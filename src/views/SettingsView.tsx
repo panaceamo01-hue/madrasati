@@ -2,12 +2,21 @@ import { useEffect, useState } from 'react';
 import { resetProgress, setSetting } from '../lib/store';
 import { useProgress } from '../lib/useProgress';
 import { speechAvailable } from '../lib/speech';
+import { checkForUpdate } from '../lib/swUpdate';
 
 type OfflineState = 'checking' | 'ready' | 'dev' | 'insecure' | 'unsupported';
+type UpdateState = 'idle' | 'checking' | 'up-to-date' | 'available' | 'unsupported';
 
 export function SettingsView() {
   const progress = useProgress();
   const [offline, setOffline] = useState<OfflineState>('checking');
+  const [updateState, setUpdateState] = useState<UpdateState>('idle');
+
+  async function handleCheckUpdate() {
+    setUpdateState('checking');
+    const result = await checkForUpdate();
+    setUpdateState(result);
+  }
 
   useEffect(() => {
     if (!('serviceWorker' in navigator) || !('caches' in window)) {
@@ -28,7 +37,7 @@ export function SettingsView() {
         await navigator.serviceWorker.ready;
         const keys = await caches.keys();
         if (cancelled) return;
-        if (keys.includes('madrasati-v1')) {
+        if (keys.some((key) => key.startsWith('madrasati-'))) {
           setOffline('ready');
           return;
         }
@@ -218,6 +227,31 @@ export function SettingsView() {
               أعلى الصفحة يقفز بك مباشرة إلى الدرس أو القائمة.
             </small>
           </div>
+        </div>
+      </div>
+
+      <div className="settings-card">
+        <h2 className="settings-title">🔄 تحديث التطبيق</h2>
+        <div className="setting-row">
+          <div>
+            <p>تحقق من وجود تحديث</p>
+            <small>
+              {updateState === 'up-to-date' && 'التطبيق محدّث، لديك أحدث نسخة.'}
+              {updateState === 'available' &&
+                'يوجد تحديث جديد. ستظهر لك لافتة التحديث أعلى الصفحة.'}
+              {updateState === 'unsupported' && 'التحديث غير مدعوم في هذا المتصفح.'}
+              {updateState === 'checking' && 'جارٍ التحقق من وجود تحديث…'}
+              {updateState === 'idle' &&
+                'تصل التحديثات إلى جهازك تلقائيًا، ويمكنك التحقق منها هنا.'}
+            </small>
+          </div>
+          <button
+            className="btn ghost small"
+            onClick={handleCheckUpdate}
+            disabled={updateState === 'checking'}
+          >
+            تحقق من وجود تحديث
+          </button>
         </div>
       </div>
 

@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './styles.css';
 import './kid-theme.css';
 import { App } from './App';
+import { initSwUpdate } from './lib/swUpdate';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -12,8 +13,11 @@ createRoot(document.getElementById('root')!).render(
 
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {
-      /* إن تعذّر التسجيل يبقى التطبيق صالحًا على الشبكة. */
-    });
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then((registration) => initSwUpdate(registration))
+      .catch(() => {
+        /* إن تعذّر التسجيل يبقى التطبيق صالحًا على الشبكة. */
+      });
   });
 }

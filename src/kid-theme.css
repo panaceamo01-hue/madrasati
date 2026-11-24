@@ -1148,6 +1148,36 @@ body {
   box-shadow: var(--shadow-pop);
 }
 
+/* ---------- update banner ---------- */
+
+.update-banner {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  background: linear-gradient(160deg, #ffd166, #ffb703);
+  color: #4a3100;
+  border-bottom: 3px solid #c98a00;
+  box-shadow: 0 4px 12px rgba(43, 33, 64, 0.25);
+  font-weight: 800;
+}
+
+.update-banner p {
+  margin: 0;
+}
+
+.update-banner-actions {
+  display: flex;
+  gap: 8px;
+}
+
 .offline-box {
   border-style: dashed;
 }
@@ -3028,4 +3058,132 @@ html.a11y-reduce-motion *::after {
 .goal-rules ul {
   margin: 6px 0 0;
   padding-inline-start: 18px;
+}
+
+/* ---------- التفعيل بالكود وإدارة الأكواد ---------- */
+
+.license-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 28px 0 40px;
+}
+
+.license-page.admin-page {
+  max-width: 960px;
+}
+
+.license-hero {
+  font-size: 4rem;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.license-head {
+  justify-content: center;
+  text-align: center;
+}
+
+.license-head .page-title {
+  text-align: center;
+}
+
+.license-card {
+  margin: 18px auto;
+  padding: 22px;
+  border-radius: 26px;
+  background: #fff;
+  border: 2px solid var(--line);
+  box-shadow: var(--shadow-soft);
+}
+
+.license-lede {
+  font-weight: 700;
+  line-height: 1.9;
+  margin-bottom: 16px;
+}
+
+.license-input {
+  direction: ltr;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 800;
+}
+
+.license-note {
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.8;
+  margin-top: 14px;
+}
+
+.license-code {
+  display: block;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  text-align: center;
+  padding: 14px;
+  margin: 10px 0;
+  border-radius: 16px;
+  background: #f6f4ec;
+  border: 2px dashed var(--line);
+}
+
+.admin-new-code {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.admin-new-code p {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.admin-head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--line);
+  text-align: start;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.admin-table th {
+  font-weight: 800;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.admin-table tr.revoked {
+  opacity: 0.6;
+}
+
+.admin-code-cell {
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.admin-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
 }

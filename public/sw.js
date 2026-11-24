@@ -1,15 +1,21 @@
 /* مدرستي — خدمة العمل دون إنترنت.
-   قائمة الملفات (__ASSETS__) تُحقن آليًا عند البناء من ملفات dist كاملة. */
-const CACHE = 'madrasati-v1';
+   قائمة الملفات (__ASSETS__) ومعرّف البناء (__BUILD_ID__) يُحقنان آليًا
+   عند البناء من ملفات dist كاملة. كل نشر يحصل على ذاكرة تخزين خاصة به
+   (madrasati-<معرّف البناء>)، فيبقى العامل القديم يخدم الصفحة المفتوحة
+   حتى يقبل المستخدم التحديث من داخل التطبيق. */
+const CACHE = 'madrasati-__BUILD_ID__';
 const ASSETS = "__ASSETS__";
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches
-      .open(CACHE)
-      .then((cache) => cache.addAll(ASSETS))
-      .then(() => self.skipWaiting()),
-  );
+  event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(ASSETS)));
+});
+
+/* لا نستدعي skipWaiting هنا عمدًا: العامل الجديد يبقى في حالة الانتظار
+   حتى يضغط المستخدم «حدّث الآن» في لافتة التحديث داخل التطبيق. */
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('activate', (event) => {

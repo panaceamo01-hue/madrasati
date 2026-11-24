@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import { parseRoute, type Route } from './lib/router';
 import { useProgress } from './lib/useProgress';
 import { totalStars, addMinutes } from './lib/store';
+import { loadLicense, revalidateLicense } from './lib/license';
 import { LESSON_BY_ID } from './data';
 import { BottomNav } from './components/BottomNav';
+import { UpdateBanner } from './components/UpdateBanner';
 import { Home } from './views/Home';
 import { LevelView } from './views/LevelView';
 import { LessonPlayer } from './views/LessonPlayer';
@@ -19,6 +21,8 @@ import { CertificateView } from './views/CertificateView';
 import { QuranView } from './views/QuranView';
 import { SurahView } from './views/SurahView';
 import { LeaderboardView } from './views/LeaderboardView';
+import { ActivationView } from './views/ActivationView';
+import { AdminView } from './views/AdminView';
 import { NotFound } from './views/NotFound';
 
 function currentRoute(): Route {
@@ -29,6 +33,8 @@ export function App() {
   const [route, setRoute] = useState<Route>(currentRoute);
   const progress = useProgress();
   const stars = totalStars(progress.stars);
+  /** هل فُعّل التطبيق بكود على هذا الجهاز؟ (الترخيص محفوظ محليًا فيبقى بعد التحديثات.) */
+  const [licensed, setLicensed] = useState<boolean>(() => loadLicense() !== null);
 
   useEffect(() => {
     const onChange = () => {
@@ -38,6 +44,19 @@ export function App() {
     window.addEventListener('hashchange', onChange);
     return () => window.removeEventListener('hashchange', onChange);
   }, []);
+
+  // إعادة التحقق من الترخيص في الخادم عند التشغيل (مرة كل 24 ساعة)؛
+  // إن أكد الخادم أن الترخيص لم يعد صالحًا نعود إلى شاشة التفعيل.
+  useEffect(() => {
+    if (!licensed) return;
+    let cancelled = false;
+    void revalidateLicense().then((ok) => {
+      if (!cancelled && !ok) setLicensed(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [licensed]);
 
   // إتاحة الوصول: تُطبق خيارات الابن النشط على الصفحة كلها.
   useEffect(() => {
@@ -68,8 +87,40 @@ export function App() {
 
   const lesson = route.name === 'lesson' ? LESSON_BY_ID[route.id] : undefined;
 
+  // إدارة الأكواد لا تحتاج ترخيصًا (لصاحب التطبيق).
+  if (route.name === 'admin') {
+    return (
+      <div className="app-shell">
+        <main className="app-main" id="main" tabIndex={-1}>
+          <div className="container">
+            <AdminView />
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  // بلا ترخيص: شاشة التفعيل بدل التطبيق كاملًا (بلا شريط علوي ولا تنقل سفلي).
+  if (!licensed) {
+    return (
+      <div className="app-shell">
+        <main className="app-main" id="main" tabIndex={-1}>
+          <div className="container">
+            <ActivationView
+              onActivated={() => {
+                setLicensed(true);
+                window.location.hash = '#/';
+              }}
+            />
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="app-shell">
+      <UpdateBanner />
       <a className="skip-link" href="#main">
         تخطَّ إلى المحتوى
       </a>
@@ -111,6 +162,7 @@ export function App() {
           {route.name === 'quran' && <QuranView />}
           {route.name === 'surah' && <SurahView key={route.id} surahId={route.id} />}
           {route.name === 'leaderboard' && <LeaderboardView />}
+          {route.name === 'activate' && <Home />}
         </div>
       </main>
 

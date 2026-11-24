@@ -1,0 +1,95 @@
+import { useState } from 'react';
+import { activateLicense, type ActivateError } from '../lib/license';
+
+const ERROR_TEXT: Record<ActivateError, string> = {
+  invalid_code: 'الكود غير صحيح. تأكد من الكود وأعد المحاولة.',
+  device_limit: 'هذا الكود مستعمل في جهازين. تواصل مع صاحب التطبيق لإلغاء جهاز قديم.',
+  revoked: 'هذا الكود ملغى. تواصل مع صاحب التطبيق.',
+  not_configured: 'خدمة التفعيل غير مفعّلة بعد. حاول لاحقًا.',
+  offline: 'تحقق من اتصالك بالإنترنت وحاول مرة أخرى.',
+  unknown: 'حدث خطأ غير متوقع. حاول مرة أخرى.',
+};
+
+interface Props {
+  onActivated: () => void;
+}
+
+/** شاشة تفعيل التطبيق بكود، تظهر لولي الأمر قبل استعمال التطبيق. */
+export function ActivationView({ onActivated }: Props) {
+  const [code, setCode] = useState('');
+  const [error, setError] = useState<ActivateError | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  async function submit() {
+    if (busy) return;
+    const clean = code.trim();
+    if (!clean) {
+      setError('invalid_code');
+      return;
+    }
+    setBusy(true);
+    setError(null);
+    const result = await activateLicense(clean);
+    setBusy(false);
+    if (result.ok) {
+      onActivated();
+      return;
+    }
+    setError(result.error);
+  }
+
+  return (
+    <div className="license-page">
+      <div className="license-hero" aria-hidden="true">
+        🎒
+      </div>
+      <div className="page-head license-head">
+        <div className="page-title">
+          <h1>فعّل التطبيق</h1>
+          <p>«مدرستي» تطبيق تعليمي للتعليم الابتدائي في المغرب.</p>
+        </div>
+      </div>
+      <div className="license-card">
+        <p className="license-lede">
+          أدخل الكود الذي أرسله لك صاحب التطبيق لتفعيله. الكود يعمل على جهازين فقط، ويبقى
+          صالحًا دائمًا.
+        </p>
+        <label className="field" htmlFor="activation-code">
+          <span>كود التفعيل</span>
+          <input
+            id="activation-code"
+            className="license-input"
+            type="text"
+            inputMode="text"
+            autoComplete="off"
+            autoCapitalize="characters"
+            spellCheck={false}
+            dir="ltr"
+            value={code}
+            onChange={(event) => {
+              setCode(event.target.value.toUpperCase());
+              setError(null);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') void submit();
+            }}
+            placeholder="K7Q2-9X4P-3M8D"
+            aria-label="كود التفعيل"
+          />
+        </label>
+        {error && (
+          <p className="gate-error" role="alert">
+            {ERROR_TEXT[error]}
+          </p>
+        )}
+        <button className="btn primary big" onClick={() => void submit()} disabled={busy}>
+          {busy ? 'جارٍ التفعيل…' : 'تفعيل'}
+        </button>
+        <p className="license-note">
+          تحتاج إلى الإنترنت مرة واحدة للتفعيل، ثم يعمل التطبيق دون إنترنت. إن لم يصلك كود
+          بعد، تواصل مع صاحب التطبيق.
+        </p>
+      </div>
+    </div>
+  );
+}
