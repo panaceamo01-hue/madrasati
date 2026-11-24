@@ -6,6 +6,9 @@ import { level4 } from './level4';
 import { level5 } from './level5';
 import { level6 } from './level6';
 import { extras } from './extras';
+import { l6ExamMath } from './l6-exam-math';
+import { l6ExamArabic } from './l6-exam-arabic';
+import { l6ExamFrench } from './l6-exam-french';
 
 export const LESSONS: Lesson[] = [
   ...level1,
@@ -20,6 +23,9 @@ export const LESSONS: Lesson[] = [
   ...extras[5],
   ...level6,
   ...extras[6],
+  ...l6ExamMath,
+  ...l6ExamArabic,
+  ...l6ExamFrench,
 ];
 
 export const LESSON_BY_ID: Record<string, Lesson> = LESSONS.reduce((acc, lesson) => {

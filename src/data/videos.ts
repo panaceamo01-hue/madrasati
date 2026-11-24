@@ -1,6 +1,6 @@
 /**
  * فيديوهات شرح مختارة باللغة العربية الفصحى، للدروس المهمة فقط
- * في الرياضيات والنشاط العلمي (12 درسا).
+ * في الرياضيات والنشاط العلمي (16 درسا).
  *
  * المصدر: يوتيوب (تضمّن عبر youtube-nocookie، بلا تتبّع إضافي).
  * تحقّقنا من وجود كل فيديو وعنوانه عبر oEmbed في 2026-11-24.
@@ -30,6 +30,10 @@ export const LESSON_VIDEOS: Record<string, LessonVideo> = {
   'l4-math-fractions': { id: 'Z4VB_t3J3kI', channel: 'Mignon et mignonne for kids' },
   'l5-math-decimals': { id: 'iyfxQwWFMCo', channel: 'الأستاذ العيد شيخة' },
   'l6-math-percent': { id: 'AUuRMhFTy9c', channel: 'منال التويجري' },
+  'l6-math-division': { id: 'P72KVCA7uQg', channel: 'نور الهدى التعليمية' },
+  'l6-math-decimals': { id: 'UXdrDDRkDQ4', channel: 'Almotaaalim-المتعلم' },
+  'l6-math-proportionality-1': { id: 'PUZcce2FNNA', channel: 'تقنية وتعليم' },
+  'l6-math-big-numbers': { id: 'GZPqZxzywjg', channel: 'محمد علي التعليمية' },
   'l1-science-water': { id: 'kK-ui8Yqbu0', channel: 'حكايات صغار' },
   'l3-science-water': { id: 'niot5YFakP0', channel: 'حكاية ودعاء' },
   'l3-science-solar': { id: 'WqzwrbzSqyY', channel: 'Osratouna TV — قناة أسرتنا' },
