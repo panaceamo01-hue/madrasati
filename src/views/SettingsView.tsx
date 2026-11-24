@@ -3,6 +3,12 @@ import { resetProgress, setSetting } from '../lib/store';
 import { useProgress } from '../lib/useProgress';
 import { speechAvailable } from '../lib/speech';
 import { checkForUpdate } from '../lib/swUpdate';
+import {
+  getDailyPushState,
+  subscribeDailyPush,
+  unsubscribeDailyPush,
+  type DailyPushState,
+} from '../lib/dailyPush';
 import { InstallAppButton } from '../components/InstallAppButton';
 
 type OfflineState = 'checking' | 'ready' | 'dev' | 'insecure' | 'unsupported';
@@ -12,11 +18,32 @@ export function SettingsView() {
   const progress = useProgress();
   const [offline, setOffline] = useState<OfflineState>('checking');
   const [updateState, setUpdateState] = useState<UpdateState>('idle');
+  const [pushState, setPushState] = useState<DailyPushState>('unsubscribed');
+  const [pushBusy, setPushBusy] = useState(false);
 
   async function handleCheckUpdate() {
     setUpdateState('checking');
     const result = await checkForUpdate();
     setUpdateState(result);
+  }
+
+  useEffect(() => {
+    let cancelled = false;
+    void getDailyPushState().then((state) => {
+      if (!cancelled) setPushState(state);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  async function handleTogglePush() {
+    if (pushBusy) return;
+    setPushBusy(true);
+    const next =
+      pushState === 'subscribed' ? await unsubscribeDailyPush() : await subscribeDailyPush();
+    setPushState(next);
+    setPushBusy(false);
   }
 
   useEffect(() => {
@@ -241,6 +268,33 @@ export function SettingsView() {
             </small>
           </div>
           <InstallAppButton className="btn ghost small" />
+        </div>
+      </div>
+
+      <div className="settings-card">
+        <h2 className="settings-title">📩 إشعار آية وحديث وحكمة اليوم</h2>
+        <div className="setting-row">
+          <div>
+            <p>إشعار كل صباح (08:00) حتى لو كان التطبيق مغلقًا</p>
+            <small>
+              {pushState === 'subscribed' && 'الإشعار مفعّل ✅. تصلك آية وحديث وحكمة اليوم كل صباح.'}
+              {pushState === 'unsubscribed' &&
+                'فعّل الإشعار ليصلك محتوى اليوم كل صباح، والضغط عليه يفتح صفحة حكمة اليوم.'}
+              {pushState === 'denied' &&
+                'الإشعارات محظورة في هذا المتصفح. فعّلها من إعدادات المتصفح ثم أعد المحاولة.'}
+              {pushState === 'unsupported' &&
+                'هذا المتصفح لا يدعم إشعارات الدفع. جرّب كروم على أندرويد، وعلى آيفون ثبّت التطبيق على الشاشة الرئيسية أولًا.'}
+              {pushState === 'error' &&
+                'تعذّر تفعيل الإشعار. تأكد من اتصالك بالإنترنت ومن تفعيل خدمة الإشعارات في الخادم، ثم أعد المحاولة.'}
+            </small>
+          </div>
+          <button
+            className={`btn ${pushState === 'subscribed' ? 'ghost' : 'primary'} small`}
+            onClick={() => void handleTogglePush()}
+            disabled={pushBusy || pushState === 'unsupported' || pushState === 'denied'}
+          >
+            {pushBusy ? 'جارٍ…' : pushState === 'subscribed' ? 'إيقاف الإشعار' : 'تفعيل الإشعار'}
+          </button>
         </div>
       </div>
 
