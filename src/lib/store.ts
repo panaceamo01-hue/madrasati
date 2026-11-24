@@ -212,6 +212,29 @@ export function recordMistake(question: string, lessonId?: string): void {
   emit();
 }
 
+/**
+ * أجاب الطفل صحيحًا في المراجعة عن سؤال كان يخطئ فيه:
+ * ينقص عدد أخطائه فيه، فيخرج من قائمة الأسئلة الضعيفة عند إتقانه.
+ */
+export function resolveMistake(question: string, lessonId?: string): void {
+  const current = state.mistakes[question] ?? 0;
+  if (current === 0) return;
+  const mistakes = { ...state.mistakes };
+  if (current <= 1) delete mistakes[question];
+  else mistakes[question] = current - 1;
+  const mistakeLessons =
+    lessonId != null
+      ? {
+          ...state.mistakeLessons,
+          [lessonId]: Math.max(0, (state.mistakeLessons[lessonId] ?? 0) - 1),
+        }
+      : state.mistakeLessons;
+  if (lessonId != null && mistakeLessons[lessonId] === 0) delete mistakeLessons[lessonId];
+  state = { ...state, mistakes, mistakeLessons };
+  persist();
+  emit();
+}
+
 /** خطأ في تمرين بلا نص سؤال (ترتيب أو بناء كلمة): يُحسب على الدرس فقط. */
 export function recordLessonMistake(lessonId: string): void {
   state = {

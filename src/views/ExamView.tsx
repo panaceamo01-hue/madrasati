@@ -167,6 +167,12 @@ export function ExamView({ lessonId, level }: Props) {
             <p className="exam-alert">
               ⚠️ هذا ثالث رسوب متتالٍ في {lesson ? `اختبار درس «${lesson.title}»` : `اختبار ${LEVEL_NAMES[examLevel as Level]}`}.
               راجع الدرس بهدوء مع ولي أمرك قبل المحاولة من جديد.
+              {lesson && (
+                <>
+                  {' '}
+                  <a href={`#/review/${encodeURIComponent(lesson.id)}`}>ابدأ المراجعة ←</a>
+                </>
+              )}
             </p>
           )}
           <div className="game-actions">
@@ -175,9 +181,14 @@ export function ExamView({ lessonId, level }: Props) {
                 {lesson ? 'الدرس التالي →' : 'المستوى التالي →'}
               </a>
             )}
+            {!passed && lesson && (
+              <a className="btn primary" href={`#/review/${encodeURIComponent(lesson.id)}`}>
+                🔁 راجع الدرس أولًا
+              </a>
+            )}
             {!passed && (
-              <button className="btn primary" onClick={retry}>
-                أعد المحاولة
+              <button className="btn ghost" onClick={retry}>
+                أعد المحاولة مباشرة
               </button>
             )}
             <a className="btn ghost" href={lesson ? `#/level/${lesson.level}` : `#/level/${examLevel}`}>

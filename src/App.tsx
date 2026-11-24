@@ -14,6 +14,7 @@ import { SettingsView } from './views/SettingsView';
 import { WisdomView } from './views/WisdomView';
 import { ParentView } from './views/ParentView';
 import { ExamView } from './views/ExamView';
+import { ReviewView } from './views/ReviewView';
 import { NotFound } from './views/NotFound';
 
 function currentRoute(): Route {
@@ -40,7 +41,10 @@ export function App() {
 
   useEffect(() => {
     const learning =
-      route.name === 'lesson' || route.name === 'examLesson' || route.name === 'examLevel';
+      route.name === 'lesson' ||
+      route.name === 'examLesson' ||
+      route.name === 'examLevel' ||
+      route.name === 'review';
     if (!learning) return;
     const timer = window.setInterval(() => {
       if (document.visibilityState === 'visible') addMinutes(0.5);
@@ -83,6 +87,7 @@ export function App() {
           {route.name === 'parent' && <ParentView />}
           {route.name === 'examLesson' && <ExamView key={route.id} lessonId={route.id} />}
           {route.name === 'examLevel' && <ExamView key={`level-${route.level}`} level={route.level} />}
+          {route.name === 'review' && <ReviewView key={route.id} lessonId={route.id} />}
         </div>
       </main>
 

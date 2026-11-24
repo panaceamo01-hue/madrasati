@@ -398,6 +398,9 @@ export function ParentView() {
                       {row.mistakes > 0 && row.fails > 0 && ' · '}
                       {row.fails > 0 && `${row.fails} ${row.fails === 1 ? 'رسوب' : 'مرات رسوب'} في الاختبار`}
                     </small>
+                    <a className="review-link" href={`#/review/${encodeURIComponent(row.lesson.id)}`}>
+                      🔁 مراجعة
+                    </a>
                   </li>
                 ))}
               </ul>

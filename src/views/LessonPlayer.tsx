@@ -436,7 +436,7 @@ interface StepProps<T> {
   onMistake: () => void;
 }
 
-function QuizView({ step, onSolved, onMistake }: StepProps<QuizStep>) {
+export function QuizView({ step, onSolved, onMistake }: StepProps<QuizStep>) {
   const [chosen, setChosen] = useState<number | null>(null);
   const answered = chosen !== null;
   const isCorrect = chosen === step.answer;
@@ -492,7 +492,7 @@ function QuizView({ step, onSolved, onMistake }: StepProps<QuizStep>) {
   );
 }
 
-function OrderView({ step, onSolved, onMistake }: StepProps<OrderStep>) {
+export function OrderView({ step, onSolved, onMistake }: StepProps<OrderStep>) {
   const shuffled = useMemo(() => shuffle(step.items), [step.items]);
   const [picked, setPicked] = useState<string[]>([]);
   const [status, setStatus] = useState<'idle' | 'ok' | 'bad'>('idle');
@@ -556,7 +556,7 @@ function OrderView({ step, onSolved, onMistake }: StepProps<OrderStep>) {
   );
 }
 
-function BuildView({ step, onSolved, onMistake }: StepProps<BuildStep>) {
+export function BuildView({ step, onSolved, onMistake }: StepProps<BuildStep>) {
   const letters = useMemo(() => shuffle(Array.from(step.word)), [step.word]);
   const [picked, setPicked] = useState<number[]>([]);
   const [status, setStatus] = useState<'idle' | 'ok' | 'bad'>('idle');

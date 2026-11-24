@@ -11,7 +11,8 @@ export type Route =
   | { name: 'wisdom' }
   | { name: 'parent' }
   | { name: 'examLesson'; id: string }
-  | { name: 'examLevel'; level: Level };
+  | { name: 'examLevel'; level: Level }
+  | { name: 'review'; id: string };
 
 const GAME_IDS: GameId[] = ['memory', 'math', 'words', 'matching', 'ordering', 'values'];
 
@@ -46,6 +47,7 @@ export function parseRoute(hash: string): Route {
     const level = toLevel(parts[2]);
     if (level) return { name: 'examLevel', level };
   }
+  if (parts[0] === 'review' && parts[1]) return { name: 'review', id: decodeURIComponent(parts[1]) };
   return { name: 'home' };
 }
 

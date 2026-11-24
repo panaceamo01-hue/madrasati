@@ -15,6 +15,7 @@ import {
 import { useProgress } from '../lib/useProgress';
 import { lessonUnlocked, levelUnlocked } from '../lib/unlock';
 import { examKeyLevel, examPassed } from '../lib/exam';
+import { needsReview } from '../lib/adaptive';
 import { Stars } from '../components/Stars';
 
 const LEVEL_EMOJI: Record<Level, string> = {
@@ -184,6 +185,12 @@ export function LevelView({ level }: { level: Level }) {
                 {lessonVideo(lesson.id) && progress.settings.videosEnabled && (
                   <span className="cta" title="هذا الدرس فيه فيديو شرح">🎥 فيديو</span>
                 )}
+                {earned > 0 &&
+                  needsReview(lesson.id, progress.mistakes ?? {}, progress.examAttempts ?? []) && (
+                    <span className="cta review-badge" title="تعثّرت في هذا الدرس — راجع أسئلته قبل الاختبار">
+                      🔁 يحتاج مراجعة
+                    </span>
+                  )}
                 <span className="cta">{earned ? 'راجع ←' : 'ابدأ ←'}</span>
               </div>
             </a>

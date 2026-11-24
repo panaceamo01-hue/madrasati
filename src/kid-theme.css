@@ -2196,6 +2196,37 @@ body {
   font-weight: 800;
 }
 
+/* التعلّم المتكيّف: شارة المراجعة وصفحة المراجعة */
+.review-badge {
+  background: #fff3d6;
+  color: #8a5a00;
+  border: 1px solid #f0d48a;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.review-weak {
+  margin: 0 0 10px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: #fff3d6;
+  border: 1px solid #f0d48a;
+  color: #8a5a00;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.review-link {
+  white-space: nowrap;
+  color: #8a4a12;
+  font-weight: 800;
+  font-size: 0.72rem;
+  text-decoration: none;
+}
+
 /* تنبيه الرسوب المتتالي في صفحة نتيجة الاختبار */
 .exam-alert {
   margin: 12px auto 0;
