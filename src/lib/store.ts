@@ -100,6 +100,26 @@ export interface Progress {
 
 const KEY = 'madrasati:progress:v1';
 
+/** ملف تعريف ابن: اسمه وصورته الرمزية. التقدم نفسه محفوظ لكل ابن على حدة. */
+export interface ChildProfile {
+  id: string;
+  name: string;
+  emoji: string;
+}
+
+/** الصور الرمزية المتاحة للأبناء. */
+export const PROFILE_EMOJIS: string[] = ['🦸', '🦊', '🐼', '🦁', '🐰', '🦄', '🐸', '🦉', '🐯', '🐵'];
+/** أكبر عدد أبناء في العائلة. */
+export const MAX_PROFILES = 6;
+
+const PROFILES_KEY = 'madrasati:profiles:v1';
+const progressKey = (profileId: string) => `${KEY}:${profileId}`;
+
+interface ProfilesState {
+  activeId: string;
+  profiles: ChildProfile[];
+}
+
 const EMPTY_SETTINGS: ProgressSettings = {
   speech: true,
   sound: true,
@@ -126,12 +146,14 @@ function yesterdayKey(): string {
   return todayKey(date);
 }
 
-function load(): Progress {
+function emptyProgress(): Progress {
+  return { stars: {}, gameBest: {}, settings: { ...EMPTY_SETTINGS }, daily: { ...EMPTY_DAILY }, exams: {}, activity: {}, mistakes: {}, mistakeLessons: {}, examAttempts: [], lessonCompletions: {}, memorization: {}, lastReminderDate: '' };
+}
+
+function loadFor(key: string): Progress {
   try {
-    const raw = localStorage.getItem(KEY);
-    if (!raw) {
-      return { stars: {}, gameBest: {}, settings: { ...EMPTY_SETTINGS }, daily: { ...EMPTY_DAILY }, exams: {}, activity: {}, mistakes: {}, mistakeLessons: {}, examAttempts: [], lessonCompletions: {}, memorization: {}, lastReminderDate: '' };
-    }
+    const raw = localStorage.getItem(key);
+    if (!raw) return emptyProgress();
     const parsed = JSON.parse(raw) as Partial<Progress>;
     return {
       stars: parsed.stars ?? {},
@@ -148,11 +170,43 @@ function load(): Progress {
       lastReminderDate: parsed.lastReminderDate ?? '',
     };
   } catch {
-    return { stars: {}, gameBest: {}, settings: { ...EMPTY_SETTINGS }, daily: { ...EMPTY_DAILY }, exams: {}, activity: {}, mistakes: {}, mistakeLessons: {}, examAttempts: [], lessonCompletions: {}, memorization: {}, lastReminderDate: '' };
+    return emptyProgress();
   }
 }
 
-let state: Progress = load();
+/**
+ * يقرأ ملفات الأبناء، أو ينشئ أول ملف بترحيل التقدم الوحيد القديم
+ * (المحفوظ في المفتاح القديم) إليه، فيبقى تقدم الابن الأول كما كان.
+ */
+function loadProfiles(): ProfilesState {
+  try {
+    const raw = localStorage.getItem(PROFILES_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw) as ProfilesState;
+      if (parsed.profiles?.length && parsed.activeId) return parsed;
+    }
+  } catch {
+    /* نكمل إلى الترحيل. */
+  }
+  const legacy = loadFor(KEY);
+  const profile: ChildProfile = {
+    id: 'child-1',
+    name: legacy.settings.childName.trim() || 'ابني',
+    emoji: '🦸',
+  };
+  const next: ProfilesState = { activeId: profile.id, profiles: [profile] };
+  try {
+    localStorage.setItem(progressKey(profile.id), JSON.stringify(legacy));
+    localStorage.removeItem(KEY);
+    localStorage.setItem(PROFILES_KEY, JSON.stringify(next));
+  } catch {
+    /* التخزين غير متاح: تبقى الملفات في الجلسة الحالية. */
+  }
+  return next;
+}
+
+let profilesState: ProfilesState = loadProfiles();
+let state: Progress = loadFor(progressKey(profilesState.activeId));
 const listeners = new Set<() => void>();
 
 function emit() {
@@ -161,10 +215,102 @@ function emit() {
 
 function persist() {
   try {
-    localStorage.setItem(KEY, JSON.stringify(state));
+    localStorage.setItem(progressKey(profilesState.activeId), JSON.stringify(state));
   } catch {
     /* التخزين غير متاح (وضع خاص مثلًا): يبقى التقدم في الجلسة الحالية. */
   }
+}
+
+function persistProfiles() {
+  try {
+    localStorage.setItem(PROFILES_KEY, JSON.stringify(profilesState));
+  } catch {
+    /* نتجاهل: تبقى الملفات في الجلسة الحالية. */
+  }
+}
+
+/** ملفات الأبناء والابن النشط (مرجع مستقر ما لم يتغيرا). */
+export function getProfilesState(): ProfilesState {
+  return profilesState;
+}
+
+export function getProfiles(): ChildProfile[] {
+  return profilesState.profiles;
+}
+
+export function getActiveProfileId(): string {
+  return profilesState.activeId;
+}
+
+export function getActiveProfile(): ChildProfile {
+  return profilesState.profiles.find((profile) => profile.id === profilesState.activeId) ?? profilesState.profiles[0];
+}
+
+/** يبدّل الابن النشط (يحفظ تقدم الحالي تلقائيًا عبر persist السابقة). */
+export function switchProfile(id: string): void {
+  if (id === profilesState.activeId) return;
+  if (!profilesState.profiles.some((profile) => profile.id === id)) return;
+  profilesState = { ...profilesState, activeId: id };
+  persistProfiles();
+  state = loadFor(progressKey(id));
+  emit();
+}
+
+/** ينشئ ابنًا جديدًا ويبدّل إليه. يعيد null إن كان الاسم فارغًا أو بلغ العدد الأقصى. */
+export function createProfile(name: string, emoji: string): ChildProfile | null {
+  const clean = name.trim().slice(0, 20);
+  if (!clean || profilesState.profiles.length >= MAX_PROFILES) return null;
+  const profile: ChildProfile = { id: `child-${Date.now()}`, name: clean, emoji };
+  profilesState = { ...profilesState, profiles: [...profilesState.profiles, profile], activeId: profile.id };
+  persistProfiles();
+  state = { ...emptyProgress(), settings: { ...EMPTY_SETTINGS, childName: clean } };
+  persist();
+  emit();
+  return profile;
+}
+
+/** يغيّر اسم ابن أو صورته الرمزية. */
+export function updateProfile(id: string, patch: Partial<Pick<ChildProfile, 'name' | 'emoji'>>): void {
+  const name = patch.name?.trim().slice(0, 20);
+  profilesState = {
+    ...profilesState,
+    profiles: profilesState.profiles.map((profile) =>
+      profile.id === id
+        ? { ...profile, ...(name ? { name } : {}), ...(patch.emoji ? { emoji: patch.emoji } : {}) }
+        : profile,
+    ),
+  };
+  persistProfiles();
+  if (id === profilesState.activeId && name) {
+    state = { ...state, settings: { ...state.settings, childName: name } };
+    persist();
+  }
+  emit();
+}
+
+/** يحذف ابنًا وتقدمه. يعيد false إن كان الابن الوحيد. */
+export function deleteProfile(id: string): boolean {
+  if (profilesState.profiles.length <= 1) return false;
+  const remaining = profilesState.profiles.filter((profile) => profile.id !== id);
+  try {
+    localStorage.removeItem(progressKey(id));
+  } catch {
+    /* نتجاهل. */
+  }
+  const wasActive = id === profilesState.activeId;
+  profilesState = { activeId: wasActive ? remaining[0].id : profilesState.activeId, profiles: remaining };
+  persistProfiles();
+  if (wasActive) state = loadFor(progressKey(profilesState.activeId));
+  emit();
+  return true;
+}
+
+/** تقدم كل الأبناء (للوحة الترتيب): النشط من الذاكرة، والباقون من التخزين. */
+export function getAllProfilesProgress(): { profile: ChildProfile; progress: Progress }[] {
+  return profilesState.profiles.map((profile) => ({
+    profile,
+    progress: profile.id === profilesState.activeId ? state : loadFor(progressKey(profile.id)),
+  }));
 }
 
 export function subscribe(listener: () => void): () => void {

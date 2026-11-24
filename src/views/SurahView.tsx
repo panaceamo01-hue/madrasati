@@ -5,6 +5,7 @@ import { deleteRecording, loadRecording, recordingSupported, saveRecording, star
 import { speak, speechAvailable, stopSpeaking } from '../lib/speech';
 import { setMemorizationStatus } from '../lib/store';
 import { useProgress } from '../lib/useProgress';
+import { useProfiles } from '../lib/useProfiles';
 
 interface Props {
   surahId: string;
@@ -16,6 +17,9 @@ interface Props {
  */
 export function SurahView({ surahId }: Props) {
   const progress = useProgress();
+  const { activeId } = useProfiles();
+  /** التسجيلات محفوظة لكل ابن على حدة. */
+  const recordingKey = `${activeId}:${surahId}`;
   const surah = SURAHS_BY_ID[surahId];
   const [recording, setRecording] = useState<ActiveRecording | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
@@ -31,15 +35,25 @@ export function SurahView({ surahId }: Props) {
 
   useEffect(() => {
     let alive = true;
-    loadRecording(surahId).then((blob) => {
-      if (!alive || !blob) return;
-      setAudioUrl(URL.createObjectURL(blob));
+    setAudioUrl(null);
+    setHasSaved(false);
+    loadRecording(recordingKey).then(async (blob) => {
+      if (!alive) return;
+      // ترحيل لمرة واحدة: تسجيل محفوظ قبل نظام الأبناء ينتقل إلى حساب الابن النشط.
+      const found = blob ?? (await loadRecording(surahId));
+      if (!found) return;
+      if (!blob) {
+        await saveRecording(recordingKey, found);
+        await deleteRecording(surahId);
+      }
+      if (!alive) return;
+      setAudioUrl(URL.createObjectURL(found));
       setHasSaved(true);
     });
     return () => {
       alive = false;
     };
-  }, [surahId]);
+  }, [recordingKey]);
 
   useEffect(
     () => () => {
@@ -89,7 +103,7 @@ export function SurahView({ surahId }: Props) {
     if (audioUrl) URL.revokeObjectURL(audioUrl);
     const url = URL.createObjectURL(blob);
     setAudioUrl(url);
-    const saved = await saveRecording(surah.id, blob);
+    const saved = await saveRecording(recordingKey, blob);
     setHasSaved(saved);
     setSavedNote(
       saved
@@ -99,7 +113,7 @@ export function SurahView({ surahId }: Props) {
   }
 
   async function removeRecording() {
-    await deleteRecording(surah.id);
+    await deleteRecording(recordingKey);
     if (audioUrl) URL.revokeObjectURL(audioUrl);
     setAudioUrl(null);
     setHasSaved(false);

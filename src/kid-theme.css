@@ -2603,6 +2603,178 @@ body {
   flex-wrap: wrap;
 }
 
+/* ---------- حسابات الأبناء ولوحة الترتيب ---------- */
+
+.profile-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  max-width: 680px;
+  margin: 0 auto 14px;
+  padding: 0 4px;
+}
+
+.profile-switcher-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.profile-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  border: 2px solid #e9f0fb;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--ink);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.profile-chip.active {
+  border-color: #1d6b52;
+  background: #eef7f1;
+}
+
+.profile-manage-list {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.profile-manage-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  background: #f8fafd;
+  border: 2px solid #e9f0fb;
+  border-radius: 16px;
+  padding: 10px 12px;
+}
+
+.profile-manage-avatar {
+  font-size: 1.4rem;
+}
+
+.profile-manage-row input[type='text'],
+.profile-add input[type='text'] {
+  flex: 1;
+  min-width: 120px;
+  border: 2px solid #e9f0fb;
+  border-radius: 12px;
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 0.88rem;
+}
+
+.profile-manage-emojis {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.emoji-pick {
+  border: 2px solid transparent;
+  background: none;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  padding: 2px 4px;
+  cursor: pointer;
+}
+
+.emoji-pick.active {
+  border-color: #1d6b52;
+  background: #eef7f1;
+}
+
+.profile-active-tag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #1d6b52;
+  background: #eef7f1;
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.profile-add {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.leaderboard-page {
+  max-width: 680px;
+  margin: 0 auto;
+  padding-bottom: 32px;
+}
+
+.leaderboard-list {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.leaderboard-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 2px solid #e9f0fb;
+  border-radius: 18px;
+  padding: 12px 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+.leaderboard-row.first {
+  border-color: #d4a017;
+  background: #fffdf5;
+}
+
+.leaderboard-rank {
+  font-size: 1.3rem;
+  min-width: 32px;
+  text-align: center;
+  font-weight: 900;
+}
+
+.leaderboard-avatar {
+  font-size: 1.6rem;
+}
+
+.leaderboard-name {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.leaderboard-name small {
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+
+.leaderboard-stars {
+  font-weight: 900;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.leaderboard-note {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
 /* تنبيه الرسوب المتتالي في صفحة نتيجة الاختبار */
 .exam-alert {
   margin: 12px auto 0;

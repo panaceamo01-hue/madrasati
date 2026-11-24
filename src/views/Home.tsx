@@ -3,9 +3,10 @@ import { LESSONS, lessonsFor } from '../data';
 import { GAMES } from '../data/games';
 import { LEVEL_AGES, LEVEL_COLORS, LEVEL_NAMES, LEVEL_SOFT } from '../data/subjects';
 import type { Level } from '../types';
-import { todayMinutes, totalStars, todayKey } from '../lib/store';
+import { switchProfile, todayMinutes, totalStars, todayKey } from '../lib/store';
 import { triggerReminder } from '../lib/reminder';
 import { useProgress } from '../lib/useProgress';
+import { useProfiles } from '../lib/useProfiles';
 import { levelUnlocked, levelStatus, nextLessonFor, visibleLevels } from '../lib/unlock';
 
 const LEVEL_EMOJI: Record<Level, string> = {
@@ -26,6 +27,7 @@ const DAILY_ITEMS = [
 
 export function Home() {
   const progress = useProgress();
+  const { profiles, activeId } = useProfiles();
   const stars = totalStars(progress.stars);
   const levels = visibleLevels(progress.settings);
   const activeLevel: Level =
@@ -55,6 +57,24 @@ export function Home() {
 
   return (
     <>
+      {profiles.length > 1 && (
+        <div className="profile-switcher" role="group" aria-label="من يتعلم الآن؟">
+          <span className="profile-switcher-label">من يتعلم الآن؟</span>
+          {profiles.map((profile) => (
+            <button
+              key={profile.id}
+              className={`profile-chip${profile.id === activeId ? ' active' : ''}`}
+              onClick={() => switchProfile(profile.id)}
+              aria-pressed={profile.id === activeId}
+            >
+              <span aria-hidden="true">{profile.emoji}</span> {profile.name}
+            </button>
+          ))}
+          <a className="profile-chip" href="#/leaderboard">
+            🏆 الترتيب
+          </a>
+        </div>
+      )}
       <section className="hero kid-hero">
         <div className="hero-copy">
           <p className="eyebrow">{greeting} 👋</p>
@@ -248,6 +268,17 @@ export function Home() {
         <span>
           <strong>حفظ القرآن</strong>
           <small>سور الحفظ المقررة — استمع، وردّد، وسجّل تلاوتك</small>
+        </span>
+        <span className="cta">افتح ←</span>
+      </a>
+
+      <a className="wisdom-teaser" href="#/leaderboard">
+        <span className="wisdom-teaser-emoji" aria-hidden="true">
+          🏆
+        </span>
+        <span>
+          <strong>لوحة ترتيب العائلة</strong>
+          <small>قارن نجوم الأبناء — وأضف ابنًا جديدًا من مساحة ولي الأمر</small>
         </span>
         <span className="cta">افتح ←</span>
       </a>

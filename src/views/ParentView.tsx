@@ -9,6 +9,7 @@ import {
   type NotificationState,
 } from '../lib/reminder';
 import { useProgress } from '../lib/useProgress';
+import { ProfilesSection } from './ProfilesSection';
 import { failStreaks, strugglingTopics, subjectProgress, weekBySubject, weekLessons, weekReport, weekTotals } from '../lib/report';
 
 export function ParentView() {
@@ -265,6 +266,8 @@ export function ParentView() {
         </div>
         {saved && <p className="save-note">✅ حُفظت التغييرات على هذا الجهاز.</p>}
       </section>
+
+      <ProfilesSection />
 
       {(() => {
         const rows = weekReport(progress.activity ?? {});

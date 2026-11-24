@@ -18,6 +18,7 @@ import { ReviewView } from './views/ReviewView';
 import { CertificateView } from './views/CertificateView';
 import { QuranView } from './views/QuranView';
 import { SurahView } from './views/SurahView';
+import { LeaderboardView } from './views/LeaderboardView';
 import { NotFound } from './views/NotFound';
 
 function currentRoute(): Route {
@@ -97,6 +98,7 @@ export function App() {
           )}
           {route.name === 'quran' && <QuranView />}
           {route.name === 'surah' && <SurahView key={route.id} surahId={route.id} />}
+          {route.name === 'leaderboard' && <LeaderboardView />}
         </div>
       </main>
 
