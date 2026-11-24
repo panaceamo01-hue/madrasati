@@ -1,6 +1,6 @@
 import { kv } from '@vercel/kv';
-import * as webPush from 'web-push';
 import { dailyContent, todayInMorocco } from '../src/data/daily';
+import { sendPush, type PushSubscriptionLike } from './_lib/webpush';
 
 /**
  * إرسال إشعار الصباح اليومي (آية وحديث وحكمة اليوم) إلى كل الأجهزة
@@ -14,11 +14,7 @@ import { dailyContent, todayInMorocco } from '../src/data/daily';
 const SUBSCRIPTIONS_KEY = 'push:subscriptions';
 
 /** اشتراك دفع كما يُحفظ في KV (نفس شكل PushSubscription JSON). */
-interface StoredSubscription {
-  endpoint: string;
-  keys: { p256dh: string; auth: string };
-  expirationTime?: number | null;
-}
+interface StoredSubscription extends PushSubscriptionLike {}
 
 function json(res: any, status: number, body: unknown): void {
   res.status(status).json(body);
@@ -53,11 +49,11 @@ export default async function handler(req: any, res: any): Promise<void> {
     json(res, 503, { error: 'vapid_not_configured' });
     return;
   }
-  webPush.setVapidDetails(
-    process.env.VAPID_SUBJECT || 'https://repo-eight-bay.vercel.app',
+  const vapid = {
+    subject: process.env.VAPID_SUBJECT || 'https://repo-eight-bay.vercel.app',
     publicKey,
     privateKey,
-  );
+  };
 
   const content = dailyContent(todayInMorocco());
   const payload = JSON.stringify({
@@ -75,15 +71,16 @@ export default async function handler(req: any, res: any): Promise<void> {
     members.map(async (member) => {
       try {
         const subscription = JSON.parse(member) as StoredSubscription;
-        await webPush.sendNotification(subscription, payload);
-        sent += 1;
-      } catch (error: any) {
-        const statusCode = error?.statusCode;
-        if (statusCode === 404 || statusCode === 410) {
+        const result = await sendPush(subscription, payload, vapid);
+        if (result.ok) {
+          sent += 1;
+        } else if (result.gone) {
           stale.push(member);
         } else {
           failed += 1;
         }
+      } catch {
+        failed += 1;
       }
     }),
   );
