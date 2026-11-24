@@ -2,6 +2,7 @@ import type { Level } from '../types';
 import { LESSONS, lessonsFor } from '../data';
 import { GAMES } from '../data/games';
 import { LEVEL_COLORS, LEVEL_NAMES, LEVELS } from '../data/subjects';
+import { allLevelsCertified, levelCertificate } from '../lib/certificate';
 import { totalStars } from '../lib/store';
 import { useProgress } from '../lib/useProgress';
 
@@ -138,6 +139,52 @@ export function ProgressView() {
             <small>{badge.description}</small>
           </div>
         ))}
+      </div>
+
+      <div className="section-head">
+        <h2>📜 شهاداتي</h2>
+        <p>شهادة قابلة للطباعة عند اجتياز اختبار كل مستوى</p>
+      </div>
+      <div className="badge-grid">
+        {LEVELS.map((level) => {
+          const info = levelCertificate(level, progress);
+          return info.earned ? (
+            <a className="badge earned" href={`#/certificate/${level}`} key={level}>
+              <span className="icon" aria-hidden="true">
+                📜
+              </span>
+              <strong>{LEVEL_NAMES[level]}</strong>
+              <small>نتيجة الاختبار {info.percent}% · اطبعها ←</small>
+            </a>
+          ) : (
+            <div className="badge" key={level}>
+              <span className="icon" aria-hidden="true">
+                🔒
+              </span>
+              <strong>{LEVEL_NAMES[level]}</strong>
+              <small>
+                اجتز اختبار المستوى ({info.lessons}/{info.total} دروس)
+              </small>
+            </div>
+          );
+        })}
+        {allLevelsCertified(progress) ? (
+          <a className="badge earned" href="#/certificate/all">
+            <span className="icon" aria-hidden="true">
+              🏆
+            </span>
+            <strong>بطل مدرستي</strong>
+            <small>أتممت المستويات الستة · اطبعها ←</small>
+          </a>
+        ) : (
+          <div className="badge">
+            <span className="icon" aria-hidden="true">
+              🏆
+            </span>
+            <strong>بطل مدرستي</strong>
+            <small>أتمم المستويات الستة كلها</small>
+          </div>
+        )}
       </div>
 
       <p className="profile-note">🔒 كل تقدمك محفوظ على جهازك فقط، بدون حساب ولا إنترنت.</p>

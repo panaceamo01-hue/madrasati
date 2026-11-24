@@ -203,20 +203,27 @@ export function LevelView({ level }: { level: Level }) {
         const certified = examPassed(progress.exams, examKeyLevel(level));
         if (complete) {
           return (
-            <a className={`exam-card${certified ? ' certified' : ''}`} href={`#/exam/level/${level}`}>
-              <span className="exam-card-emoji" aria-hidden="true">
-                {certified ? '🏅' : '🎯'}
-              </span>
-              <span className="exam-card-text">
-                <strong>{certified ? 'ناجح في اختبار المستوى' : 'اختبار المستوى جاهز'}</strong>
-                <small>
-                  {certified
-                    ? `أفضل نتيجة: ${progress.exams[examKeyLevel(level)]}% · يمكنك الإعادة لتحسين النتيجة`
-                    : `أكملت كل الدروس: اجتز الاختبار لتفتح ${level < 6 ? LEVEL_NAMES[(level + 1) as Level] : 'شهادة الصف السادس'}`}
-                </small>
-              </span>
-              <span className="exam-card-cta">{certified ? 'أعد ←' : 'ابدأ ←'}</span>
-            </a>
+            <>
+              <a className={`exam-card${certified ? ' certified' : ''}`} href={`#/exam/level/${level}`}>
+                <span className="exam-card-emoji" aria-hidden="true">
+                  {certified ? '🏅' : '🎯'}
+                </span>
+                <span className="exam-card-text">
+                  <strong>{certified ? 'ناجح في اختبار المستوى' : 'اختبار المستوى جاهز'}</strong>
+                  <small>
+                    {certified
+                      ? `أفضل نتيجة: ${progress.exams[examKeyLevel(level)]}% · يمكنك الإعادة لتحسين النتيجة`
+                      : `أكملت كل الدروس: اجتز الاختبار لتفتح ${level < 6 ? LEVEL_NAMES[(level + 1) as Level] : 'شهادة الصف السادس'}`}
+                  </small>
+                </span>
+                <span className="exam-card-cta">{certified ? 'أعد ←' : 'ابدأ ←'}</span>
+              </a>
+              {certified && (
+                <a className="btn primary" href={`#/certificate/${level}`} style={{ marginTop: 10 }}>
+                  📜 شهادتك قابلة للطباعة
+                </a>
+              )}
+            </>
           );
         }
         return (

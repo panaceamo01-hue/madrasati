@@ -15,6 +15,7 @@ import { WisdomView } from './views/WisdomView';
 import { ParentView } from './views/ParentView';
 import { ExamView } from './views/ExamView';
 import { ReviewView } from './views/ReviewView';
+import { CertificateView } from './views/CertificateView';
 import { NotFound } from './views/NotFound';
 
 function currentRoute(): Route {
@@ -88,6 +89,9 @@ export function App() {
           {route.name === 'examLesson' && <ExamView key={route.id} lessonId={route.id} />}
           {route.name === 'examLevel' && <ExamView key={`level-${route.level}`} level={route.level} />}
           {route.name === 'review' && <ReviewView key={route.id} lessonId={route.id} />}
+          {route.name === 'certificate' && (
+            <CertificateView key={route.level === 'all' ? 'all' : `level-${route.level}`} level={route.level} />
+          )}
         </div>
       </main>
 

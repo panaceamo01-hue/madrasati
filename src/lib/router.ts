@@ -12,7 +12,8 @@ export type Route =
   | { name: 'parent' }
   | { name: 'examLesson'; id: string }
   | { name: 'examLevel'; level: Level }
-  | { name: 'review'; id: string };
+  | { name: 'review'; id: string }
+  | { name: 'certificate'; level: Level | 'all' };
 
 const GAME_IDS: GameId[] = ['memory', 'math', 'words', 'matching', 'ordering', 'values'];
 
@@ -48,6 +49,11 @@ export function parseRoute(hash: string): Route {
     if (level) return { name: 'examLevel', level };
   }
   if (parts[0] === 'review' && parts[1]) return { name: 'review', id: decodeURIComponent(parts[1]) };
+  if (parts[0] === 'certificate' && parts[1] === 'all') return { name: 'certificate', level: 'all' };
+  if (parts[0] === 'certificate') {
+    const level = toLevel(parts[1]);
+    if (level) return { name: 'certificate', level };
+  }
   return { name: 'home' };
 }
 
