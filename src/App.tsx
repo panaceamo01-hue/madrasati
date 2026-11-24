@@ -91,6 +91,7 @@ export function App() {
   if (route.name === 'admin') {
     return (
       <div className="app-shell">
+        <UpdateBanner />
         <main className="app-main" id="main" tabIndex={-1}>
           <div className="container">
             <AdminView />
@@ -104,6 +105,7 @@ export function App() {
   if (!licensed) {
     return (
       <div className="app-shell">
+        <UpdateBanner />
         <main className="app-main" id="main" tabIndex={-1}>
           <div className="container">
             <ActivationView
