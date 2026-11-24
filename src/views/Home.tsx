@@ -241,6 +241,17 @@ export function Home() {
         <span className="cta">افتح ←</span>
       </a>
 
+      <a className="wisdom-teaser" href="#/quran">
+        <span className="wisdom-teaser-emoji" aria-hidden="true">
+          📖
+        </span>
+        <span>
+          <strong>حفظ القرآن</strong>
+          <small>سور الحفظ المقررة — استمع، وردّد، وسجّل تلاوتك</small>
+        </span>
+        <span className="cta">افتح ←</span>
+      </a>
+
       <div className="section-head">
         <h2>🎮 ألعاب سريعة</h2>
         <a href="#/games" className="cta">

@@ -53,6 +53,12 @@ export interface LessonCompletion {
   stars: number;
 }
 
+/** حالة حفظ سورة: 1 = أحفظها الآن، 2 = حفظتها. */
+export interface MemorizationStatus {
+  status: 1 | 2;
+  date: string;
+}
+
 /** نشاط يوم واحد. */
 export interface DayActivity {
   /** دقائق التعلّم المقدرة (تُحتسب كل نصف دقيقة أثناء الدرس أو الاختبار). */
@@ -86,6 +92,8 @@ export interface Progress {
   examAttempts: ExamAttempt[];
   /** معرّف الدرس ← تاريخ إتمامه أول مرة ونجومه. */
   lessonCompletions: Record<string, LessonCompletion>;
+  /** معرّف السورة ← حالة حفظها. */
+  memorization: Record<string, MemorizationStatus>;
   /** آخر يوم ظهر فيه تذكير التأخر، بصيغة YYYY-MM-DD (مرة واحدة في اليوم كحد أقصى). */
   lastReminderDate: string;
 }
@@ -122,7 +130,7 @@ function load(): Progress {
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) {
-      return { stars: {}, gameBest: {}, settings: { ...EMPTY_SETTINGS }, daily: { ...EMPTY_DAILY }, exams: {}, activity: {}, mistakes: {}, mistakeLessons: {}, examAttempts: [], lessonCompletions: {}, lastReminderDate: '' };
+      return { stars: {}, gameBest: {}, settings: { ...EMPTY_SETTINGS }, daily: { ...EMPTY_DAILY }, exams: {}, activity: {}, mistakes: {}, mistakeLessons: {}, examAttempts: [], lessonCompletions: {}, memorization: {}, lastReminderDate: '' };
     }
     const parsed = JSON.parse(raw) as Partial<Progress>;
     return {
@@ -136,10 +144,11 @@ function load(): Progress {
       mistakeLessons: parsed.mistakeLessons ?? {},
       examAttempts: parsed.examAttempts ?? [],
       lessonCompletions: parsed.lessonCompletions ?? {},
+      memorization: parsed.memorization ?? {},
       lastReminderDate: parsed.lastReminderDate ?? '',
     };
   } catch {
-    return { stars: {}, gameBest: {}, settings: { ...EMPTY_SETTINGS }, daily: { ...EMPTY_DAILY }, exams: {}, activity: {}, mistakes: {}, mistakeLessons: {}, examAttempts: [], lessonCompletions: {}, lastReminderDate: '' };
+    return { stars: {}, gameBest: {}, settings: { ...EMPTY_SETTINGS }, daily: { ...EMPTY_DAILY }, exams: {}, activity: {}, mistakes: {}, mistakeLessons: {}, examAttempts: [], lessonCompletions: {}, memorization: {}, lastReminderDate: '' };
   }
 }
 
@@ -351,8 +360,19 @@ export function resetProgress(): void {
     mistakeLessons: {},
     examAttempts: [],
     lessonCompletions: {},
+    memorization: {},
     lastReminderDate: '',
   };
+  persist();
+  emit();
+}
+
+/** يحدّد حالة حفظ سورة (1 = أحفظها، 2 = حفظتها)، أو null لإعادتها إلى البداية. */
+export function setMemorizationStatus(surahId: string, status: 1 | 2 | null): void {
+  const memorization = { ...state.memorization };
+  if (status === null) delete memorization[surahId];
+  else memorization[surahId] = { status, date: todayKey() };
+  state = { ...state, memorization };
   persist();
   emit();
 }
