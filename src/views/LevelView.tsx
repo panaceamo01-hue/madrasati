@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { Level, SubjectId } from '../types';
 import { lessonsFor } from '../data';
+import { lessonVideo } from '../data/videos';
 import { GAMES } from '../data/games';
 import {
   LEVEL_AGES,
@@ -177,6 +178,9 @@ export function LevelView({ level }: { level: Level }) {
               <p className="objective">{lesson.objective}</p>
               <div className="lesson-foot">
                 <Stars value={earned} />
+                {lessonVideo(lesson.id) && progress.settings.videosEnabled && (
+                  <span className="cta" title="هذا الدرس فيه فيديو شرح">🎥 فيديو</span>
+                )}
                 <span className="cta">{earned ? 'راجع ←' : 'ابدأ ←'}</span>
               </div>
             </a>

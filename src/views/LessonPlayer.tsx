@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { BuildStep, GameId, Lesson, OrderStep, QuizStep, SubjectId, TeachStep } from '../types';
 import { nextLesson } from '../data';
+import { lessonVideo } from '../data/videos';
 import { LEVEL_NAMES, SUBJECT_BY_ID } from '../data/subjects';
 import { saveGameScore, saveLessonStars, touchDaily } from '../lib/store';
 import { useProgress } from '../lib/useProgress';
@@ -23,7 +24,7 @@ const GAME_FOR_SUBJECT: Record<SubjectId, GameId> = {
   french: 'matching',
 };
 
-type Tab = 'teach' | 'practice' | 'play';
+type Tab = 'teach' | 'video' | 'practice' | 'play';
 
 export function LessonPlayer({ lesson }: { lesson: Lesson }) {
   const teachSteps = useMemo(
@@ -44,6 +45,8 @@ export function LessonPlayer({ lesson }: { lesson: Lesson }) {
   const [attempt, setAttempt] = useState(0);
 
   const progress = useProgress();
+  const video = lessonVideo(lesson.id);
+  const showVideo = Boolean(video && progress.settings.videosEnabled);
   const subject = SUBJECT_BY_ID[lesson.subject];
   const following = nextLesson(lesson);
   const gameId = GAME_FOR_SUBJECT[lesson.subject];
@@ -57,6 +60,7 @@ export function LessonPlayer({ lesson }: { lesson: Lesson }) {
     setSolved(false);
     stopSpeaking();
     if (tab === 'teach') touchDaily('teach');
+    if (tab === 'video') touchDaily('video');
   }, [practiceIndex, teachIndex, tab]);
 
   useEffect(() => () => stopSpeaking(), []);
@@ -110,6 +114,17 @@ export function LessonPlayer({ lesson }: { lesson: Lesson }) {
           📘 الشرح
           <small>{teachSteps.length}</small>
         </button>
+        {showVideo && (
+          <button
+            role="tab"
+            aria-selected={tab === 'video'}
+            className={`lesson-tab${tab === 'video' ? ' active' : ''}`}
+            onClick={() => setTab('video')}
+          >
+            🎥 فيديو
+            <small>شرح</small>
+          </button>
+        )}
         <button
           role="tab"
           aria-selected={tab === 'practice'}
@@ -171,6 +186,45 @@ export function LessonPlayer({ lesson }: { lesson: Lesson }) {
             </div>
           )}
         </>
+      )}
+
+      {tab === 'video' && showVideo && video && (
+        <div className="step-card" style={{ borderTop: `5px solid ${subject.color}` }}>
+          <div className="step-tag">🎥 فيديو الشرح</div>
+          <div className="video-frame">
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${video.id}?rel=0${video.start ? `&start=${video.start}` : ''}`}
+              title={`فيديو شرح: ${lesson.title}`}
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+          <p className="step-body">
+            شاهد الفيديو، ثم انتقل إلى التمارين لتتدرّب على ما تعلّمته.
+            {video.channel ? ` المصدر: قناة ${video.channel} على يوتيوب.` : ''}
+          </p>
+          <p className="tip">
+            <span aria-hidden="true">📶</span>
+            <span>
+              الفيديو يحتاج إلى الإنترنت. إذا لم يظهر، تأكّد من الاتصال بالإنترنت؛
+              الشرح والتمارين في هذا الدرس يعملان دون إنترنت.
+            </span>
+          </p>
+          <div className="lesson-actions">
+            <a
+              className="btn ghost small"
+              href={`https://www.youtube.com/watch?v=${video.id}${video.start ? `&t=${video.start}s` : ''}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              فتح الفيديو في يوتيوب ↗
+            </a>
+            <button className="btn primary" onClick={() => setTab('practice')}>
+              إلى التمارين ✏️
+            </button>
+          </div>
+        </div>
       )}
 
       {tab === 'practice' && (

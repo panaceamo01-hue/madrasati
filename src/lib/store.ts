@@ -15,6 +15,8 @@ export interface ProgressSettings {
   dailyGoalMinutes: number;
   /** تفعيل التذكير اللطيف عند التأخر عن هدف اليوم. */
   reminderEnabled: boolean;
+  /** إظهار فيديوهات الشرح (يوتيوب، تحتاج إلى الإنترنت) في الدروس التي لها فيديو. */
+  videosEnabled: boolean;
 }
 
 /** خيارات هدف التعلم اليومي بالدقائق. */
@@ -71,6 +73,7 @@ const EMPTY_SETTINGS: ProgressSettings = {
   startFromFirst: false,
   dailyGoalMinutes: 20,
   reminderEnabled: true,
+  videosEnabled: true,
 };
 
 const EMPTY_DAILY: DailyState = { lastDate: '', streak: 0, today: [] };

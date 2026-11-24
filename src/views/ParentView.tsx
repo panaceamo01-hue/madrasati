@@ -21,6 +21,7 @@ export function ParentView() {
   const [fromFirst, setFromFirst] = useState(settings.startFromFirst);
   const [goal, setGoal] = useState(settings.dailyGoalMinutes);
   const [reminder, setReminder] = useState(settings.reminderEnabled);
+  const [videos, setVideos] = useState(settings.videosEnabled);
   const [notifState, setNotifState] = useState<NotificationState>(() => notificationPermission());
   const [saved, setSaved] = useState(false);
 
@@ -67,6 +68,7 @@ export function ParentView() {
     setSetting('startFromFirst', fromFirst && level !== null);
     setSetting('dailyGoalMinutes', goal);
     setSetting('reminderEnabled', reminder);
+    setSetting('videosEnabled', videos);
     setSaved(true);
   }
 
@@ -183,6 +185,22 @@ export function ParentView() {
             <small>
               مرة واحدة في اليوم، بعد الساعة الرابعة مساء، فقط إذا لم يكتمل هدف اليوم. لا يظهر
               أبدًا إذا أكمل الطفل هدفه.
+            </small>
+          </span>
+        </label>
+
+        <label className="switch-row">
+          <input
+            type="checkbox"
+            checked={videos}
+            onChange={(event) => setVideos(event.target.checked)}
+          />
+          <span>
+            <strong>🎥 فيديوهات الشرح</strong>
+            <small>
+              12 درسًا في الرياضيات والنشاط العلمي لها فيديو شرح من يوتيوب. الفيديو يحتاج
+              إلى الإنترنت، ويمكن إيقافه من هنا فيبقى الشرح والتمارين دون إنترنت.
+              راجع الفيديوهات بنفسك قبل أن يشاهدها طفلك.
             </small>
           </span>
         </label>
@@ -334,6 +352,7 @@ export function ParentView() {
           <li>كل درس موزّع على أسبوع: شرح، تمارين، لعبة، وآية/حكمة يومية.</li>
           <li>لا يُفتح درس جديد قبل اجتياز اختبار الدرس السابق، ولا مستوى قبل اختبار المستوى.</li>
           <li>كل التقدم والنجوم والاختبارات محفوظة على الجهاز دون حساب أو إنترنت.</li>
+          <li>فيديوهات الشرح من يوتيوب وتحتاج إلى الإنترنت؛ باقي الدروس والتمارين تعمل دون إنترنت.</li>
         </ul>
       </section>
     </div>
