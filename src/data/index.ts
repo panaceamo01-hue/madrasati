@@ -9,6 +9,9 @@ import { extras } from './extras';
 import { l6ExamMath } from './l6-exam-math';
 import { l6ExamArabic } from './l6-exam-arabic';
 import { l6ExamFrench } from './l6-exam-french';
+import { l6RestScience } from './l6-rest-science';
+import { l6RestIslamic } from './l6-rest-islamic';
+import { l6RestSocial } from './l6-rest-social';
 
 export const LESSONS: Lesson[] = [
   ...level1,
@@ -26,6 +29,9 @@ export const LESSONS: Lesson[] = [
   ...l6ExamMath,
   ...l6ExamArabic,
   ...l6ExamFrench,
+  ...l6RestScience,
+  ...l6RestIslamic,
+  ...l6RestSocial,
 ];
 
 export const LESSON_BY_ID: Record<string, Lesson> = LESSONS.reduce((acc, lesson) => {

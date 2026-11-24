@@ -37,5 +37,9 @@ export const LESSON_FOR_SURAH: Record<string, string> = {
   fatiha: 'l1-islamic-fatiha',
   ikhlas: 'l1-islamic-ikhlas',
   quraysh: 'l5-islamic-quraysh',
-  takathur: 'l6-islamic-takathur',
+  takathur: 'l2-islamic-takathur',
+  mulk: 'l6-islamic-mulk',
+  qalam: 'l6-islamic-qalam',
+  jinn: 'l6-islamic-jinn',
+  mursalat: 'l6-islamic-mursalat',
 };
