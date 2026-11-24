@@ -1,9 +1,10 @@
-import type { CSSProperties } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { LESSONS, lessonsFor } from '../data';
 import { GAMES } from '../data/games';
 import { LEVEL_AGES, LEVEL_COLORS, LEVEL_NAMES, LEVEL_SOFT } from '../data/subjects';
 import type { Level } from '../types';
-import { totalStars, todayKey } from '../lib/store';
+import { todayMinutes, totalStars, todayKey } from '../lib/store';
+import { triggerReminder } from '../lib/reminder';
 import { useProgress } from '../lib/useProgress';
 import { levelUnlocked, levelStatus, nextLessonFor, visibleLevels } from '../lib/unlock';
 
@@ -40,6 +41,17 @@ export function Home() {
   const greeting = progress.settings.childName
     ? `مرحبًا ${progress.settings.childName}`
     : 'مرحبًا يا بطل';
+  const dailyGoal = progress.settings.dailyGoalMinutes;
+  const minutesToday = Math.round(todayMinutes(progress.activity));
+  const goalReached = minutesToday >= dailyGoal;
+  const goalPercent = Math.min(100, Math.round((minutesToday / dailyGoal) * 100));
+  const [reminderVisible, setReminderVisible] = useState(false);
+
+  // التذكير اللطيف: مرة واحدة في اليوم، بعد الرابعة مساء، فقط إذا لم
+  // يكتمل هدف اليوم. يُسجَّل ظهوره فورًا حتى لا يتكرر في اليوم نفسه.
+  useEffect(() => {
+    if (triggerReminder()) setReminderVisible(true);
+  }, []);
 
   return (
     <>
@@ -84,6 +96,31 @@ export function Home() {
         </div>
       </section>
 
+      {reminderVisible && (
+        <section className="reminder-banner" role="status" aria-label="تذكير لطيف بحصة اليوم">
+          <span className="reminder-emoji" aria-hidden="true">
+            🌤️
+          </span>
+          <div className="reminder-copy">
+            <strong>حصة اليوم تنتظرك بلطف</strong>
+            <p>
+              لم نكمل هدف اليوم بعد ({minutesToday} من {dailyGoal} دقيقة). درس قصير يكفي، ولا ضغط أبدًا.
+            </p>
+          </div>
+          <div className="reminder-actions">
+            <a
+              className="btn primary small"
+              href={weekLesson ? `#/lesson/${encodeURIComponent(weekLesson.id)}` : `#/level/${activeLevel}`}
+            >
+              هيا نتعلم 🚀
+            </a>
+            <button className="btn ghost small" onClick={() => setReminderVisible(false)}>
+              ليس الآن
+            </button>
+          </div>
+        </section>
+      )}
+
       <section className="daily-plan" aria-label="حصة اليوم">
         <div className="daily-head">
           <div>
@@ -91,6 +128,22 @@ export function Home() {
             <h2>{dailyDone === DAILY_ITEMS.length ? 'أتممت حصتك اليوم 🎉' : `بقيت ${DAILY_ITEMS.length - dailyDone} من ${DAILY_ITEMS.length} أنشطة`}</h2>
           </div>
           <span className="streak-pill">🔥 {daily.streak} يوم</span>
+        </div>
+        <div className="goal-box" aria-label="هدف التعلم اليومي">
+          <div className="goal-head">
+            <span>⏱️ هدف اليوم</span>
+            <strong>
+              {minutesToday} / {dailyGoal} دقيقة
+            </strong>
+          </div>
+          <div className="progress candy goal-bar">
+            <span style={{ width: `${goalPercent}%` }} />
+          </div>
+          <p className="goal-note">
+            {goalReached
+              ? 'أتممت هدف اليوم، أحسنت! 🎉'
+              : `بقيت ${Math.max(0, dailyGoal - minutesToday)} دقيقة لإتمام هدف اليوم. خذ وقتك، كل دقيقة تعلم تُحسب.`}
+          </p>
         </div>
         <div className="daily-items">
           {DAILY_ITEMS.map((item) => (

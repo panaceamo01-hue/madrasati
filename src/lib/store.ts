@@ -11,7 +11,14 @@ export interface ProgressSettings {
   parentLock: boolean;
   /** يبدأ الطفل من المستوى الأول: تُفتح المستويات من الأول حتى مستوى الطفل. */
   startFromFirst: boolean;
+  /** هدف التعلم اليومي بالدقائق، يضبطه ولي الأمر (10 أو 15 أو 20 أو 30 أو 40). */
+  dailyGoalMinutes: number;
+  /** تفعيل التذكير اللطيف عند التأخر عن هدف اليوم. */
+  reminderEnabled: boolean;
 }
+
+/** خيارات هدف التعلم اليومي بالدقائق. */
+export const DAILY_GOAL_OPTIONS: number[] = [10, 15, 20, 30, 40];
 
 export interface DailyState {
   /** آخر يوم فيه نشاط بصيغة YYYY-MM-DD. */
@@ -49,6 +56,8 @@ export interface Progress {
   activity: Record<string, DayActivity>;
   /** نص السؤال ← عدد مرات الخطأ. */
   mistakes: Record<string, number>;
+  /** آخر يوم ظهر فيه تذكير التأخر، بصيغة YYYY-MM-DD (مرة واحدة في اليوم كحد أقصى). */
+  lastReminderDate: string;
 }
 
 const KEY = 'madrasati:progress:v1';
@@ -60,6 +69,8 @@ const EMPTY_SETTINGS: ProgressSettings = {
   childLevel: null,
   parentLock: false,
   startFromFirst: false,
+  dailyGoalMinutes: 20,
+  reminderEnabled: true,
 };
 
 const EMPTY_DAILY: DailyState = { lastDate: '', streak: 0, today: [] };
@@ -80,7 +91,7 @@ function load(): Progress {
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) {
-      return { stars: {}, gameBest: {}, settings: { ...EMPTY_SETTINGS }, daily: { ...EMPTY_DAILY }, exams: {}, activity: {}, mistakes: {} };
+      return { stars: {}, gameBest: {}, settings: { ...EMPTY_SETTINGS }, daily: { ...EMPTY_DAILY }, exams: {}, activity: {}, mistakes: {}, lastReminderDate: '' };
     }
     const parsed = JSON.parse(raw) as Partial<Progress>;
     return {
@@ -91,9 +102,10 @@ function load(): Progress {
       exams: parsed.exams ?? {},
       activity: parsed.activity ?? {},
       mistakes: parsed.mistakes ?? {},
+      lastReminderDate: parsed.lastReminderDate ?? '',
     };
   } catch {
-    return { stars: {}, gameBest: {}, settings: { ...EMPTY_SETTINGS }, daily: { ...EMPTY_DAILY }, exams: {}, activity: {}, mistakes: {} };
+    return { stars: {}, gameBest: {}, settings: { ...EMPTY_SETTINGS }, daily: { ...EMPTY_DAILY }, exams: {}, activity: {}, mistakes: {}, lastReminderDate: '' };
   }
 }
 
@@ -161,6 +173,18 @@ export function recordMistake(question: string): void {
   emit();
 }
 
+/** دقائق التعلم المحققة في يوم معين (اليوم الحالي افتراضًا). */
+export function todayMinutes(activity: Record<string, DayActivity>, dateKey: string = todayKey()): number {
+  return Math.round((activity[dateKey]?.minutes ?? 0) * 10) / 10;
+}
+
+/** يسجّل أن تذكير التأخر ظهر اليوم، حتى لا يتكرر في اليوم نفسه. */
+export function markReminderShown(): void {
+  state = { ...state, lastReminderDate: todayKey() };
+  persist();
+  emit();
+}
+
 /** يضيف دقائق تعلّم إلى اليوم الحالي. */
 export function addMinutes(minutes: number): void {
   if (minutes <= 0) return;
@@ -222,6 +246,7 @@ export function resetProgress(): void {
     exams: {},
     activity: {},
     mistakes: {},
+    lastReminderDate: '',
   };
   persist();
   emit();

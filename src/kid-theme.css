@@ -2137,3 +2137,88 @@ body {
   font-weight: 800;
   font-size: 0.72rem;
 }
+
+/* ---------- الهدف اليومي والتذكير اللطيف ---------- */
+
+.goal-box {
+  margin: 12px 0 4px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: #fff;
+  border: 2px solid #e3f1ea;
+}
+
+.goal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.85rem;
+  font-weight: 900;
+  color: #0b6b4d;
+}
+
+.goal-bar {
+  margin: 8px 0 6px;
+}
+
+.goal-note {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.reminder-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 18px 0 6px;
+  padding: 14px 16px;
+  border-radius: 22px;
+  background: #fff8e1;
+  border: 2px solid #ffd166;
+  box-shadow: var(--shadow-soft);
+}
+
+.reminder-emoji {
+  font-size: 1.6rem;
+}
+
+.reminder-copy {
+  flex: 1;
+  min-width: 200px;
+}
+
+.reminder-copy strong {
+  font-size: 0.95rem;
+}
+
+.reminder-copy p {
+  margin: 2px 0 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.reminder-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.goal-rules {
+  margin: 14px 0 4px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: #f6f4ec;
+  border: 1px solid #e8e2d0;
+  font-size: 0.82rem;
+  line-height: 2;
+}
+
+.goal-rules ul {
+  margin: 6px 0 0;
+  padding-inline-start: 18px;
+}

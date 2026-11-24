@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import { LEVEL_AGES, LEVEL_NAMES, LEVELS } from '../data/subjects';
 import type { Level } from '../types';
-import { setSetting } from '../lib/store';
+import { DAILY_GOAL_OPTIONS, setSetting } from '../lib/store';
+import {
+  notificationPermission,
+  requestReminderPermission,
+  type NotificationState,
+} from '../lib/reminder';
 import { useProgress } from '../lib/useProgress';
 import { subjectProgress, weekReport, weekTotals } from '../lib/report';
 
@@ -14,6 +19,9 @@ export function ParentView() {
   const [level, setLevel] = useState<Level | null>(settings.childLevel);
   const [locked, setLocked] = useState(settings.parentLock);
   const [fromFirst, setFromFirst] = useState(settings.startFromFirst);
+  const [goal, setGoal] = useState(settings.dailyGoalMinutes);
+  const [reminder, setReminder] = useState(settings.reminderEnabled);
+  const [notifState, setNotifState] = useState<NotificationState>(() => notificationPermission());
   const [saved, setSaved] = useState(false);
 
   if (!verified) {
@@ -57,6 +65,8 @@ export function ParentView() {
     setSetting('childLevel', level);
     setSetting('parentLock', locked && level !== null);
     setSetting('startFromFirst', fromFirst && level !== null);
+    setSetting('dailyGoalMinutes', goal);
+    setSetting('reminderEnabled', reminder);
     setSaved(true);
   }
 
@@ -141,8 +151,84 @@ export function ParentView() {
           </span>
         </label>
 
+        <div className="field">
+          <span>⏱️ هدف التعلم اليومي</span>
+          <p className="start-hint">
+            تُحسب الدقائق فقط أثناء الدرس أو الاختبار، وتتوقف عند إخفاء الصفحة. الهدف للتشجيع،
+            وليس للضغط.
+          </p>
+          <div className="parent-levels">
+            {DAILY_GOAL_OPTIONS.map((minutes) => (
+              <button
+                key={minutes}
+                className={`parent-level${goal === minutes ? ' active' : ''}`}
+                onClick={() => setGoal(minutes)}
+                aria-pressed={goal === minutes}
+              >
+                <strong>{minutes}</strong>
+                <small>دقيقة في اليوم</small>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <label className="switch-row">
+          <input
+            type="checkbox"
+            checked={reminder}
+            onChange={(event) => setReminder(event.target.checked)}
+          />
+          <span>
+            <strong>تذكير لطيف عند التأخر</strong>
+            <small>
+              مرة واحدة في اليوم، بعد الساعة الرابعة مساء، فقط إذا لم يكتمل هدف اليوم. لا يظهر
+              أبدًا إذا أكمل الطفل هدفه.
+            </small>
+          </span>
+        </label>
+
+        {reminder && (
+          <div className="field">
+            <span>إشعار المتصفح (اختياري)</span>
+            <p className="start-hint">
+              التذكير داخل التطبيق يظهر عند فتحه بعد الرابعة مساء. ولإظهار إشعار من المتصفح أيضًا،
+              فعّله من هنا. التطبيق يعمل دون خادم، لذلك لا تصل إشعارات والتطبيق مغلق تمامًا.
+            </p>
+            <div className="parent-actions">
+              <button
+                className="btn ghost"
+                onClick={async () => {
+                  const permission = await requestReminderPermission();
+                  setNotifState(permission);
+                }}
+              >
+                تفعيل إشعارات المتصفح
+              </button>
+            </div>
+            <p className="start-hint">
+              {notifState === 'granted'
+                ? '✅ إشعارات المتصفح مفعّلة.'
+                : notifState === 'denied'
+                  ? 'إشعارات المتصفح مرفوضة من المتصفح. يمكن تغييرها من إعدادات الموقع في المتصفح.'
+                  : notifState === 'unsupported'
+                    ? 'متصفحك لا يدعم إشعارات المتصفح. يبقى التذكير داخل التطبيق يعمل.'
+                    : 'لم تُفعَّل إشعارات المتصفح بعد. التذكير داخل التطبيق يعمل دونها.'}
+            </p>
+          </div>
+        )}
+
+        <div className="goal-rules">
+          <strong>قواعد واضحة حتى لا يتحول التذكير إلى ضغط:</strong>
+          <ul>
+            <li>لا خصم نقاط ولا فقدان نجوم أبدًا.</li>
+            <li>تذكير واحد فقط في اليوم، ويمكن إيقافه في أي وقت من هنا.</li>
+            <li>إذا أكمل الطفل هدفه، لا يظهر أي تذكير.</li>
+            <li>يكفي درس قصير لإتمام جزء من الهدف؛ لا يشترط إتمامه دفعة واحدة.</li>
+          </ul>
+        </div>
+
         <div className="parent-actions">
-          <button className="btn primary big" onClick={save} disabled={level === null}>
+          <button className="btn primary big" onClick={save}>
             💾 حفظ
           </button>
           {locked && level !== null && (
