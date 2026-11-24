@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#1f6f5c"/>
+  <circle cx="256" cy="188" r="66" fill="#f5c451"/>
+  <path d="M120 210c0-26 20-46 46-46h60v200h-60c-26 0-46-20-46-46V210z" fill="#fffaf0"/>
+  <path d="M392 210c0-26-20-46-46-46h-60v200h60c26 0 46-20 46-46V210z" fill="#ffe9b8"/>
+  <path d="M226 164h60v200h-60z" fill="#f5c451" opacity=".55"/>
+  <path d="M256 372l14 28 30 4-22 22 5 30-27-14-27 14 5-30-22-22 30-4z" fill="#f5c451"/>
+  <text x="256" y="470" font-family="Tahoma, Arial, sans-serif" font-size="58" font-weight="bold" fill="#fffaf0" text-anchor="middle">مدرستي</text>
+</svg>
