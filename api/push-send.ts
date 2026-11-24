@@ -1,5 +1,5 @@
 import { kv } from '@vercel/kv';
-import webPush from 'web-push';
+import * as webPush from 'web-push';
 import { dailyContent, todayInMorocco } from '../src/data/daily';
 
 /**
@@ -12,6 +12,13 @@ import { dailyContent, todayInMorocco } from '../src/data/daily';
  */
 
 const SUBSCRIPTIONS_KEY = 'push:subscriptions';
+
+/** اشتراك دفع كما يُحفظ في KV (نفس شكل PushSubscription JSON). */
+interface StoredSubscription {
+  endpoint: string;
+  keys: { p256dh: string; auth: string };
+  expirationTime?: number | null;
+}
 
 function json(res: any, status: number, body: unknown): void {
   res.status(status).json(body);
@@ -67,7 +74,7 @@ export default async function handler(req: any, res: any): Promise<void> {
   await Promise.all(
     members.map(async (member) => {
       try {
-        const subscription = JSON.parse(member) as webPush.PushSubscription;
+        const subscription = JSON.parse(member) as StoredSubscription;
         await webPush.sendNotification(subscription, payload);
         sent += 1;
       } catch (error: any) {
