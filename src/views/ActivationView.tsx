@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { activateLicense, type ActivateError } from '../lib/license';
 
 const ERROR_TEXT: Record<ActivateError, string> = {
@@ -19,9 +19,17 @@ export function ActivationView({ onActivated }: Props) {
   const [code, setCode] = useState('');
   const [error, setError] = useState<ActivateError | null>(null);
   const [busy, setBusy] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  // بعد رسالة النجاح نفتح التطبيق تلقائيًا بعد ثانيتين ونصف.
+  useEffect(() => {
+    if (!success) return;
+    const timer = window.setTimeout(onActivated, 2500);
+    return () => window.clearTimeout(timer);
+  }, [success, onActivated]);
 
   async function submit() {
-    if (busy) return;
+    if (busy || success) return;
     const clean = code.trim();
     if (!clean) {
       setError('invalid_code');
@@ -32,7 +40,7 @@ export function ActivationView({ onActivated }: Props) {
     const result = await activateLicense(clean);
     setBusy(false);
     if (result.ok) {
-      onActivated();
+      setSuccess(true);
       return;
     }
     setError(result.error);
@@ -50,10 +58,20 @@ export function ActivationView({ onActivated }: Props) {
         </div>
       </div>
       <div className="license-card">
-        <p className="license-lede">
-          أدخل الكود الذي أرسله لك صاحب التطبيق لتفعيله. الكود يعمل على جهازين فقط، ويبقى
-          صالحًا دائمًا.
-        </p>
+        {success ? (
+          <div className="gate-success" role="status">
+            <p className="gate-success-emoji" aria-hidden="true">
+              🎉
+            </p>
+            <p>مبروك تم تفعيل الكود الخاص بك صالح مدى الحياة</p>
+            <p className="license-note">جارٍ فتح التطبيق…</p>
+          </div>
+        ) : (
+          <>
+            <p className="license-lede">
+              أدخل الكود الذي أرسله لك صاحب التطبيق لتفعيله. الكود يعمل على جهازين فقط،
+              ويبقى صالحًا دائمًا.
+            </p>
         <label className="field" htmlFor="activation-code">
           <span>كود التفعيل</span>
           <input
@@ -89,6 +107,8 @@ export function ActivationView({ onActivated }: Props) {
           تحتاج إلى الإنترنت مرة واحدة للتفعيل، ثم يعمل التطبيق دون إنترنت. إن لم يصلك كود
           بعد، تواصل مع صاحب التطبيق.
         </p>
+          </>
+        )}
       </div>
     </div>
   );

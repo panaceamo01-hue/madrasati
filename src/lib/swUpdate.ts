@@ -50,7 +50,9 @@ function trackWorker(worker: ServiceWorker) {
  */
 export function initSwUpdate(reg: ServiceWorkerRegistration): void {
   registration = reg;
-  if (reg.waiting) markAvailable(reg.waiting);
+  // عامل في الانتظار مع متحكم قديم يعني تحديثًا حقيقيًا؛
+  // بلا متحكم فهو أول تثبيت، وليس تحديثًا، فلا نظهر اللافتة.
+  if (reg.waiting && navigator.serviceWorker.controller) markAvailable(reg.waiting);
   reg.addEventListener('updatefound', () => {
     if (reg.installing) trackWorker(reg.installing);
   });
@@ -93,7 +95,7 @@ export async function checkForUpdate(): Promise<UpdateCheckResult> {
     (await navigator.serviceWorker.getRegistration().catch(() => undefined));
   if (!reg) return 'unsupported';
   registration = reg;
-  if (reg.waiting) {
+  if (reg.waiting && navigator.serviceWorker.controller) {
     markAvailable(reg.waiting);
     return 'available';
   }
@@ -103,7 +105,7 @@ export async function checkForUpdate(): Promise<UpdateCheckResult> {
     /* بلا شبكة: لا يمكن التأكد، ونفترض أن النسخة الحالية هي الأحدث. */
     return 'up-to-date';
   }
-  if (reg.waiting) {
+  if (reg.waiting && navigator.serviceWorker.controller) {
     markAvailable(reg.waiting);
     return 'available';
   }

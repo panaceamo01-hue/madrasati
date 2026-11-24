@@ -1520,6 +1520,23 @@ body {
   margin-top: 8px;
 }
 
+.gate-success {
+  text-align: center;
+  padding: 12px 4px;
+}
+
+.gate-success-emoji {
+  font-size: 2.5rem;
+  margin: 0 0 8px;
+}
+
+.gate-success > p:nth-child(2) {
+  color: #2b8a3e;
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin: 0 0 8px;
+}
+
 .field {
   display: block;
   margin-bottom: 18px;
