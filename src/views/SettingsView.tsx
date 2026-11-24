@@ -154,6 +154,74 @@ export function SettingsView() {
       </div>
 
       <div className="settings-card">
+        <h2 className="settings-title">♿ إتاحة الوصول</h2>
+        <p className="settings-note">تُحفظ هذه الخيارات لكل ابن على حدة، وتُطبق فورًا على التطبيق كله.</p>
+        <div className="setting-row">
+          <div>
+            <p>حجم الخط</p>
+            <small>تكبير النص ليسهل قراءته على الشاشة.</small>
+          </div>
+          <div className="parent-levels" role="group" aria-label="حجم الخط">
+            {(
+              [
+                ['normal', 'عادي'],
+                ['large', 'كبير'],
+                ['xl', 'كبير جدًا'],
+              ] as const
+            ).map(([value, label]) => (
+              <button
+                key={value}
+                className={`parent-level${progress.settings.fontSize === value ? ' active' : ''}`}
+                onClick={() => setSetting('fontSize', value)}
+                aria-pressed={progress.settings.fontSize === value}
+              >
+                <strong>{label}</strong>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="setting-row">
+          <div>
+            <p>تباين أعلى</p>
+            <small>نص أغمق على خلفية بيضاء وحدود أوضح وروابط مسطّرة.</small>
+          </div>
+          <label className="switch">
+            <input
+              type="checkbox"
+              checked={progress.settings.highContrast}
+              onChange={(event) => setSetting('highContrast', event.target.checked)}
+              aria-label="تفعيل التباين الأعلى"
+            />
+            <span />
+          </label>
+        </div>
+        <div className="setting-row">
+          <div>
+            <p>تقليل الحركة</p>
+            <small>إيقاف الحركات والانتقالات في التطبيق.</small>
+          </div>
+          <label className="switch">
+            <input
+              type="checkbox"
+              checked={progress.settings.reduceMotion}
+              onChange={(event) => setSetting('reduceMotion', event.target.checked)}
+              aria-label="تفعيل تقليل الحركة"
+            />
+            <span />
+          </label>
+        </div>
+        <div className="setting-row">
+          <div>
+            <p>التصفح بلوحة المفاتيح</p>
+            <small>
+              استعمل Tab للتنقل بين الأزرار والروابط، وEnter لفتحها. رابط «تخطَّ إلى المحتوى» في
+              أعلى الصفحة يقفز بك مباشرة إلى الدرس أو القائمة.
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <div className="settings-card">
         <div className="setting-row">
           <div>
             <p>عن التطبيق</p>

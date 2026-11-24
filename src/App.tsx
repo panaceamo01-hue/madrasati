@@ -39,6 +39,15 @@ export function App() {
     return () => window.removeEventListener('hashchange', onChange);
   }, []);
 
+  // إتاحة الوصول: تُطبق خيارات الابن النشط على الصفحة كلها.
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.toggle('a11y-font-large', progress.settings.fontSize === 'large');
+    root.classList.toggle('a11y-font-xl', progress.settings.fontSize === 'xl');
+    root.classList.toggle('a11y-contrast', progress.settings.highContrast);
+    root.classList.toggle('a11y-reduce-motion', progress.settings.reduceMotion);
+  }, [progress.settings.fontSize, progress.settings.highContrast, progress.settings.reduceMotion]);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
   }, [route]);
@@ -61,6 +70,9 @@ export function App() {
 
   return (
     <div className="app-shell">
+      <a className="skip-link" href="#main">
+        تخطَّ إلى المحتوى
+      </a>
       <header className="topbar">
         <div className="container topbar-inner">
           <a className="brand" href="#/">
@@ -78,7 +90,7 @@ export function App() {
         </div>
       </header>
 
-      <main className="app-main">
+      <main className="app-main" id="main" tabIndex={-1}>
         <div className="container">
           {route.name === 'home' && <Home />}
           {route.name === 'level' && <LevelView level={route.level} />}

@@ -18,6 +18,12 @@ export interface ProgressSettings {
   reminderEnabled: boolean;
   /** إظهار فيديوهات الشرح (يوتيوب، تحتاج إلى الإنترنت) في الدروس التي لها فيديو. */
   videosEnabled: boolean;
+  /** حجم الخط: عادي أو كبير أو كبير جدًا (إتاحة الوصول). */
+  fontSize: 'normal' | 'large' | 'xl';
+  /** تباين أعلى: نص أسود على خلفية بيضاء وحدود أوضح. */
+  highContrast: boolean;
+  /** تقليل الحركة: إيقاف الحركات والانتقالات. */
+  reduceMotion: boolean;
 }
 
 /** خيارات هدف التعلم اليومي بالدقائق. */
@@ -130,6 +136,9 @@ const EMPTY_SETTINGS: ProgressSettings = {
   dailyGoalMinutes: 20,
   reminderEnabled: true,
   videosEnabled: true,
+  fontSize: 'normal',
+  highContrast: false,
+  reduceMotion: false,
 };
 
 const EMPTY_DAILY: DailyState = { lastDate: '', streak: 0, today: [] };

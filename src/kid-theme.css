@@ -2775,6 +2775,123 @@ body {
   line-height: 1.8;
 }
 
+/* ---------- إتاحة الوصول ---------- */
+
+/* تركيز واضح بلوحة المفاتيح في كل التطبيق. */
+:focus-visible {
+  outline: 3px solid #0b5fff;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* رابط التخطي: مخفي حتى يصل إليه التركيز بلوحة المفاتيح. */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  right: 12px;
+  z-index: 100;
+  background: #1d6b52;
+  color: #fff;
+  font-weight: 800;
+  padding: 10px 16px;
+  border-radius: 12px;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 8px;
+}
+
+main:focus {
+  outline: none;
+}
+
+/* حجم الخط: كل أحجام النص في التطبيق بوحدة rem فتكبر معه. */
+html.a11y-font-large {
+  font-size: 18px;
+}
+
+html.a11y-font-xl {
+  font-size: 20.5px;
+}
+
+/* تباين أعلى: ألوان داكنة، خلفية بيضاء بلا زخارف، روابط مسطّرة. */
+html.a11y-contrast {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #ffffff;
+  --ink: #000000;
+  --muted: #1a1a1a;
+  --line: #111111;
+  --green-dark: #005c3f;
+  --gold: #7a5200;
+  --shadow-soft: none;
+  --shadow-pop: none;
+}
+
+html.a11y-contrast body {
+  background-image: none;
+  background-color: #ffffff;
+}
+
+html.a11y-contrast a {
+  text-decoration: underline;
+}
+
+html.a11y-contrast a.btn,
+html.a11y-contrast a.tab,
+html.a11y-contrast a.brand,
+html.a11y-contrast a.progress-card,
+html.a11y-contrast a.quran-list a {
+  text-decoration: none;
+}
+
+html.a11y-contrast .btn,
+html.a11y-contrast .parent-level,
+html.a11y-contrast .badge,
+html.a11y-contrast .progress-card,
+html.a11y-contrast .quran-list li a,
+html.a11y-contrast .leaderboard-row {
+  border-color: #111111;
+}
+
+html.a11y-contrast :focus-visible {
+  outline-color: #000000;
+}
+
+/* تقليل الحركة: يوقف الحركات والانتقالات، ويحترم إعداد الجهاز أيضًا. */
+html.a11y-reduce-motion *,
+html.a11y-reduce-motion *::before,
+html.a11y-reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.settings-title {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+}
+
+.settings-note {
+  margin: 0 0 12px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
 /* تنبيه الرسوب المتتالي في صفحة نتيجة الاختبار */
 .exam-alert {
   margin: 12px auto 0;

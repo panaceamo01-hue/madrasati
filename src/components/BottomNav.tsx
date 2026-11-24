@@ -8,10 +8,10 @@ interface Tab {
 }
 
 const TABS: Tab[] = [
-  { href: '#/', label: 'المستويات', emoji: '🏫', matches: ['home', 'level', 'lesson', 'examLesson', 'examLevel'] },
+  { href: '#/', label: 'المستويات', emoji: '🏫', matches: ['home', 'level', 'lesson', 'examLesson', 'examLevel', 'review', 'quran', 'surah'] },
   { href: '#/games', label: 'ألعاب الذكاء', emoji: '🎮', matches: ['games', 'game'] },
   { href: '#/wisdom', label: 'حكمة اليوم', emoji: '💡', matches: ['wisdom'] },
-  { href: '#/progress', label: 'ملفي', emoji: '🦸', matches: ['progress'] },
+  { href: '#/progress', label: 'ملفي', emoji: '🦸', matches: ['progress', 'certificate', 'leaderboard'] },
   { href: '#/settings', label: 'الإعدادات', emoji: '⚙️', matches: ['settings', 'parent'] },
 ];
 
