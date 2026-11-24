@@ -12,9 +12,17 @@ interface Props {
   onReplay: () => void;
 }
 
+const SETTING_LABEL: Record<string, string> = {
+  school: '🏫 في المدرسة',
+  home: '🏠 في البيت',
+  street: '🛣️ في الشارع',
+};
+
 interface Question {
   emoji: string;
   situation: string;
+  setting: string;
+  value: string;
   options: { text: string; correct: boolean }[];
   moral: string;
 }
@@ -23,6 +31,8 @@ function makeQuestions(level: Level): Question[] {
   return shuffle(VALUES[level]).map((scenario) => ({
     emoji: scenario.emoji,
     situation: scenario.situation,
+    setting: scenario.setting,
+    value: scenario.value,
     moral: scenario.moral,
     options: shuffle(
       scenario.options.map((text, index) => ({ text, correct: index === scenario.answer })),
@@ -86,7 +96,8 @@ export function ValuesGame({ level, best, onFinish, onReplay }: Props) {
         </span>
         <span className="hud-pill score">النقاط: {score}</span>
         <span className="spacer" />
-        <span className="hud-pill">اختر السلوك الأحسن</span>
+        <span className="hud-pill">{SETTING_LABEL[question.setting] ?? ''}</span>
+        <span className="hud-pill">قيمة: {question.value}</span>
       </div>
       <div className="game-board">
         <div
@@ -126,7 +137,9 @@ export function ValuesGame({ level, best, onFinish, onReplay }: Props) {
         {picked !== null && (
           <div className={`value-moral${answeredCorrectly ? ' good' : ''}`}>
             <strong>{answeredCorrectly ? '✅ أحسنت!' : '🤔 فكر قليلًا...'}</strong>
-            <p>{question.moral}</p>
+            <p>
+              قيمة {question.value}: {question.moral}
+            </p>
           </div>
         )}
         <div className="game-actions">
