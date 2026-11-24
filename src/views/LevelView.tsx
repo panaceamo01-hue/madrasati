@@ -151,6 +151,9 @@ export function LevelView({ level }: { level: Level }) {
                   </div>
                 </div>
                 <p className="objective">أكمل الدرس السابق واجتز اختباره لتفتح هذا الدرس.</p>
+                {lessonVideo(lesson.id) && progress.settings.videosEnabled && (
+                  <p className="objective">🎥 هذا الدرس فيه فيديو شرح.</p>
+                )}
               </div>
             );
           }
