@@ -4,6 +4,9 @@ import './styles.css';
 import './kid-theme.css';
 import { App } from './App';
 import { initSwUpdate } from './lib/swUpdate';
+import { initPwaInstall } from './lib/pwaInstall';
+
+initPwaInstall();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

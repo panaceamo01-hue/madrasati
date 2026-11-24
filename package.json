@@ -1,7 +1,7 @@
 {
   "name": "madrasati",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.1.0",
   "type": "module",
   "description": "مدرستي — تطبيق تعليمي مغربي للتعليم الابتدائي يعمل دون إنترنت",
   "scripts": {

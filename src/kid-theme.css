@@ -1537,6 +1537,20 @@ body {
   margin: 0 0 8px;
 }
 
+.install-wrap {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: stretch;
+}
+
+.install-help {
+  display: block;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  max-width: 280px;
+}
+
 .field {
   display: block;
   margin-bottom: 18px;

@@ -3,6 +3,7 @@ import { resetProgress, setSetting } from '../lib/store';
 import { useProgress } from '../lib/useProgress';
 import { speechAvailable } from '../lib/speech';
 import { checkForUpdate } from '../lib/swUpdate';
+import { InstallAppButton } from '../components/InstallAppButton';
 
 type OfflineState = 'checking' | 'ready' | 'dev' | 'insecure' | 'unsupported';
 type UpdateState = 'idle' | 'checking' | 'up-to-date' | 'available' | 'unsupported';
@@ -231,6 +232,19 @@ export function SettingsView() {
       </div>
 
       <div className="settings-card">
+        <h2 className="settings-title">⬇️ تحميل التطبيق</h2>
+        <div className="setting-row">
+          <div>
+            <p>ثبّت التطبيق على جهازك</p>
+            <small>
+              يثبّت كأيقونة على الشاشة الرئيسية، ويعمل دون إنترنت بعد أول فتح.
+            </small>
+          </div>
+          <InstallAppButton className="btn ghost small" />
+        </div>
+      </div>
+
+      <div className="settings-card">
         <h2 className="settings-title">🔄 تحديث التطبيق</h2>
         <div className="setting-row">
           <div>
@@ -269,7 +283,7 @@ export function SettingsView() {
         <div className="setting-row">
           <div>
             <p>الإصدار</p>
-            <small>1.0.0 · يعمل دون إنترنت بعد أول فتح · لا يجمع أي بيانات</small>
+            <small>1.1.0 · يعمل دون إنترنت بعد أول فتح · لا يجمع أي بيانات</small>
           </div>
         </div>
       </div>

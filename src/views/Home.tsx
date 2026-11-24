@@ -7,6 +7,7 @@ import { switchProfile, todayMinutes, totalStars, todayKey } from '../lib/store'
 import { triggerReminder } from '../lib/reminder';
 import { useProgress } from '../lib/useProgress';
 import { useProfiles } from '../lib/useProfiles';
+import { InstallAppButton } from '../components/InstallAppButton';
 import { levelUnlocked, levelStatus, nextLessonFor, visibleLevels } from '../lib/unlock';
 
 const LEVEL_EMOJI: Record<Level, string> = {
@@ -91,6 +92,7 @@ export function Home() {
             <a className="btn ghost big" href="#/games">
               🎮 ألعاب الذكاء
             </a>
+            <InstallAppButton className="btn ghost big" />
           </div>
           <div className="hero-facts">
             <span>
