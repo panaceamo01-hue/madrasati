@@ -1,4 +1,5 @@
 import type { Level } from '../types';
+import { LESSON_BY_ID } from '../data';
 
 export interface ProgressSettings {
   speech: boolean;
@@ -31,6 +32,27 @@ export interface DailyState {
   today: string[];
 }
 
+/** محاولة اختبار واحدة (درس أو مستوى). */
+export interface ExamAttempt {
+  /** "lesson:<id>" أو "level:<n>". */
+  key: string;
+  kind: 'lesson' | 'level';
+  /** معرّف الدرس في اختبار الدرس، أو null في اختبار المستوى. */
+  lessonId: string | null;
+  /** رقم المستوى. */
+  level: number;
+  percent: number;
+  passed: boolean;
+  /** يوم المحاولة بصيغة YYYY-MM-DD. */
+  date: string;
+}
+
+/** إتمام درس أول مرة: تاريخه وعدد نجومه. */
+export interface LessonCompletion {
+  date: string;
+  stars: number;
+}
+
 /** نشاط يوم واحد. */
 export interface DayActivity {
   /** دقائق التعلّم المقدرة (تُحتسب كل نصف دقيقة أثناء الدرس أو الاختبار). */
@@ -58,6 +80,12 @@ export interface Progress {
   activity: Record<string, DayActivity>;
   /** نص السؤال ← عدد مرات الخطأ. */
   mistakes: Record<string, number>;
+  /** معرّف الدرس ← عدد مرات الخطأ في تمارينه واختباراته. */
+  mistakeLessons: Record<string, number>;
+  /** محاولات الاختبار بالترتيب الزمني (الأقدم أولًا)، بحد أقصى 200 محاولة. */
+  examAttempts: ExamAttempt[];
+  /** معرّف الدرس ← تاريخ إتمامه أول مرة ونجومه. */
+  lessonCompletions: Record<string, LessonCompletion>;
   /** آخر يوم ظهر فيه تذكير التأخر، بصيغة YYYY-MM-DD (مرة واحدة في اليوم كحد أقصى). */
   lastReminderDate: string;
 }
@@ -94,7 +122,7 @@ function load(): Progress {
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) {
-      return { stars: {}, gameBest: {}, settings: { ...EMPTY_SETTINGS }, daily: { ...EMPTY_DAILY }, exams: {}, activity: {}, mistakes: {}, lastReminderDate: '' };
+      return { stars: {}, gameBest: {}, settings: { ...EMPTY_SETTINGS }, daily: { ...EMPTY_DAILY }, exams: {}, activity: {}, mistakes: {}, mistakeLessons: {}, examAttempts: [], lessonCompletions: {}, lastReminderDate: '' };
     }
     const parsed = JSON.parse(raw) as Partial<Progress>;
     return {
@@ -105,10 +133,13 @@ function load(): Progress {
       exams: parsed.exams ?? {},
       activity: parsed.activity ?? {},
       mistakes: parsed.mistakes ?? {},
+      mistakeLessons: parsed.mistakeLessons ?? {},
+      examAttempts: parsed.examAttempts ?? [],
+      lessonCompletions: parsed.lessonCompletions ?? {},
       lastReminderDate: parsed.lastReminderDate ?? '',
     };
   } catch {
-    return { stars: {}, gameBest: {}, settings: { ...EMPTY_SETTINGS }, daily: { ...EMPTY_DAILY }, exams: {}, activity: {}, mistakes: {}, lastReminderDate: '' };
+    return { stars: {}, gameBest: {}, settings: { ...EMPTY_SETTINGS }, daily: { ...EMPTY_DAILY }, exams: {}, activity: {}, mistakes: {}, mistakeLessons: {}, examAttempts: [], lessonCompletions: {}, lastReminderDate: '' };
   }
 }
 
@@ -167,10 +198,25 @@ function changeActivity(dateKey: string, update: Partial<DayActivity>): void {
   emit();
 }
 
-export function recordMistake(question: string): void {
+export function recordMistake(question: string, lessonId?: string): void {
+  const mistakeLessons =
+    lessonId != null
+      ? { ...state.mistakeLessons, [lessonId]: (state.mistakeLessons[lessonId] ?? 0) + 1 }
+      : state.mistakeLessons;
   state = {
     ...state,
     mistakes: { ...state.mistakes, [question]: (state.mistakes[question] ?? 0) + 1 },
+    mistakeLessons,
+  };
+  persist();
+  emit();
+}
+
+/** خطأ في تمرين بلا نص سؤال (ترتيب أو بناء كلمة): يُحسب على الدرس فقط. */
+export function recordLessonMistake(lessonId: string): void {
+  state = {
+    ...state,
+    mistakeLessons: { ...state.mistakeLessons, [lessonId]: (state.mistakeLessons[lessonId] ?? 0) + 1 },
   };
   persist();
   emit();
@@ -206,7 +252,15 @@ export function saveLessonStars(lessonId: string, stars: number): void {
   touchDaily('practice');
   const current = state.stars[lessonId] ?? 0;
   if (stars <= current) return;
-  state = { ...state, stars: { ...state.stars, [lessonId]: Math.min(3, stars) } };
+  const lessonCompletions =
+    current === 0 && !state.lessonCompletions[lessonId]
+      ? { ...state.lessonCompletions, [lessonId]: { date: todayKey(), stars: Math.min(3, stars) } }
+      : state.lessonCompletions;
+  state = {
+    ...state,
+    stars: { ...state.stars, [lessonId]: Math.min(3, stars) },
+    lessonCompletions,
+  };
   persist();
   emit();
   if (current === 0) logActivity('lessons');
@@ -226,11 +280,33 @@ export function saveGameScore(gameId: string, level: number, score: number): boo
 
 export function saveExamResult(key: string, percent: number): boolean {
   const current = state.exams[key] ?? 0;
-  if (percent <= current) return false;
-  state = { ...state, exams: { ...state.exams, [key]: percent } };
+  const passed = percent >= 70;
+  const lessonMatch = key.match(/^lesson:(.+)$/);
+  const levelMatch = key.match(/^level:(\d+)$/);
+  const attempt: ExamAttempt = {
+    key,
+    kind: lessonMatch ? 'lesson' : 'level',
+    lessonId: lessonMatch ? lessonMatch[1] : null,
+    level: lessonMatch
+      ? (LESSON_BY_ID[lessonMatch[1]]?.level ?? 0)
+      : levelMatch
+        ? Number(levelMatch[1])
+        : 0,
+    percent,
+    passed,
+    date: todayKey(),
+  };
+  const examAttempts = [...state.examAttempts, attempt].slice(-200);
+  if (percent <= current) {
+    state = { ...state, examAttempts };
+    persist();
+    emit();
+    return false;
+  }
+  state = { ...state, exams: { ...state.exams, [key]: percent }, examAttempts };
   persist();
   emit();
-  if (percent >= 70 && current < 70) logActivity('exams');
+  if (passed && current < 70) logActivity('exams');
   return true;
 }
 
@@ -249,6 +325,9 @@ export function resetProgress(): void {
     exams: {},
     activity: {},
     mistakes: {},
+    mistakeLessons: {},
+    examAttempts: [],
+    lessonCompletions: {},
     lastReminderDate: '',
   };
   persist();

@@ -2120,6 +2120,95 @@ body {
   }
 }
 
+/* تنبيه الرسوب المتكرر في تقرير ولي الأمر */
+.alert-box {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: #fdeeee;
+  border: 2px solid #f3b8b8;
+}
+
+.alert-box h3 {
+  margin: 0 0 6px;
+  font-size: 0.95rem;
+  color: #a02c2c;
+}
+
+.alert-box p {
+  margin: 6px 0;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: #5f1f1f;
+}
+
+.alert-box a {
+  color: #a02c2c;
+  font-weight: 800;
+}
+
+/* قوائم تقرير ولي الأمر: دروس الأسبوع والمواضيع المتعثرة */
+.week-lesson-list,
+.struggle-list {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.week-lesson-list li,
+.struggle-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #f6f9ff;
+  border: 1px solid #e6edf9;
+  border-radius: 14px;
+  padding: 9px 12px;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.struggle-list li {
+  background: #fff7ec;
+  border-color: #f6e2c6;
+}
+
+.week-lesson-list li a,
+.struggle-list li a {
+  min-width: 0;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.week-lesson-list li small,
+.struggle-list li small {
+  white-space: nowrap;
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.struggle-list li small {
+  color: #8a4a12;
+  font-weight: 800;
+}
+
+/* تنبيه الرسوب المتتالي في صفحة نتيجة الاختبار */
+.exam-alert {
+  margin: 12px auto 0;
+  max-width: 480px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: #fdeeee;
+  border: 2px solid #f3b8b8;
+  color: #5f1f1f;
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
 /* أسئلة تحتاج مراجعة في تقرير ولي الأمر */
 .mistake-box {
   margin-top: 16px;

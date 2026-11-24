@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { LEVEL_AGES, LEVEL_NAMES, LEVELS } from '../data/subjects';
+import { LESSON_BY_ID } from '../data';
+import { LEVEL_AGES, LEVEL_NAMES, LEVELS, SUBJECT_BY_ID } from '../data/subjects';
 import type { Level } from '../types';
 import { DAILY_GOAL_OPTIONS, setSetting } from '../lib/store';
 import {
@@ -8,7 +9,7 @@ import {
   type NotificationState,
 } from '../lib/reminder';
 import { useProgress } from '../lib/useProgress';
-import { subjectProgress, weekReport, weekTotals } from '../lib/report';
+import { failStreaks, strugglingTopics, subjectProgress, weekBySubject, weekLessons, weekReport, weekTotals } from '../lib/report';
 
 export function ParentView() {
   const progress = useProgress();
@@ -272,12 +273,45 @@ export function ParentView() {
         const subjects = subjectProgress(shownLevel, progress.stars);
         const weakest = [...subjects].sort((a, b) => a.percent - b.percent).slice(0, 3);
         const maxMinutes = Math.max(10, ...rows.map((row) => row.minutes));
+        const alerts = failStreaks(progress.examAttempts ?? []);
+        const weekSubjects = weekBySubject(progress.lessonCompletions ?? {}).filter(
+          (subject) => subject.lessons > 0,
+        );
+        const weekLessonsList = weekLessons(progress.lessonCompletions ?? {});
+        const struggling = strugglingTopics(progress.mistakeLessons ?? {}, progress.examAttempts ?? []);
+        const weekdayOf = (date: string) =>
+          ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'][
+            new Date(`${date}T12:00:00`).getDay()
+          ];
         return (
           <section className="parent-report">
             <div className="report-head">
               <h2>📊 تقرير آخر 7 أيام</h2>
               <span className="report-pill">{Math.round(totals.minutes)} دقيقة</span>
             </div>
+            {alerts.length > 0 && (
+              <div className="alert-box" role="alert">
+                <h3>⚠️ تنبيه: رسوب متكرر</h3>
+                {alerts.map((alert) => {
+                  const alertLesson = alert.lessonId ? LESSON_BY_ID[alert.lessonId] : undefined;
+                  return (
+                    <p key={alert.key}>
+                      رسب ابنك <strong>{alert.count} مرات متتالية</strong> في اختبار{' '}
+                      {alertLesson
+                        ? `درس «${alertLesson.title}»`
+                        : `«${LEVEL_NAMES[alert.level as Level]}»`}
+                      . راجع معه الدرس بهدوء قبل إعادة الاختبار.
+                      {alertLesson && (
+                        <>
+                          {' '}
+                          <a href={`#/lesson/${alertLesson.id}`}>افتح الدرس ←</a>
+                        </>
+                      )}
+                    </p>
+                  );
+                })}
+              </div>
+            )}
             <div className="report-stats">
               <div>
                 <strong>{totals.lessons}</strong>
@@ -306,6 +340,68 @@ export function ParentView() {
                 </div>
               ))}
             </div>
+            <h3 className="report-sub">📚 دروس الأسبوع حسب المادة</h3>
+            {weekSubjects.length === 0 ? (
+              <p className="report-note">لم يُنجز أي درس هذا الأسبوع بعد.</p>
+            ) : (
+              <div className="subject-list">
+                {weekSubjects.map((subject) => (
+                  <div className="subject-row" key={subject.id}>
+                    <span className="subject-name">
+                      {subject.emoji} {subject.name}
+                    </span>
+                    <span className="subject-track">
+                      <i
+                        style={{
+                          width: `${Math.round(
+                            (subject.lessons / Math.max(...weekSubjects.map((item) => item.lessons))) * 100,
+                          )}%`,
+                        }}
+                      />
+                    </span>
+                    <small>
+                      {subject.lessons} {subject.lessons === 1 ? 'درس' : 'دروس'}
+                    </small>
+                  </div>
+                ))}
+              </div>
+            )}
+            <h3 className="report-sub">📝 دروس أُنجزت هذا الأسبوع</h3>
+            {weekLessonsList.length === 0 ? (
+              <p className="report-note">لا دروس منجزة في الأيام السبعة الأخيرة.</p>
+            ) : (
+              <ul className="week-lesson-list">
+                {weekLessonsList.map((row) => (
+                  <li key={row.lesson.id}>
+                    <a href={`#/lesson/${row.lesson.id}`}>
+                      {SUBJECT_BY_ID[row.lesson.subject]?.emoji ?? '📖'} {row.lesson.title}
+                    </a>
+                    <small>
+                      {weekdayOf(row.date)} · {'⭐'.repeat(row.stars)}
+                    </small>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <h3 className="report-sub">🎯 أكثر المواضيع تعثرًا</h3>
+            {struggling.length === 0 ? (
+              <p className="report-note">لا تعثر مسجّل بعد — أحسنت! تظهر هنا الدروس التي يكثر فيها الخطأ أو الرسوب.</p>
+            ) : (
+              <ul className="struggle-list">
+                {struggling.map((row) => (
+                  <li key={row.lesson.id}>
+                    <a href={`#/lesson/${row.lesson.id}`}>
+                      {SUBJECT_BY_ID[row.lesson.subject]?.emoji ?? '📖'} {row.lesson.title}
+                    </a>
+                    <small>
+                      {row.mistakes > 0 && `${row.mistakes} ${row.mistakes === 1 ? 'خطأ' : 'أخطاء'}`}
+                      {row.mistakes > 0 && row.fails > 0 && ' · '}
+                      {row.fails > 0 && `${row.fails} ${row.fails === 1 ? 'رسوب' : 'مرات رسوب'} في الاختبار`}
+                    </small>
+                  </li>
+                ))}
+              </ul>
+            )}
             <h3 className="report-sub">إتمام المواد — {LEVEL_NAMES[shownLevel]}</h3>
             <div className="subject-list">
               {weakest.map((subject) => (

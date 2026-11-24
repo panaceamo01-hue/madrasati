@@ -4,7 +4,7 @@ import { DIFFICULTY_LABEL } from '../types';
 import { nextLesson } from '../data';
 import { lessonVideo } from '../data/videos';
 import { LEVEL_NAMES, SUBJECT_BY_ID } from '../data/subjects';
-import { saveGameScore, saveLessonStars, touchDaily } from '../lib/store';
+import { recordLessonMistake, recordMistake, saveGameScore, saveLessonStars, touchDaily } from '../lib/store';
 import { useProgress } from '../lib/useProgress';
 import { examKeyLesson, examPassed } from '../lib/exam';
 import { playCorrect, playWin, playWrong } from '../lib/sound';
@@ -287,13 +287,37 @@ export function LessonPlayer({ lesson }: { lesson: Lesson }) {
                 {practiceStep.difficulty === 3 ? ' · تحدٍّ! 💪' : ''}
               </div>
               {practiceStep.kind === 'quiz' && (
-                <QuizView key={`quiz-${practiceIndex}`} step={practiceStep} onSolved={() => setSolved(true)} onMistake={addMistake} />
+                <QuizView
+                  key={`quiz-${practiceIndex}`}
+                  step={practiceStep}
+                  onSolved={() => setSolved(true)}
+                  onMistake={() => {
+                    addMistake();
+                    recordMistake(practiceStep.question, lesson.id);
+                  }}
+                />
               )}
               {practiceStep.kind === 'order' && (
-                <OrderView key={`order-${practiceIndex}`} step={practiceStep} onSolved={() => setSolved(true)} onMistake={addMistake} />
+                <OrderView
+                  key={`order-${practiceIndex}`}
+                  step={practiceStep}
+                  onSolved={() => setSolved(true)}
+                  onMistake={() => {
+                    addMistake();
+                    recordLessonMistake(lesson.id);
+                  }}
+                />
               )}
               {practiceStep.kind === 'build' && (
-                <BuildView key={`build-${practiceIndex}`} step={practiceStep} onSolved={() => setSolved(true)} onMistake={addMistake} />
+                <BuildView
+                  key={`build-${practiceIndex}`}
+                  step={practiceStep}
+                  onSolved={() => setSolved(true)}
+                  onMistake={() => {
+                    addMistake();
+                    recordLessonMistake(lesson.id);
+                  }}
+                />
               )}
 
               <div className="lesson-actions">

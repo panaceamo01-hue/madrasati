@@ -3,6 +3,7 @@ import type { Level } from '../types';
 import { LESSON_BY_ID, lessonsFor } from '../data';
 import { LEVEL_NAMES } from '../data/subjects';
 import { buildLevelExam, buildLessonExam, examKeyLesson, examKeyLevel, examPassed, PASS_PERCENT } from '../lib/exam';
+import { trailingFails } from '../lib/report';
 import { saveExamResult, recordMistake } from '../lib/store';
 import { useProgress } from '../lib/useProgress';
 import { lessonDone, levelStatus } from '../lib/unlock';
@@ -100,7 +101,13 @@ export function ExamView({ lessonId, level }: Props) {
       playCorrect();
     } else {
       playWrong();
-      recordMistake(questions[index].question);
+      // نربط الخطأ بالدرس صاحب السؤال، ليظهر في «أكثر المواضيع تعثرًا» عند ولي الأمر.
+      const questionLessonId = lesson
+        ? lesson.id
+        : examLevel
+          ? (lessonsFor(examLevel).find((item) => item.title === questions[index].lesson)?.id ?? undefined)
+          : undefined;
+      recordMistake(questions[index].question, questionLessonId);
     }
   }
 
@@ -156,6 +163,12 @@ export function ExamView({ lessonId, level }: Props) {
               : `تحتاج ${PASS_PERCENT}% للنجاح. راجع الشرح والتمارين ثم أعد المحاولة.`}
           </p>
           {best > 0 && <p className="exam-best">أفضل نتيجة لك: {Math.max(best, percent)}%</p>}
+          {!passed && trailingFails(progress.examAttempts ?? [], key) >= 3 && (
+            <p className="exam-alert">
+              ⚠️ هذا ثالث رسوب متتالٍ في {lesson ? `اختبار درس «${lesson.title}»` : `اختبار ${LEVEL_NAMES[examLevel as Level]}`}.
+              راجع الدرس بهدوء مع ولي أمرك قبل المحاولة من جديد.
+            </p>
+          )}
           <div className="game-actions">
             {passed && href && (
               <a className="btn primary" href={href}>
