@@ -1,9 +1,13 @@
 import { useState } from 'react';
+import { LEVEL_NAMES, LEVELS } from '../data/subjects';
+import type { Level } from '../types';
 import {
   MAX_PROFILES,
   PROFILE_EMOJIS,
   createProfile,
   deleteProfile,
+  getProfileLevel,
+  setProfileLevel,
   switchProfile,
   updateProfile,
 } from '../lib/store';
@@ -57,6 +61,26 @@ export function ProfilesSection() {
                 </button>
               ))}
             </span>
+            <label className="profile-level">
+              المستوى:
+              <select
+                value={getProfileLevel(profile.id) ?? ''}
+                onChange={(event) => {
+                  const value = Number(event.target.value);
+                  if (value >= 1 && value <= 6) setProfileLevel(profile.id, value as Level);
+                }}
+                aria-label={`مستوى ${profile.name}`}
+              >
+                <option value="" disabled>
+                  اختر المستوى
+                </option>
+                {LEVELS.map((level) => (
+                  <option key={level} value={level}>
+                    {LEVEL_NAMES[level]}
+                  </option>
+                ))}
+              </select>
+            </label>
             {profile.id === activeId ? (
               <span className="profile-active-tag">النشط الآن</span>
             ) : (

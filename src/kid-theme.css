@@ -1577,6 +1577,142 @@ body {
   margin: 12px auto 0;
 }
 
+/* معالج إعداد حسابات الأبناء لأول مرة. */
+.setup-page {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.setup-card {
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: 26px;
+  box-shadow: var(--shadow-soft);
+  padding: 22px;
+}
+
+.setup-count {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.setup-count-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 8px;
+  border: 2px solid var(--line);
+  border-radius: 18px;
+  background: #f8fafd;
+  font: inherit;
+  cursor: pointer;
+}
+
+.setup-count-btn.active {
+  border-color: var(--accent, #2d6cb5);
+  background: #e8f0fb;
+  font-weight: 700;
+}
+
+.setup-count-num {
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.setup-child {
+  background: #f8fafd;
+  border: 2px solid #e9f0fb;
+  border-radius: 18px;
+  padding: 14px;
+  margin: 14px 0;
+}
+
+.setup-child-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.setup-child-avatar {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.setup-child-head input[type='text'] {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  font: inherit;
+}
+
+.setup-emojis {
+  margin: 10px 0;
+}
+
+.setup-levels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.setup-level-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 6px;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.setup-level-btn small {
+  color: var(--muted, #667085);
+  font-size: 0.8rem;
+}
+
+.setup-level-btn.active {
+  border-color: var(--accent, #2d6cb5);
+  background: #e8f0fb;
+}
+
+.setup-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.setup-skip {
+  display: block;
+  margin: 14px auto 0;
+}
+
+.profile-level {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.profile-level select {
+  padding: 6px 8px;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  font: inherit;
+  background: #fff;
+}
+
 .field {
   display: block;
   margin-bottom: 18px;

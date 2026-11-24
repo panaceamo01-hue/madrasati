@@ -3,6 +3,7 @@ import { parseRoute, type Route } from './lib/router';
 import { useProgress } from './lib/useProgress';
 import { totalStars, addMinutes } from './lib/store';
 import { loadLicense, revalidateLicense } from './lib/license';
+import { clearSetupDone, isSetupDone, markSetupDone } from './lib/setup';
 import { LESSON_BY_ID } from './data';
 import { BottomNav } from './components/BottomNav';
 import { UpdateBanner } from './components/UpdateBanner';
@@ -22,6 +23,7 @@ import { QuranView } from './views/QuranView';
 import { SurahView } from './views/SurahView';
 import { LeaderboardView } from './views/LeaderboardView';
 import { ActivationView } from './views/ActivationView';
+import { SetupView } from './views/SetupView';
 import { AdminView } from './views/AdminView';
 import { NotFound } from './views/NotFound';
 
@@ -35,6 +37,9 @@ export function App() {
   const stars = totalStars(progress.stars);
   /** هل فُعّل التطبيق بكود على هذا الجهاز؟ (الترخيص محفوظ محليًا فيبقى بعد التحديثات.) */
   const [licensed, setLicensed] = useState<boolean>(() => loadLicense() !== null);
+  /** إعداد حسابات الأبناء لأول مرة: يظهر المعالج مرة واحدة بعد التفعيل. */
+  const [setupDone, setSetupDone] = useState<boolean>(() => isSetupDone());
+  const [setupOpen, setSetupOpen] = useState(false);
 
   useEffect(() => {
     const onChange = () => {
@@ -120,6 +125,28 @@ export function App() {
     );
   }
 
+  // بعد التفعيل مباشرة: معالج إعداد حسابات الأبناء (عدد الأبناء ومستوى كل
+  // واحد)، يظهر مرة واحدة، ويمكن إعادة فتحه من مساحة ولي الأمر.
+  if (licensed && (!setupDone || setupOpen)) {
+    return (
+      <div className="app-shell">
+        <UpdateBanner />
+        <main className="app-main" id="main" tabIndex={-1}>
+          <div className="container">
+            <SetupView
+              onDone={() => {
+                markSetupDone();
+                setSetupDone(true);
+                setSetupOpen(false);
+                window.location.hash = '#/';
+              }}
+            />
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="app-shell">
       <UpdateBanner />
@@ -154,7 +181,16 @@ export function App() {
           {route.name === 'progress' && <ProgressView />}
           {route.name === 'settings' && <SettingsView />}
           {route.name === 'wisdom' && <WisdomView />}
-          {route.name === 'parent' && <ParentView />}
+          {route.name === 'parent' && (
+            <ParentView
+              onReopenSetup={() => {
+                clearSetupDone();
+                setSetupDone(false);
+                setSetupOpen(true);
+                window.location.hash = '#/';
+              }}
+            />
+          )}
           {route.name === 'examLesson' && <ExamView key={route.id} lessonId={route.id} />}
           {route.name === 'examLevel' && <ExamView key={`level-${route.level}`} level={route.level} />}
           {route.name === 'review' && <ReviewView key={route.id} lessonId={route.id} />}

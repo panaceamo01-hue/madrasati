@@ -12,7 +12,12 @@ import { useProgress } from '../lib/useProgress';
 import { ProfilesSection } from './ProfilesSection';
 import { failStreaks, strugglingTopics, subjectProgress, weekBySubject, weekLessons, weekReport, weekTotals } from '../lib/report';
 
-export function ParentView() {
+interface ParentViewProps {
+  /** إعادة فتح معالج إعداد حسابات الأبناء (العدد والمستوى). */
+  onReopenSetup?: () => void;
+}
+
+export function ParentView({ onReopenSetup }: ParentViewProps) {
   const progress = useProgress();
   const settings = progress.settings;
   const [gate, setGate] = useState('');
@@ -268,6 +273,18 @@ export function ParentView() {
       </section>
 
       <ProfilesSection />
+
+      {onReopenSetup && (
+        <section className="parent-card">
+          <h2>🔄 إعادة إعداد حسابات الأبناء</h2>
+          <p className="start-hint">
+            أعد معالج الإعداد الأول: عدد الأبناء وأسماؤهم ومستوى كل واحد منهم.
+          </p>
+          <button className="btn ghost" onClick={onReopenSetup}>
+            إعادة الإعداد
+          </button>
+        </section>
+      )}
 
       {(() => {
         const rows = weekReport(progress.activity ?? {});

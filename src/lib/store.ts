@@ -265,17 +265,57 @@ export function switchProfile(id: string): void {
   emit();
 }
 
-/** ينشئ ابنًا جديدًا ويبدّل إليه. يعيد null إن كان الاسم فارغًا أو بلغ العدد الأقصى. */
-export function createProfile(name: string, emoji: string): ChildProfile | null {
+/** ينشئ ابنًا جديدًا ويبدّل إليه. يعيد null إن كان الاسم فارغًا أو بلغ العدد الأقصى.
+ *  عند تمرير مستوى يُقفل بقية المستويات (وضع ولي الأمر) منذ البداية. */
+export function createProfile(name: string, emoji: string, level?: Level | null): ChildProfile | null {
   const clean = name.trim().slice(0, 20);
   if (!clean || profilesState.profiles.length >= MAX_PROFILES) return null;
-  const profile: ChildProfile = { id: `child-${Date.now()}`, name: clean, emoji };
+  const profile: ChildProfile = {
+    id: `child-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    name: clean,
+    emoji,
+  };
   profilesState = { ...profilesState, profiles: [...profilesState.profiles, profile], activeId: profile.id };
   persistProfiles();
-  state = { ...emptyProgress(), settings: { ...EMPTY_SETTINGS, childName: clean } };
+  state = {
+    ...emptyProgress(),
+    settings: {
+      ...EMPTY_SETTINGS,
+      childName: clean,
+      childLevel: level ?? null,
+      parentLock: level != null,
+      startFromFirst: false,
+    },
+  };
   persist();
   emit();
   return profile;
+}
+
+/** مستوى ابن (من إعداداته المحفوظة)، أو null إن لم يحدده ولي الأمر بعد. */
+export function getProfileLevel(id: string): Level | null {
+  if (id === profilesState.activeId) return state.settings.childLevel;
+  return loadFor(progressKey(id)).settings.childLevel;
+}
+
+/** يحدد مستوى ابن ويقفل بقية المستويات (وضع ولي الأمر). */
+export function setProfileLevel(id: string, level: Level): void {
+  const patch = { childLevel: level, parentLock: true, startFromFirst: false };
+  if (id === profilesState.activeId) {
+    state = { ...state, settings: { ...state.settings, ...patch } };
+    persist();
+  } else {
+    const other = loadFor(progressKey(id));
+    try {
+      localStorage.setItem(
+        progressKey(id),
+        JSON.stringify({ ...other, settings: { ...other.settings, ...patch } }),
+      );
+    } catch {
+      /* نتجاهل: يبقى التغيير في الجلسة الحالية. */
+    }
+  }
+  emit();
 }
 
 /** يغيّر اسم ابن أو صورته الرمزية. */
