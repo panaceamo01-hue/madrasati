@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { BuildStep, GameId, Lesson, OrderStep, QuizStep, SubjectId, TeachStep } from '../types';
+import { DIFFICULTY_LABEL } from '../types';
 import { nextLesson } from '../data';
 import { lessonVideo } from '../data/videos';
 import { LEVEL_NAMES, SUBJECT_BY_ID } from '../data/subjects';
@@ -280,7 +281,11 @@ export function LessonPlayer({ lesson }: { lesson: Lesson }) {
             </div>
           ) : practiceStep ? (
             <div className="step-card" style={{ borderTop: `5px solid ${subject.color}` }}>
-              <div className="step-tag">تمرين {practiceIndex + 1} / {practiceSteps.length}</div>
+              <div className="step-tag">
+                تمرين {practiceIndex + 1} / {practiceSteps.length}
+                {practiceStep.difficulty ? ` · ${DIFFICULTY_LABEL[practiceStep.difficulty]}` : ''}
+                {practiceStep.difficulty === 3 ? ' · تحدٍّ! 💪' : ''}
+              </div>
               {practiceStep.kind === 'quiz' && (
                 <QuizView key={`quiz-${practiceIndex}`} step={practiceStep} onSolved={() => setSolved(true)} onMistake={addMistake} />
               )}
@@ -368,6 +373,12 @@ export function LessonPlayer({ lesson }: { lesson: Lesson }) {
 function TeachView({ step }: { step: TeachStep }) {
   return (
     <>
+      {step.hook && (
+        <div className="tip">
+          <span aria-hidden="true">🎈</span>
+          <span>{step.hook}</span>
+        </div>
+      )}
       {step.visual && (
         <div className="step-visual" aria-hidden="true">
           {step.visual}

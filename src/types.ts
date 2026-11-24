@@ -2,12 +2,23 @@ export type Level = 1 | 2 | 3 | 4 | 5 | 6;
 
 export type SubjectId = 'arabic' | 'math' | 'islamic' | 'science' | 'social' | 'french';
 
+/** مستوى صعوبة التمرين: 1 سهل، 2 متوسط، 3 صعب (تحدٍّ). */
+export type Difficulty = 1 | 2 | 3;
+
+export const DIFFICULTY_LABEL: Record<Difficulty, string> = {
+  1: 'سهل ⭐',
+  2: 'متوسط ⭐⭐',
+  3: 'صعب ⭐⭐⭐',
+};
+
 export interface TeachStep {
   kind: 'teach';
   title: string;
   body: string;
   visual?: string;
   tip?: string;
+  /** سؤال أو موقف ممتع يفتتح الشرح ويجذب الطفل (جملة واحدة بالفصحى). */
+  hook?: string;
 }
 
 export interface QuizStep {
@@ -17,6 +28,7 @@ export interface QuizStep {
   answer: number;
   hint?: string;
   visual?: string;
+  difficulty?: Difficulty;
 }
 
 export interface OrderStep {
@@ -25,6 +37,7 @@ export interface OrderStep {
   /** العناصر بالترتيب الصحيح. */
   items: string[];
   hint?: string;
+  difficulty?: Difficulty;
 }
 
 export interface BuildStep {
@@ -32,6 +45,7 @@ export interface BuildStep {
   question: string;
   word: string;
   hint?: string;
+  difficulty?: Difficulty;
 }
 
 export type LessonStep = TeachStep | QuizStep | OrderStep | BuildStep;
