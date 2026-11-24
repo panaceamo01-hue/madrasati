@@ -4,6 +4,7 @@ import { SUBJECT_BY_ID } from '../data/subjects';
 import { reviewSteps, shuffledQuiz, weakCount } from '../lib/adaptive';
 import { recordLessonMistake, recordMistake, resolveMistake, touchDaily } from '../lib/store';
 import { useProgress } from '../lib/useProgress';
+import { lessonUnlocked, levelUnlocked } from '../lib/unlock';
 import { BuildView, OrderView, QuizView } from './LessonPlayer';
 
 interface Props {
@@ -18,6 +19,10 @@ interface Props {
 export function ReviewView({ lessonId }: Props) {
   const progress = useProgress();
   const lesson = LESSON_BY_ID[lessonId];
+  const unlocked =
+    lesson !== undefined &&
+    levelUnlocked(lesson.level, progress.stars, progress.exams, progress.settings) &&
+    lessonUnlocked(lesson, progress.stars, progress.exams);
   const [attempt, setAttempt] = useState(0);
   const [index, setIndex] = useState(0);
   const [solved, setSolved] = useState(false);
@@ -39,6 +44,20 @@ export function ReviewView({ lessonId }: Props) {
         <p>لم أجد هذا الدرس.</p>
         <a className="btn primary" href="#/">
           العودة للرئيسية
+        </a>
+      </div>
+    );
+  }
+
+  if (!unlocked) {
+    return (
+      <div className="locked-page">
+        <span className="locked-emoji" aria-hidden="true">
+          🔒
+        </span>
+        <p>أكمل الدرس السابق واجتز اختباره لتفتح مراجعة هذا الدرس.</p>
+        <a className="btn primary" href={`#/level/${lesson.level}`}>
+          العودة إلى المستوى
         </a>
       </div>
     );

@@ -182,7 +182,7 @@ export function Home() {
       </section>
 
       <div className="section-head">
-        <h2>{progress.settings.parentLock && progress.settings.childLevel ? '📚 مستوى ابني' : '🗺️ رحلتك عبر المستويات'}</h2>
+        <h2>{progress.settings.parentLock && progress.settings.childLevel ? `📚 مستوى ${greetingName || 'ابني'}` : '🗺️ رحلتك عبر المستويات'}</h2>
         <a href="#/progress" className="cta">
           ملفي الشخصي ←
         </a>

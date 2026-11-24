@@ -7,6 +7,7 @@ import { LEVEL_NAMES, SUBJECT_BY_ID } from '../data/subjects';
 import { recordLessonMistake, recordMistake, saveGameScore, saveLessonStars, touchDaily } from '../lib/store';
 import { useProgress } from '../lib/useProgress';
 import { examKeyLesson, examPassed } from '../lib/exam';
+import { lessonUnlocked, levelUnlocked } from '../lib/unlock';
 import { playCorrect, playWin, playWrong } from '../lib/sound';
 import { speak, stopSpeaking } from '../lib/speech';
 import { shuffle } from '../lib/shuffle';
@@ -47,6 +48,8 @@ export function LessonPlayer({ lesson }: { lesson: Lesson }) {
 
   const progress = useProgress();
   const video = lessonVideo(lesson.id);
+  const levelAllowed = levelUnlocked(lesson.level, progress.stars, progress.exams, progress.settings);
+  const unlocked = levelAllowed && lessonUnlocked(lesson, progress.stars, progress.exams);
   const showVideo = Boolean(video && progress.settings.videosEnabled);
   const subject = SUBJECT_BY_ID[lesson.subject];
   const following = nextLesson(lesson);
@@ -60,8 +63,8 @@ export function LessonPlayer({ lesson }: { lesson: Lesson }) {
   useEffect(() => {
     setSolved(false);
     stopSpeaking();
-    if (tab === 'teach') touchDaily('teach');
-    if (tab === 'video') touchDaily('video');
+    if (unlocked && tab === 'teach') touchDaily('teach');
+    if (unlocked && tab === 'video') touchDaily('video');
   }, [practiceIndex, teachIndex, tab]);
 
   useEffect(() => () => stopSpeaking(), []);
@@ -89,6 +92,34 @@ export function LessonPlayer({ lesson }: { lesson: Lesson }) {
   const addMistake = () => setMistakes((value) => value + 1);
 
   const doneCount = Object.keys(progress.stars).length;
+
+  // القفل يسري أيضا على الرابط المباشر: لا يكفي إخفاء الدرس في قائمة المستوى.
+  if (!unlocked) {
+    const hiddenByParent =
+      progress.settings.parentLock &&
+      progress.settings.childLevel !== null &&
+      lesson.level !== progress.settings.childLevel;
+    return (
+      <div className="lesson-shell">
+        <div className="locked-page">
+          <span className="locked-emoji" aria-hidden="true">
+            🔒
+          </span>
+          <h1>{lesson.title}</h1>
+          <p>
+            {hiddenByParent
+              ? 'هذا الدرس ليس في مستوى ابنك. انتقل إلى مستوى ابنك.'
+              : !levelAllowed
+                ? 'هذا المستوى مقفل. أكمل دروس المستوى السابق واجتز اختباره أولًا.'
+                : 'أكمل الدرس السابق واجتز اختباره لتفتح هذا الدرس.'}
+          </p>
+          <a className="btn primary" href={`#/level/${lesson.level}`}>
+            العودة إلى {LEVEL_NAMES[lesson.level]}
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="lesson-shell">
