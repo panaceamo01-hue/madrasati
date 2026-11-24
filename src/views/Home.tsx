@@ -40,9 +40,9 @@ export function Home() {
   const today = todayKey();
   const todayItems = daily.lastDate === today ? daily.today : [];
   const dailyDone = DAILY_ITEMS.filter((item) => todayItems.includes(item.id)).length;
-  const greeting = progress.settings.childName
-    ? `مرحبًا ${progress.settings.childName}`
-    : 'مرحبًا يا بطل';
+  const activeProfile = profiles.find((profile) => profile.id === activeId);
+  const greetingName = progress.settings.childName || activeProfile?.name || '';
+  const greeting = greetingName ? `مرحبًا ${greetingName}` : 'مرحبًا يا بطل';
   const dailyGoal = progress.settings.dailyGoalMinutes;
   const minutesToday = Math.round(todayMinutes(progress.activity));
   const goalReached = minutesToday >= dailyGoal;
