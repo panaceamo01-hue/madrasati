@@ -1551,6 +1551,32 @@ body {
   max-width: 280px;
 }
 
+.license-owner {
+  text-align: center;
+  margin-top: 16px;
+}
+
+.owner-card {
+  text-align: start;
+  margin-top: 12px;
+}
+
+.link-button {
+  background: none;
+  border: 0;
+  padding: 4px 8px;
+  color: inherit;
+  font: inherit;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.owner-card .link-button {
+  display: block;
+  margin: 12px auto 0;
+}
+
 .field {
   display: block;
   margin-bottom: 18px;

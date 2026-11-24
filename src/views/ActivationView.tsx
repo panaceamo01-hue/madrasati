@@ -1,10 +1,22 @@
 import { useEffect, useState } from 'react';
-import { activateLicense, type ActivateError } from '../lib/license';
+import {
+  activateLicense,
+  activateOwner,
+  type ActivateError,
+  type OwnerError,
+} from '../lib/license';
 
 const ERROR_TEXT: Record<ActivateError, string> = {
   invalid_code: 'الكود غير صحيح. تأكد من الكود وأعد المحاولة.',
   device_limit: 'هذا الكود مستعمل في جهازين. تواصل مع صاحب التطبيق لإلغاء جهاز قديم.',
   revoked: 'هذا الكود ملغى. تواصل مع صاحب التطبيق.',
+  not_configured: 'خدمة التفعيل غير مفعّلة بعد. حاول لاحقًا.',
+  offline: 'تحقق من اتصالك بالإنترنت وحاول مرة أخرى.',
+  unknown: 'حدث خطأ غير متوقع. حاول مرة أخرى.',
+};
+
+const OWNER_ERROR_TEXT: Record<OwnerError, string> = {
+  wrong_password: 'كلمة السر غير صحيحة.',
   not_configured: 'خدمة التفعيل غير مفعّلة بعد. حاول لاحقًا.',
   offline: 'تحقق من اتصالك بالإنترنت وحاول مرة أخرى.',
   unknown: 'حدث خطأ غير متوقع. حاول مرة أخرى.',
@@ -20,6 +32,10 @@ export function ActivationView({ onActivated }: Props) {
   const [error, setError] = useState<ActivateError | null>(null);
   const [busy, setBusy] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [ownerMode, setOwnerMode] = useState(false);
+  const [ownerPassword, setOwnerPassword] = useState('');
+  const [ownerError, setOwnerError] = useState<OwnerError | null>(null);
 
   // بعد رسالة النجاح نفتح التطبيق تلقائيًا بعد ثانيتين ونصف.
   useEffect(() => {
@@ -40,10 +56,25 @@ export function ActivationView({ onActivated }: Props) {
     const result = await activateLicense(clean);
     setBusy(false);
     if (result.ok) {
+      setSuccessMessage('مبروك تم تفعيل الكود الخاص بك صالح مدى الحياة');
       setSuccess(true);
       return;
     }
     setError(result.error);
+  }
+
+  async function submitOwner() {
+    if (busy || success) return;
+    setBusy(true);
+    setOwnerError(null);
+    const result = await activateOwner(ownerPassword);
+    setBusy(false);
+    if (result.ok) {
+      setSuccessMessage('مرحبًا بك، تم الدخول كمالك للتطبيق');
+      setSuccess(true);
+      return;
+    }
+    setOwnerError(result.error);
   }
 
   return (
@@ -63,7 +94,7 @@ export function ActivationView({ onActivated }: Props) {
             <p className="gate-success-emoji" aria-hidden="true">
               🎉
             </p>
-            <p>مبروك تم تفعيل الكود الخاص بك صالح مدى الحياة</p>
+            <p>{successMessage}</p>
             <p className="license-note">جارٍ فتح التطبيق…</p>
           </div>
         ) : (
@@ -110,6 +141,64 @@ export function ActivationView({ onActivated }: Props) {
           </>
         )}
       </div>
+      {!success && (
+        <div className="license-owner">
+          {!ownerMode ? (
+            <button
+              type="button"
+              className="link-button"
+              onClick={() => setOwnerMode(true)}
+            >
+              أنا صاحب التطبيق
+            </button>
+          ) : (
+            <div className="license-card owner-card">
+              <label className="field" htmlFor="owner-password">
+                <span>كلمة سر الإدارة</span>
+                <input
+                  id="owner-password"
+                  className="license-input"
+                  type="password"
+                  autoComplete="current-password"
+                  dir="ltr"
+                  value={ownerPassword}
+                  onChange={(event) => {
+                    setOwnerPassword(event.target.value);
+                    setOwnerError(null);
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') void submitOwner();
+                  }}
+                  placeholder="كلمة السر"
+                  aria-label="كلمة سر الإدارة"
+                />
+              </label>
+              {ownerError && (
+                <p className="gate-error" role="alert">
+                  {OWNER_ERROR_TEXT[ownerError]}
+                </p>
+              )}
+              <button
+                className="btn primary big"
+                onClick={() => void submitOwner()}
+                disabled={busy}
+              >
+                {busy ? 'جارٍ التحقق…' : 'دخول كمالك'}
+              </button>
+              <button
+                type="button"
+                className="link-button"
+                onClick={() => {
+                  setOwnerMode(false);
+                  setOwnerError(null);
+                }}
+              >
+                رجوع إلى التفعيل بالكود
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
