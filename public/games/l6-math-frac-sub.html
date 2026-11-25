@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>طرح الكسور – المستوى السادس ابتدائي</title>
+<style>
+:root{--b:#2563eb;--o:#f97316;--g:#16a34a;--r:#dc2626;--bg:#fff7e6;--ink:#1e293b}
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,"Segoe UI","Noto Sans Arabic",system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:18px;line-height:1.7}
+#app{max-width:780px;margin:0 auto;padding:0 10px 10px;min-height:100vh;display:flex;flex-direction:column;gap:10px}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 0 4px}
+.top{display:flex;align-items:center;gap:10px}
+.bar{flex:1;height:14px;background:#e2e8f0;border-radius:9px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#16a34a,#84cc16);transition:width .4s}
+#lab{font-size:14px;white-space:nowrap;font-weight:bold;color:#475569}
+.mascot{display:flex;align-items:center;gap:8px;margin-top:6px}
+.mascot svg{width:66px;height:66px;flex:none}
+.bubble{background:#fff;border:3px solid var(--b);border-radius:18px;padding:6px 14px;flex:1;font-weight:bold;font-size:16px;line-height:1.5}
+main{flex:1}
+.card{background:#fff;border-radius:22px;padding:14px;box-shadow:0 5px 0 #f1d9a8}
+.c{text-align:center}
+h1,h2,h3{margin:.2em 0;color:var(--b)}
+h1{font-size:30px}h2{font-size:23px}h3{font-size:19px;color:#7c3aed}
+p{margin:.4em 0}
+button{font:inherit;cursor:pointer;border:0;border-radius:14px;padding:10px 16px;background:var(--b);color:#fff;font-weight:bold;box-shadow:0 4px 0 #1e40af}
+button:active:not(:disabled){transform:translateY(2px);box-shadow:0 2px 0 #1e40af}
+button:disabled{background:#cbd5e1;color:#64748b;box-shadow:0 4px 0 #94a3b8;cursor:not-allowed}
+button:focus-visible,input:focus-visible{outline:4px solid #fbbf24;outline-offset:2px}
+.big{font-size:22px;padding:12px 28px;background:var(--g);box-shadow:0 4px 0 #166534;margin-top:8px}
+.nav{display:flex;gap:8px;padding:6px 0}
+.nav button{flex:1;min-width:0;padding:10px 6px;font-size:16px}
+#home{background:#7c3aed;box-shadow:0 4px 0 #5b21b6}
+#retry{background:#f59e0b;box-shadow:0 4px 0 #b45309}
+.row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:flex-start;margin:8px 0}
+.row figure{margin:0;flex:1 1 240px;text-align:center;font-size:16px}
+.opts{display:grid;gap:10px;margin:10px 0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.opt{background:#fff;color:var(--ink);border:3px solid #cbd5e1;box-shadow:none;text-align:right}
+.pc{padding:4px;background:#fff;border:4px solid #cbd5e1;box-shadow:none;width:100%}
+.pc.sel{border-color:var(--b);background:#dbeafe}
+.opt.ok,.pc.ok,.chip.on{border-color:var(--g);background:#dcfce7;color:#14532d}
+.opt.no,.pc.no{border-color:var(--r);background:#fee2e2;color:#7f1d1d}
+.pic,.st{width:100%;max-width:200px;height:auto;display:block;margin:auto}
+.st{max-width:340px}
+.board{width:100%;max-width:520px;display:block;margin:6px auto;border:4px solid #bfdbfe;border-radius:14px;touch-action:none;background:#f8fafc}
+input[type=range]{width:100%;max-width:520px;display:block;margin:6px auto;height:38px;accent-color:var(--o)}
+.msg{background:#eff6ff;border-radius:12px;padding:8px 12px;margin:8px 0;font-weight:bold;min-height:3.4em}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.chip{padding:2px 14px;border-radius:20px;border:3px solid #cbd5e1;background:#fff;font-size:15px;font-weight:bold}
+.exp{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:8px 0}
+.exp figure,.exp div{margin:0;text-align:center;font-size:16px}
+.b{color:var(--b)}.o{color:var(--o)}.r{color:var(--r)}
+.rule{border:3px dashed #cbd5e1;border-radius:16px;padding:8px 12px;margin:10px 0}
+.rule.ok{border:3px solid var(--g);background:#f0fdf4;display:flex;align-items:center;gap:12px}
+.rule .mini{width:110px;flex:none}
+.blank{display:inline-block;min-width:70px;border-bottom:4px solid var(--o);text-align:center;color:var(--o)}
+.tip{background:#fef9c3;border-radius:12px;padding:8px 12px;font-weight:bold}
+.fb{padding:10px 14px;border-radius:12px;margin-top:10px;font-weight:bold}
+.fb.ok{background:#dcfce7;border:2px solid var(--g)}
+.fb.no{background:#fee2e2;border:2px solid var(--r)}
+.cap{text-align:center;font-weight:bold;min-height:1.7em;color:var(--g)}
+.score{font-size:34px;font-weight:bold;color:var(--o);margin:0}
+@media(max-width:480px){body{font-size:17px}h1{font-size:26px}.rule .mini{width:80px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+ <div class="top"><div class="bar"><i id="bar"></i></div><span id="lab"></span></div>
+ <div class="mascot">
+  <svg viewBox="0 0 100 100" aria-hidden="true">
+   <ellipse cx="50" cy="60" rx="36" ry="34" fill="#38bdf8"/><ellipse cx="50" cy="72" rx="22" ry="18" fill="#e0f2fe"/>
+   <circle cx="36" cy="50" r="10" fill="#fff"/><circle cx="64" cy="50" r="10" fill="#fff"/>
+   <circle cx="37" cy="51" r="5" fill="#1e293b"/><circle cx="63" cy="51" r="5" fill="#1e293b"/>
+   <path d="M45 58h10l-5 8z" fill="#f97316"/>
+   <path id="mouth" d="M40 72q10 8 20 0" fill="none" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>
+   <path d="M16 22L50 8l34 14-34 14z" fill="#1e3a8a"/><path d="M82 24v16" stroke="#facc15" stroke-width="3"/>
+  </svg>
+  <div class="bubble" id="say"></div>
+ </div>
+</header>
+<main id="stage"></main>
+<nav class="nav">
+ <button id="prev">السابق</button><button id="retry">إعادة المحاولة</button><button id="home">الرئيسية</button><button id="next">التالي</button>
+</nav>
+</div>
+<script>
+const S={},$=q=>document.querySelector(q);
+const names=['الرئيسية','الوضعية المشكلة','الاستكشاف','التفسير','الاستنتاج','تقويم 1/6','تقويم 2/6','تقويم 3/6','تقويم 4/6','تقويم 5/6','تقويم 6/6','النتيجة'];
+let i=0;
+const st=()=>S[i]||(S[i]={});
+const say=(t,ok)=>{$('#say').textContent=t;$('#mouth').setAttribute('d',ok===false?'M40 78q10-8 20 0':'M40 72q10 8 20 0')};
+const L=(x1,y1,x2,y2,c,w=4,x='')=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${w}" stroke-linecap="round" ${x}/>`;
+
+/* رسومات */
+const gcd=(a,b)=>b?gcd(b,a%b):a;
+const lcm=(a,b)=>a*b/gcd(a,b);
+function fracBar(num,den,col){
+ const w=320,cw=w/den;
+ let cells='';
+ for(let k=0;k<den;k++)cells+=`<rect x="${k*cw+1}" y="2" width="${cw-2}" height="30" rx="4" fill="${k<num?col:'#ffffff'}" stroke="#94a3b8" stroke-width="2"/>`;
+ return `<svg viewBox="0 0 ${w} 34" class="st" role="img"><rect width="${w}" height="34" rx="8" fill="#f8fafc"/>${cells}</svg>`;
+}
+const divPanel=txt=>`<div style="background:#fff;border:4px solid #cbd5e1;border-radius:14px;padding:16px 6px;text-align:center"><div style="font-size:23px;font-weight:bold;color:#2563eb;line-height:1.6">${txt}</div></div>`;
+const numBox=n=>`<div style="background:#fff;border:4px solid #cbd5e1;border-radius:14px;padding:18px 0;text-align:center;font-size:30px;font-weight:bold;color:#1e293b">${n}</div>`;
+const star=f=>`<svg viewBox="0 0 40 40" width="46" height="46"><path d="M20 3l5.2 11.4 12.3 1.4-9.2 8.4 2.6 12.2L20 30.2 9.1 36.4l2.6-12.2-9.2-8.4 12.3-1.4z" fill="${f?'#facc15':'#e2e8f0'}" stroke="${f?'#ca8a04':'#cbd5e1'}" stroke-width="2" stroke-linejoin="round"/></svg>`;
+
+/* مراحل الدرس */
+const hooks={};
+const scr=[
+// 0 الرئيسية
+()=>{st().done=1;say('أهلاً يا بطل! أنا بومة الرياضيات. هيا نكتشف طرح الكسور معاً!');
+ return `<div class="card c"><h1>طرح الكسور</h1><p>سنقسّم الكعكة ونجرّب كيف نوحّد المقامات ونطرح ونختزل الناتج.</p><div class="row"><figure>${fracBar(3,4,'#2563eb')}<figcaption>ثلاثة أرباع الكعكة</figcaption></figure><figure>${fracBar(1,2,'#f97316')}<figcaption>نصف الكعكة</figcaption></figure></div><button class="big" onclick="go(1)">ابدأ اللعب</button></div>`},
+// 1 الوضعية المشكلة
+()=>{const s=st();s.f=s.f||[];s.w=s.w||[];say('انظر جيداً إلى الكعكة. كم بقي منها؟');
+ const o=[['النصف يساوي ربعين: 1/2 = 2/4',1],['3/4 − 1/2 = 3/4 − 2/4 = 1/4',1],['3/4 − 1/2 = 2/4',0],['نطرح البسطين والمقامين: 3/4 − 1/2 = 2/2',0]];
+ return `<div class="card"><h2>الوضعية المشكلة</h2><p>عندك 3/4 كعكة وأكلت نصفها. اضغط على كل ملاحظة صحيحة.</p><div class="row"><figure>${fracBar(3,4,'#2563eb')}<figcaption>3/4 الكعكة</figcaption></figure><figure>${fracBar(1,2,'#f97316')}<figcaption>أكلت 1/2</figcaption></figure></div><div class="opts">${o.map((x,k)=>`<button class="opt${s.f.includes(k)?' ok':s.w.includes(k)?' no':''}" ${s.f.includes(k)||s.w.includes(k)?'disabled':''} onclick="obs(${k},${x[1]})">${x[0]}</button>`).join('')}</div></div>`},
+// 2 الاستكشاف
+()=>{const s=st();s.ai=s.ai??0;s.bi=s.bi??0;s.step=s.step||0;s.t=s.t||0;say('اختر كسرين بالمنزلقين، ثم وحّد المقامين واطرح واختزل.');
+ return `<div class="card"><h2>نستكشف</h2><p>اختر كسرين بالمنزلقين، ثم وحّد المقامين واطرح البسطين واختزل الناتج.</p><div class="row"><div><b>الكسر الأول: <span id="la">${FA[s.ai][0]}/${FA[s.ai][1]}</span></b><input id="ra" type="range" min="0" max="4" value="${s.ai}" dir="ltr" aria-label="الكسر الأول"></div><div><b>الكسر الثاني: <span id="lb">${FB[s.bi][0]}/${FB[s.bi][1]}</span></b><input id="rb" type="range" min="0" max="3" value="${s.bi}" dir="ltr" aria-label="الكسر الثاني"></div></div><div id="bars"></div><div id="steps" class="row"></div><div id="msg" class="msg"></div><div class="chips" id="chips"></div></div>`},
+// 3 التفسير
+()=>{st().done=1;say('اقرأ البطاقات، ثم انظر كيف نوحّد المقامات بطرق مختلفة.');
+ return `<div class="card"><h2>نفسّر ما اكتشفناه</h2><div class="exp"><div>${divPanel('3/4 − 1/2 = 1/4')}<p><b class="b">لماذا نوحّد المقامات؟</b>: لا نستطيع طرح كسرين بمقامين مختلفين مباشرة، بل نوحّد المقامين أولا. النصف يساوي ربعين، إذن 3/4 − 1/2 = 3/4 − 2/4 = 1/4.</p></div><div>${divPanel('5/6 − 1/3 = 1/2')}<p><b class="o">التوحيد بالمضاعف المشترك</b>: مقام 3 هو 6 مضروبا في 2، إذن 1/3 = 2/6. ثم نطرح: 5/6 − 2/6 = 3/6 = 1/2 بعد الاختزال.</p></div><div>${divPanel('3/5 − 1/3 = 4/15')}<p><b style="color:var(--g)">التوحيد بضرب المقامين</b>: إذا لم يكن أحد المقامين مضاعفا للآخر، نوحّد المقامين بضرب كل مقام في مقام الكسر الآخر. 3/5 = 9/15 و1/3 = 5/15، إذن 3/5 − 1/3 = 4/15.</p></div></div><h3>أين نجده في حياتنا؟</h3><div class="exp"><div><p>🍰</p><p>أكل جزء من كعكة وبقي جزء آخر.</p></div><div><p>📏</p><p>قطع شريط وبقي منه جزء.</p></div><div><p>🥛</p><p>شرب جزءا من كوب حليب وبقي الباقي.</p></div></div></div>`},
+// 4 الاستنتاج
+()=>{const s=st();s.r=s.r||[0,0];say('أكمل القاعدتين باختيار الناتج الصحيح.');
+ return `<div class="card"><h2>نستنتج القاعدتين</h2>${R.map((r,k)=>s.r[k]?`<div class="rule ok"><div class="mini">${r.mini}</div><p>${r.pre} <b>${r.a}</b> ${r.post}</p></div>`:`<div class="rule"><p>${r.pre} <span class="blank">؟؟؟</span> ${r.post}</p><div class="row">${r.ch.map(w=>`<button class="opt" onclick="rl(${k},'${w}')">${w}</button>`).join('')}</div></div>`).join('')}<p class="tip">تذكّر: اختزل الناتج دائما إلى أبسط صورة.</p></div>`},
+...Array.from({length:6},(_,n)=>()=>quiz(n)),
+// 11 النتيجة
+()=>{let sc=0;for(let k=5;k<11;k++)sc+=S[k]?.sc||0;st().done=1;
+ const m=sc>=5?'ممتاز! أنت بطل طرح الكسور.':sc>=3?'جيد جداً! راجع التفسير ثم حاول مجدداً.':'لا بأس! أعد المحاولة وسنتحسّن معاً.';say(m);
+ return `<div class="card c"><h1>النتيجة النهائية</h1><div class="row">${[...Array(6)].map((_,k)=>star(k<sc)).join('')}</div><p class="score">${sc} / 6</p><p>${m}</p><p class="tip">لطرح كسرين نوحّد المقامين أولا، ثم نطرح البسطين، ثم نختزل الناتج إلى أبسط صورة.</p><button class="big" onclick="reset()">العب من جديد</button></div>`}
+];
+
+/* بيانات الاستنتاج والتقويم */
+const R=[{a:'1/4',pre:'3/4 − 1/2 =',post:'.',ch:['1/4','1/2'],mini:fracBar(1,4,'#2563eb'),h:'النصف يساوي ربعين: 3/4 − 2/4 = 1/4.'},
+ {a:'1/2',pre:'5/6 − 1/3 =',post:'.',ch:['1/2','2/3'],mini:fracBar(1,2,'#16a34a'),h:'الثلث يساوي سدسين: 5/6 − 2/6 = 3/6 = 1/2.'}];
+const Q=[
+ {t:'img',q:'اضغط على الصورة التي فيها طرح صحيح.',o:[divPanel('3/4 − 1/2 = 1/4'),divPanel('3/4 − 1/2 = 1/2'),divPanel('3/4 − 1/2 = 2/3')],a:0,why:'النصف يساوي ربعين، إذن 3/4 − 2/4 = 1/4.',h:'وحّد المقامين أولا: النصف يساوي ربعين.'},
+ {t:'ch',q:'ما ناتج 7/8 − 1/4؟',o:['6/8','5/8','3/4','1/2'],a:1,why:'الربع يساوي ثمنين: 7/8 − 2/8 = 5/8.',h:'7/8 − 2/8.'},
+ {t:'ch',q:'ما ناتج 5/6 − 1/3؟',o:['1/2','2/3','1/3','4/5'],a:0,why:'الثلث يساوي سدسين: 5/6 − 2/6 = 3/6 = 1/2.',h:'الثلث يساوي سدسين: 2/6.'},
+ {t:'mt',q:'اضغط على طرح، ثم على ناتجه المناسب.',it:[divPanel('3/4 − 1/2'),divPanel('4/5 − 1/10'),divPanel('3/5 − 1/3')],W:['1/4','7/10','4/15'],ws:[2,0,1],why:'3/4 − 1/2 = 1/4، و4/5 − 1/10 = 7/10، و3/5 − 1/3 = 4/15.',h:'وحّد المقامين ثم اطرح البسطين.'},
+ {t:'sl',q:'حرّك المنزلق لاختيار بسط الناتج: 5/6 − 1/3 = ؟/6، ثم اضغط «تحقق».',min:1,max:5,step:1,def:2,target:3,fmt:v=>v+'/6',why:'5/6 − 2/6 = 3/6.',h:'الثلث يساوي سدسين: 5/6 − 2/6.'},
+ {t:'ch',q:'كان عند سلمى شريط طوله 5/6 متر، فقطعت منه 1/3 متر. كم بقي؟',o:['1/2 متر','2/3 متر','1/3 متر','1/6 متر'],a:0,why:'5/6 − 1/3 = 5/6 − 2/6 = 3/6 = 1/2 متر.',h:'5/6 − 2/6 = 3/6.'}
+];
+
+/* تنقّل */
+function render(){S[i]||(S[i]={});$('#stage').innerHTML=scr[i]();hooks[i]&&hooks[i]();$('#bar').style.width=i/11*100+'%';$('#lab').textContent=names[i];nav()}
+function nav(){$('#prev').disabled=i==0;$('#next').disabled=!S[i].done;$('#next').style.display=i==11?'none':'';$('#retry').style.display=(i==0||i==3||i==11)?'none':''}
+const go=n=>{i=n;render();scrollTo(0,0)};
+const reset=()=>{for(const k in S)delete S[k];go(0)};
+$('#prev').onclick=()=>go(i-1);$('#next').onclick=()=>go(i+1);$('#home').onclick=()=>go(0);
+$('#retry').onclick=()=>{delete S[i];render()};
+
+/* 1: الملاحظة */
+function obs(k,ok){const s=st();
+ if(ok){s.f.push(k);render();if(s.f.length==2){s.done=1;nav();say('رائع! فهمت كيف نطرح من الكعكة. هيا نجرّب بأنفسنا.')}else say('ملاحظة صحيحة! هل من ملاحظة أخرى؟')}
+ else{s.w.push(k);render();say('انظر مرة أخرى: هل نطرح البسطين والمقامين معا؟',false)}}
+
+/* 2: الاستكشاف */
+const FA=[[3,4],[5,6],[7,8],[3,5],[4,5]],FB=[[1,2],[1,3],[1,4],[1,10]];
+function fsDraw(){const s=S[2],A=FA[s.ai],B=FB[s.bi];
+ const l=lcm(A[1],B[1]),ea=A[0]*(l/A[1]),eb=B[0]*(l/B[1]);
+ const rn=ea-eb,rd=l,g=gcd(rn,rd),canRed=g>1;
+ let bars=`<div class="row"><figure>${fracBar(A[0],A[1],'#2563eb')}<figcaption>${A[0]}/${A[1]}</figcaption></figure><figure>${fracBar(B[0],B[1],'#f97316')}<figcaption>${B[0]}/${B[1]}</figcaption></figure></div>`;
+ if(s.step>=1)bars+=`<div class="row"><figure>${fracBar(ea,l,'#2563eb')}<figcaption>${ea}/${l}</figcaption></figure><figure>${fracBar(eb,l,'#f97316')}<figcaption>${eb}/${l}</figcaption></figure></div>`;
+ if(s.step>=2)bars+=`<p class="c" style="font-size:24px;font-weight:bold">${ea}/${l} − ${eb}/${l} = ${rn}/${rd}${s.step>=3?' = <span style="color:var(--g)">'+(rn/g)+'/'+(rd/g)+'</span>':''}</p>`;
+ $('#bars').innerHTML=bars;
+ let stp='';
+ if(s.step==0)stp=`<button onclick="fsStep(1)">وحّد المقامين</button>`;
+ else if(s.step==1)stp=`<button onclick="fsStep(2)">اطرح البسطين</button>`;
+ else if(s.step==2&&canRed)stp=`<button onclick="fsStep(3)">اختزل الناتج</button>`;
+ $('#steps').innerHTML=stp;
+ $('#msg').textContent=s.step==0?'اختر كسرين، ثم اضغط «وحّد المقامين».':s.step==1?'المقام المشترك هو '+l+'. الآن اطرح البسطين.':s.step==2?(canRed?'الناتج '+rn+'/'+rd+' يقبل الاختزال. اضغط «اختزل الناتج».':'الناتج '+rn+'/'+rd+' لا يقبل الاختزال. جرّب كسرين آخرين!'):'أحسنت! الناتج المختزل هو '+(rn/g)+'/'+(rd/g)+'.';
+ $('#chips').innerHTML=[['وحدنا المقامين',s.step>=1],['طرحنا البسطين',s.step>=2],['اختزلنا الناتج',s.step>=3]].map(([t,on])=>`<span class="chip${on?' on':''}">${t}</span>`).join('');
+ if(!s.done&&s.step>=3){s.done=1;nav();say('أحسنت! وحدت المقامات وطرحت واختزلت. هيا نفسّرها.')}}
+function fsStep(n){const s=S[2];s.step=n;fsDraw()}
+hooks[2]=()=>{const s=S[2],ra=$('#ra'),rb=$('#rb');fsDraw();
+ ra.oninput=()=>{s.ai=+ra.value;s.step=0;$('#la').textContent=FA[s.ai][0]+'/'+FA[s.ai][1];fsDraw()};
+ rb.oninput=()=>{s.bi=+rb.value;s.step=0;$('#lb').textContent=FB[s.bi][0]+'/'+FB[s.bi][1];fsDraw()}};
+
+/* 4: الاستنتاج */
+function rl(k,w){const s=st();
+ if(w==R[k].a){s.r[k]=1;render();if(s.r[0]&&s.r[1]){s.done=1;nav();say('أحسنت! استنتجنا القاعدتين. هيا نختبر أنفسنا.')}else say('صحيح! بقيت قاعدة واحدة.')}
+ else say(R[k].h,false)}
+
+/* 5-10: التقويم */
+function quiz(n){const q=Q[n],s=st();s.w=s.w||[];
+ say(s.d?'أحسنت يا بطل!':s.bad?'حاول مرة أخرى، أنت قادر!':'فكّر جيداً ثم أجب.',!(s.bad&&!s.d));
+ const dis=k=>s.d||s.w.includes(k)?'disabled':'',cl=k=>(s.d&&k==q.a?' ok':'')+(s.w.includes(k)?' no':'');
+ let b='';
+ if(q.t=='img')b=`<div class="grid3">${q.o.map((o,k)=>`<button class="pc${cl(k)}" ${dis(k)} onclick="ans(${k})" aria-label="صورة ${k+1}">${o}</button>`).join('')}</div>`;
+ if(q.t=='ch')b=`${q.p?`<div class="row">${q.p}</div>`:''}<div class="opts">${q.o.map((o,k)=>`<button class="opt${cl(k)}" ${dis(k)} onclick="ans(${k})">${o}</button>`).join('')}</div>`;
+ if(q.t=='mt'){s.m=s.m||[0,0,0];b=`<div class="grid3">${q.it.map((o,k)=>`<div><button class="pc${s.m[k]?' ok':''}${s.si===k?' sel':''}" ${s.m[k]?'disabled':''} onclick="pI(${k})">${o}</button><div class="cap">${s.m[k]?q.W[k]:'؟'}</div></div>`).join('')}</div><div class="opts">${q.ws.map(w=>`<button class="opt${s.m[w]?' ok':''}" ${s.m[w]?'disabled':''} onclick="pW(${w})">${q.W[w]}</button>`).join('')}</div>`}
+ if(q.t=='sl'){s.a=s.a??q.def;b=`<div class="c"><div id="sld" class="score" style="font-size:38px">${q.fmt(s.a)}</div><input id="sr" type="range" min="${q.min}" max="${q.max}" step="${q.step}" value="${s.a}" dir="ltr" aria-label="اختر العدد"><div class="row"><button onclick="slchk()" ${s.d?'disabled':''}>تحقق</button></div></div>`}
+ if(s.d)st().done=1;
+ return `<div class="card"><h2>التطبيق والتقويم</h2><p><b>${q.q}</b></p>${b}${s.fb?`<div class="fb ${s.fb.ok?'ok':'no'}">${s.fb.t}</div>`:''}</div>`}
+function fin(s,q){s.d=1;s.done=1;if(!s.bad)s.sc=1;s.fb={ok:1,t:'صحيح! '+q.why}}
+function ans(k){const q=Q[i-5],s=st();if(s.d)return;
+ if(k==q.a)fin(s,q);else{s.bad=1;s.w.push(k);s.fb={ok:0,t:'ليست هذه الإجابة. تلميح: '+q.h}}
+ render()}
+function pI(k){const s=st();s.si=k;s.fb=null;render();say('اختر الناتج المناسب لهذا الطرح.')}
+function pW(w){const s=st(),q=Q[3];
+ if(s.si==null){say('اضغط أولاً على طرح.',false);return}
+ if(w==s.si){s.m[w]=1;s.si=null;s.fb=null;if(s.m.every(x=>x))fin(s,q)}
+ else{s.bad=1;s.fb={ok:0,t:'ليست هذه الكلمة. تلميح: '+q.h}}
+ render()}
+hooks[9]=()=>{const s=S[9],q=Q[4],rg=$('#sr');if(!rg)return;
+ const upd=()=>{$('#sld').textContent=q.fmt(+rg.value)};
+ upd();
+ rg.oninput=()=>{if(s.d)return;s.a=+rg.value;upd()};
+ if(s.d)rg.disabled=true};
+function slchk(){const s=st(),q=Q[i-5];if(s.d)return;
+ if(Math.abs(s.a-q.target)<0.001)fin(s,q);else{s.bad=1;s.fb={ok:0,t:'ليس بعد. تلميح: '+q.h}}
+ render()}
+
+render();
+
+</script>
+</body>
+</html>

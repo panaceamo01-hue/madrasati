@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>التماثل المحوري – المستوى السادس ابتدائي</title>
+<style>
+:root{--b:#2563eb;--o:#f97316;--g:#16a34a;--r:#dc2626;--bg:#fff7e6;--ink:#1e293b}
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,"Segoe UI","Noto Sans Arabic",system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:18px;line-height:1.7}
+#app{max-width:780px;margin:0 auto;padding:0 10px 10px;min-height:100vh;display:flex;flex-direction:column;gap:10px}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 0 4px}
+.top{display:flex;align-items:center;gap:10px}
+.bar{flex:1;height:14px;background:#e2e8f0;border-radius:9px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#16a34a,#84cc16);transition:width .4s}
+#lab{font-size:14px;white-space:nowrap;font-weight:bold;color:#475569}
+.mascot{display:flex;align-items:center;gap:8px;margin-top:6px}
+.mascot svg{width:66px;height:66px;flex:none}
+.bubble{background:#fff;border:3px solid var(--b);border-radius:18px;padding:6px 14px;flex:1;font-weight:bold;font-size:16px;line-height:1.5}
+main{flex:1}
+.card{background:#fff;border-radius:22px;padding:14px;box-shadow:0 5px 0 #f1d9a8}
+.c{text-align:center}
+h1,h2,h3{margin:.2em 0;color:var(--b)}
+h1{font-size:30px}h2{font-size:23px}h3{font-size:19px;color:#7c3aed}
+p{margin:.4em 0}
+button{font:inherit;cursor:pointer;border:0;border-radius:14px;padding:10px 16px;background:var(--b);color:#fff;font-weight:bold;box-shadow:0 4px 0 #1e40af}
+button:active:not(:disabled){transform:translateY(2px);box-shadow:0 2px 0 #1e40af}
+button:disabled{background:#cbd5e1;color:#64748b;box-shadow:0 4px 0 #94a3b8;cursor:not-allowed}
+button:focus-visible,input:focus-visible{outline:4px solid #fbbf24;outline-offset:2px}
+.big{font-size:22px;padding:12px 28px;background:var(--g);box-shadow:0 4px 0 #166534;margin-top:8px}
+.nav{display:flex;gap:8px;padding:6px 0}
+.nav button{flex:1;min-width:0;padding:10px 6px;font-size:16px}
+#home{background:#7c3aed;box-shadow:0 4px 0 #5b21b6}
+#retry{background:#f59e0b;box-shadow:0 4px 0 #b45309}
+.row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:flex-start;margin:8px 0}
+.row figure{margin:0;flex:1 1 240px;text-align:center;font-size:16px}
+.opts{display:grid;gap:10px;margin:10px 0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.opt{background:#fff;color:var(--ink);border:3px solid #cbd5e1;box-shadow:none;text-align:right}
+.pc{padding:4px;background:#fff;border:4px solid #cbd5e1;box-shadow:none;width:100%}
+.pc.sel{border-color:var(--b);background:#dbeafe}
+.opt.ok,.pc.ok,.chip.on{border-color:var(--g);background:#dcfce7;color:#14532d}
+.opt.no,.pc.no{border-color:var(--r);background:#fee2e2;color:#7f1d1d}
+.pic,.st{width:100%;max-width:200px;height:auto;display:block;margin:auto}
+.st{max-width:340px}
+.board{width:100%;max-width:520px;display:block;margin:6px auto;border:4px solid #bfdbfe;border-radius:14px;touch-action:none;background:#f8fafc}
+input[type=range]{width:100%;max-width:520px;display:block;margin:6px auto;height:38px;accent-color:var(--o)}
+.msg{background:#eff6ff;border-radius:12px;padding:8px 12px;margin:8px 0;font-weight:bold;min-height:3.4em}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.chip{padding:2px 14px;border-radius:20px;border:3px solid #cbd5e1;background:#fff;font-size:15px;font-weight:bold}
+.exp{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:8px 0}
+.exp figure,.exp div{margin:0;text-align:center;font-size:16px}
+.b{color:var(--b)}.o{color:var(--o)}.r{color:var(--r)}
+.rule{border:3px dashed #cbd5e1;border-radius:16px;padding:8px 12px;margin:10px 0}
+.rule.ok{border:3px solid var(--g);background:#f0fdf4;display:flex;align-items:center;gap:12px}
+.rule .mini{width:110px;flex:none}
+.blank{display:inline-block;min-width:70px;border-bottom:4px solid var(--o);text-align:center;color:var(--o)}
+.tip{background:#fef9c3;border-radius:12px;padding:8px 12px;font-weight:bold}
+.fb{padding:10px 14px;border-radius:12px;margin-top:10px;font-weight:bold}
+.fb.ok{background:#dcfce7;border:2px solid var(--g)}
+.fb.no{background:#fee2e2;border:2px solid var(--r)}
+.cap{text-align:center;font-weight:bold;min-height:1.7em;color:var(--g)}
+.score{font-size:34px;font-weight:bold;color:var(--o);margin:0}
+@media(max-width:480px){body{font-size:17px}h1{font-size:26px}.rule .mini{width:80px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+ <div class="top"><div class="bar"><i id="bar"></i></div><span id="lab"></span></div>
+ <div class="mascot">
+  <svg viewBox="0 0 100 100" aria-hidden="true">
+   <ellipse cx="50" cy="60" rx="36" ry="34" fill="#38bdf8"/><ellipse cx="50" cy="72" rx="22" ry="18" fill="#e0f2fe"/>
+   <circle cx="36" cy="50" r="10" fill="#fff"/><circle cx="64" cy="50" r="10" fill="#fff"/>
+   <circle cx="37" cy="51" r="5" fill="#1e293b"/><circle cx="63" cy="51" r="5" fill="#1e293b"/>
+   <path d="M45 58h10l-5 8z" fill="#f97316"/>
+   <path id="mouth" d="M40 72q10 8 20 0" fill="none" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>
+   <path d="M16 22L50 8l34 14-34 14z" fill="#1e3a8a"/><path d="M82 24v16" stroke="#facc15" stroke-width="3"/>
+  </svg>
+  <div class="bubble" id="say"></div>
+ </div>
+</header>
+<main id="stage"></main>
+<nav class="nav">
+ <button id="prev">السابق</button><button id="retry">إعادة المحاولة</button><button id="home">الرئيسية</button><button id="next">التالي</button>
+</nav>
+</div>
+<script>
+const S={},$=q=>document.querySelector(q);
+const names=['الرئيسية','الوضعية المشكلة','الاستكشاف','التفسير','الاستنتاج','تقويم 1/6','تقويم 2/6','تقويم 3/6','تقويم 4/6','تقويم 5/6','تقويم 6/6','النتيجة'];
+let i=0;
+const st=()=>S[i]||(S[i]={});
+const say=(t,ok)=>{$('#say').textContent=t;$('#mouth').setAttribute('d',ok===false?'M40 78q10-8 20 0':'M40 72q10 8 20 0')};
+const L=(x1,y1,x2,y2,c,w=4,x='')=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${w}" stroke-linecap="round" ${x}/>`;
+const fmt=x=>String(x).replace('.',',');
+
+/* رسومات */
+function butterfly(){
+ return `<svg viewBox="0 0 120 100" class="pic" role="img"><rect width="120" height="100" rx="10" fill="#f8fafc"/><ellipse cx="38" cy="38" rx="20" ry="14" fill="#f97316" stroke="#ea580c" stroke-width="2" transform="rotate(-20 38 38)"/><ellipse cx="82" cy="38" rx="20" ry="14" fill="#f97316" stroke="#ea580c" stroke-width="2" transform="rotate(20 82 38)"/><ellipse cx="40" cy="66" rx="16" ry="11" fill="#fb923c" stroke="#ea580c" stroke-width="2" transform="rotate(20 40 66)"/><ellipse cx="80" cy="66" rx="16" ry="11" fill="#fb923c" stroke="#ea580c" stroke-width="2" transform="rotate(-20 80 66)"/><circle cx="34" cy="36" r="3" fill="#fff"/><circle cx="86" cy="36" r="3" fill="#fff"/><circle cx="36" cy="64" r="2.5" fill="#fff"/><circle cx="84" cy="64" r="2.5" fill="#fff"/><ellipse cx="60" cy="52" rx="6" ry="22" fill="#475569"/><path d="M56 32q-4-10-10-12M64 32q4-10 10-12" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round"/><line x1="60" y1="4" x2="60" y2="96" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4"/></svg>`;
+}
+function letterF(){
+ return `<svg viewBox="0 0 120 100" class="pic" role="img"><rect width="120" height="100" rx="10" fill="#f8fafc"/><text x="60" y="78" text-anchor="middle" font-size="72" font-weight="bold" fill="#2563eb" font-family="Tahoma,sans-serif">F</text><line x1="60" y1="4" x2="60" y2="96" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4"/></svg>`;
+}
+function letterA(){
+ return `<svg viewBox="0 0 120 100" class="pic" role="img"><rect width="120" height="100" rx="10" fill="#f8fafc"/><text x="60" y="78" text-anchor="middle" font-size="72" font-weight="bold" fill="#16a34a" font-family="Tahoma,sans-serif">A</text><line x1="60" y1="4" x2="60" y2="96" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4"/></svg>`;
+}
+function scalene(){
+ return `<svg viewBox="0 0 120 100" class="pic" role="img"><rect width="120" height="100" rx="10" fill="#f8fafc"/><polygon points="18,86 102,86 46,18" fill="#84cc16" stroke="#4d7c0f" stroke-width="3" stroke-linejoin="round"/></svg>`;
+}
+function squareAxes(){
+ return `<svg viewBox="0 0 120 100" class="pic" role="img"><rect width="120" height="100" rx="10" fill="#f8fafc"/><rect x="28" y="18" width="64" height="64" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/><line x1="28" y1="18" x2="92" y2="82" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4"/><line x1="92" y1="18" x2="28" y2="82" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4"/><line x1="60" y1="18" x2="60" y2="82" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4"/><line x1="28" y1="50" x2="92" y2="50" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4"/></svg>`;
+}
+function rectAxes(){
+ return `<svg viewBox="0 0 120 100" class="pic" role="img"><rect width="120" height="100" rx="10" fill="#f8fafc"/><rect x="18" y="28" width="84" height="44" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/><line x1="60" y1="28" x2="60" y2="72" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4"/><line x1="18" y1="50" x2="102" y2="50" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4"/></svg>`;
+}
+function triAxes(){
+ return `<svg viewBox="0 0 120 100" class="pic" role="img"><rect width="120" height="100" rx="10" fill="#f8fafc"/><polygon points="60,12 104,84 16,84" fill="#fef3c7" stroke="#d97706" stroke-width="3" stroke-linejoin="round"/><line x1="60" y1="12" x2="60" y2="84" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4"/><line x1="104" y1="84" x2="38" y2="48" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4"/><line x1="16" y1="84" x2="82" y2="48" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4"/></svg>`;
+}
+function circleAxes(){
+ return `<svg viewBox="0 0 120 100" class="pic" role="img"><rect width="120" height="100" rx="10" fill="#f8fafc"/><circle cx="60" cy="50" r="36" fill="#f3e8ff" stroke="#7c3aed" stroke-width="3"/>${L(24,50,96,50,'#dc2626',2,'stroke-dasharray="5 4"')}${L(60,14,60,86,'#dc2626',2,'stroke-dasharray="5 4"')}${L(35,25,85,75,'#dc2626',2,'stroke-dasharray="5 4"')}${L(85,25,35,75,'#dc2626',2,'stroke-dasharray="5 4"')}</svg>`;
+}
+function pointAxis(d){
+ const x=60-d*14,x2=60+d*14;
+ return `<svg viewBox="0 0 120 100" class="pic" role="img"><rect width="120" height="100" rx="10" fill="#f8fafc"/><line x1="60" y1="4" x2="60" y2="96" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4"/>${L(x,50,60,50,'#2563eb',2)}${L(60,50,x2,50,'#f97316',2)}<circle cx="${x}" cy="50" r="6" fill="#2563eb"/><circle cx="${x2}" cy="50" r="6" fill="#f97316"/><text x="${x}" y="38" text-anchor="middle" font-size="14" font-weight="bold" fill="#2563eb">أ</text><text x="${x2}" y="38" text-anchor="middle" font-size="14" font-weight="bold" fill="#f97316">أ′</text><text x="60" y="96" text-anchor="middle" font-size="12" fill="#64748b">المحور</text></svg>`;
+}
+function symMini(t){
+ if(t=='eq')return `<svg viewBox="0 0 120 100" class="pic" role="img"><rect width="120" height="100" rx="10" fill="#f8fafc"/><line x1="60" y1="4" x2="60" y2="96" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4"/>${L(30,50,60,50,'#2563eb',2)}${L(60,50,90,50,'#f97316',2)}<circle cx="30" cy="50" r="6" fill="#2563eb"/><circle cx="90" cy="50" r="6" fill="#f97316"/><text x="30" y="38" text-anchor="middle" font-size="13" font-weight="bold" fill="#2563eb">أ</text><text x="90" y="38" text-anchor="middle" font-size="13" font-weight="bold" fill="#f97316">أ′</text></svg>`;
+ return `<svg viewBox="0 0 120 100" class="pic" role="img"><rect width="120" height="100" rx="10" fill="#f8fafc"/><line x1="60" y1="4" x2="60" y2="96" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4"/>${L(30,50,90,50,'#2563eb',3)}<circle cx="30" cy="50" r="6" fill="#2563eb"/><circle cx="90" cy="50" r="6" fill="#f97316"/><path d="M60 50h10v10h-10z" fill="#fde04799" stroke="#16a34a" stroke-width="2"/></svg>`;
+}
+const pic=k=>({bf:butterfly(),F:letterF(),A:letterA(),sc:scalene(),sq:squareAxes(),rc:rectAxes(),tr:triAxes(),ci:circleAxes(),pa:pointAxis(3),eq:symMini('eq'),pp:symMini('pp')})[k];
+const star=f=>`<svg viewBox="0 0 40 40" width="46" height="46"><path d="M20 3l5.2 11.4 12.3 1.4-9.2 8.4 2.6 12.2L20 30.2 9.1 36.4l2.6-12.2-9.2-8.4 12.3-1.4z" fill="${f?'#facc15':'#e2e8f0'}" stroke="${f?'#ca8a04':'#cbd5e1'}" stroke-width="2" stroke-linejoin="round"/></svg>`;
+
+/* مراحل الدرس */
+const hooks={};
+const scr=[
+// 0 الرئيسية
+()=>{st().done=1;say('أهلاً يا بطل! أنا بومة الهندسة. هيا نكتشف التماثل معاً!');
+ return `<div class="card c"><h1>التماثل المحوري</h1><p>سنطوي ونجرّب ونكتشف كيف تنعكس الأشكال في المرآة.</p><div class="row">${butterfly()}${letterA()}</div><button class="big" onclick="go(1)">ابدأ اللعب</button></div>`},
+// 1 الوضعية المشكلة
+()=>{const s=st();s.f=s.f||[];s.w=s.w||[];say('انظر جيداً إلى الصورتين. ماذا تلاحظ؟');
+ const o=[['في الصورة 1: جناحا الفراشة متطابقان',1],['في الصورة 1: جناحا الفراشة مختلفان',0],['في الصورة 2: الحرف ينطبق على نفسه عند الطي',0],['في الصورة 2: الحرف لا ينطبق على نفسه عند الطي',1]];
+ return `<div class="card"><h2>الوضعية المشكلة</h2><p>هذه فراشة وحرف. اضغط على كل ملاحظة صحيحة.</p><div class="row"><figure>${butterfly()}الصورة 1</figure><figure>${letterF()}الصورة 2</figure></div><div class="opts">${o.map((x,k)=>`<button class="opt${s.f.includes(k)?' ok':s.w.includes(k)?' no':''}" ${s.f.includes(k)||s.w.includes(k)?'disabled':''} onclick="obs(${k},${x[1]})">${x[0]}</button>`).join('')}</div></div>`},
+// 2 الاستكشاف
+()=>{const s=st();s.d=s.d??3;s.g=s.g||{};s.seg=s.seg||0;say('اسحب النقطة (أ) أو حرّك المنزلق، ولاحظ صورتها (أ′) في المرآة.');
+ return `<div class="card"><h2>نستكشف</h2><p>حرّك النقطة (أ) واكتشف 3 حقائق عن التماثل المحوري.</p><svg id="ex" viewBox="0 0 360 260" class="board"></svg><input id="rg" type="range" min="0" max="6" step="0.5" value="${s.d}" dir="ltr" aria-label="بعد النقطة عن المحور"><div id="msg" class="msg"></div><div class="chips" id="chips"></div><div class="row"><button onclick="showSeg()">أظهر القطعة (أ أ′)</button></div></div>`},
+// 3 التفسير
+()=>{st().done=1;say('اقرأ البطاقات، ثم انظر أين نجده حولنا.');
+ return `<div class="card"><h2>نفسّر ما اكتشفناه</h2><div class="exp"><div>${butterfly()}<p><b class="b">التماثل المحوري</b>: ينطبق الشكل على صورته عند الطي حول خط يسمى محور التماثل.</p></div><div>${pointAxis(3)}<p><b class="o">النقطة وصورتها</b>: على نفس البعد من المحور، والمحور عمودي على القطعة (أ أ′) ويمر بمنتصفها.</p></div><div>${letterF()}<p><b class="r">انتبه!</b> نصفا الحرف F لا ينطبقان عند الطي، إذن ليس له محور تماثل.</p></div></div><h3>أين نجده حولنا؟</h3><div class="exp"><figure>${butterfly()}<figcaption>جناحا الفراشة: متماثلان</figcaption></figure><figure>${letterA()}<figcaption>حرف A: له محور عمودي</figcaption></figure><figure>${squareAxes()}<figcaption>المربع: له 4 محاور تماثل</figcaption></figure></div></div>`},
+// 4 الاستنتاج
+()=>{const s=st();s.r=s.r||[0,0];say('أكمل القاعدتين باختيار الكلمة المناسبة.');
+ return `<div class="card"><h2>نستنتج القاعدتين</h2>${R.map((r,k)=>s.r[k]?`<div class="rule ok"><div class="mini">${pic(r.t)}</div><p>${r.pre} <b>${r.a}</b> ${r.post}</p></div>`:`<div class="rule"><p>${r.pre} <span class="blank">؟؟؟</span> ${r.post}</p><div class="row">${r.ch.map(w=>`<button class="opt" onclick="rl(${k},'${w}')">${w}</button>`).join('')}</div></div>`).join('')}<p class="tip">تذكّر: المحور مثل المرآة، والبعدان متساويان دائماً.</p></div>`},
+...Array.from({length:6},(_,n)=>()=>quiz(n)),
+// 11 النتيجة
+()=>{let sc=0;for(let k=5;k<11;k++)sc+=S[k]?.sc||0;st().done=1;
+ const m=sc>=5?'ممتاز! أنت بطل التماثل المحوري.':sc>=3?'جيد جداً! راجع التفسير ثم حاول مجدداً.':'لا بأس! أعد المحاولة وسنتحسّن معاً.';say(m);
+ return `<div class="card c"><h1>النتيجة النهائية</h1><div class="row">${[...Array(6)].map((_,k)=>star(k<sc)).join('')}</div><p class="score">${sc} / 6</p><p>${m}</p><p class="tip">النقطة وصورتها على نفس البعد من المحور، والمحور عمودي على القطعة (أ أ′).</p><button class="big" onclick="reset()">العب من جديد</button></div>`}
+];
+
+/* بيانات الاستنتاج والتقويم */
+const R=[{pre:'النقطة وصورتها على',a:'نفس',t:'eq',post:'البعد من المحور.',ch:['نفس','ضعف'],h:'الصورة أبعد من النقطة؟ لا، البعدان متساويان دائماً.'},
+ {pre:'المحور',a:'عمودي',t:'pp',post:'على القطعة الواصلة بين النقطة وصورتها، ويمر بمنتصفها.',ch:['عمودي','موازٍ'],h:'المحور الموازي لا يقطع القطعة في منتصفها بزاوية قائمة.'}];
+const Q=[
+ {t:'img',q:'اضغط على الصورة التي فيها محور تماثل.',o:['bf','F','sc'],a:0,why:'جناحا الفراشة متطابقان حول المحور، أما الحرف F والمثلث فلا ينطبقان على نفسيهما عند الطي.',h:'اطوِ الشكل في ذهنك: هل ينطبق على نفسه؟'},
+ {t:'ch',q:'نقطة تبعد 3 سم عن محور التماثل، كم تبعد صورتها عن المحور؟',p:pointAxis(3),o:['6 سم','3 سم','1,5 سم','9 سم'],a:1,why:'النقطة وصورتها على نفس البعد من المحور: 3 سم.',h:'المحور مثل المرآة: البعد نفسه.'},
+ {t:'img',q:'اضغط على الشكل الذي له 4 محاور تماثل.',o:['sq','rc','tr'],a:0,why:'للمربع 4 محاور تماثل: قطران وخطا المنتصفين.',h:'كم مرة تستطيع طي المربع لينطبق على نفسه؟'},
+ {t:'mt',q:'اضغط على شكل، ثم على عدد محاور تماثله.',it:['sq','rc','ci'],W:['4 محاور','محوران','لا نهائية'],ws:[2,0,1],why:'للمربع 4 محاور، وللمستطيل محوران، وللدائرة محاور لا نهائية لأن أي قطر فيها محور تماثل.',h:'تذكّر: المربع 4، والمستطيل 2، والدائرة لا نهائية.'},
+ {t:'rt',T:0,q:'حرّك النقطة (أ) حتى تقع على المحور، ثم اضغط «تحقق».',why:'النقطة على المحور صورتها هي نفسها، لأن بعدها عن المحور صفر.',h:'قرّب النقطة من الخط الأحمر حتى تصل إليه.'},
+ {t:'ch',q:'أي حرف له محور تماثل عمودي؟',p:letterA(),o:['F','A','G','R'],a:1,why:'حرف A ينطبق على نفسه عند طيه عمودياً، أما F وG وR فلا.',h:'اطوِ الحرف عمودياً في المنتصف: هل ينطبق على نفسه؟'}
+];
+
+/* تنقّل */
+function render(){S[i]||(S[i]={});$('#stage').innerHTML=scr[i]();hooks[i]&&hooks[i]();$('#bar').style.width=i/11*100+'%';$('#lab').textContent=names[i];nav()}
+function nav(){$('#prev').disabled=i==0;$('#next').disabled=!S[i].done;$('#next').style.display=i==11?'none':'';$('#retry').style.display=(i==0||i==3||i==11)?'none':''}
+const go=n=>{i=n;render();scrollTo(0,0)};
+const reset=()=>{for(const k in S)delete S[k];go(0)};
+$('#prev').onclick=()=>go(i-1);$('#next').onclick=()=>go(i+1);$('#home').onclick=()=>go(0);
+$('#retry').onclick=()=>{delete S[i];render()};
+
+/* 1: الملاحظة */
+function obs(k,ok){const s=st();
+ if(ok){s.f.push(k);render();if(s.f.length==2){s.done=1;nav();say('رائع! لاحظت الفرق بين الصورتين. هيا نجرّب بأنفسنا.')}else say('ملاحظة صحيحة! هل من ملاحظة أخرى؟')}
+ else{s.w.push(k);render();say('انظر مرة أخرى: هل ينطبق النصفان عند الطي فعلاً؟',false)}}
+
+/* 2: الاستكشاف */
+function exDraw(){const s=S[2],d=s.d,x=180-d*20,x2=180+d*20;
+ let g='<rect width="360" height="260" fill="#f8fafc"/>';
+ g+=L(180,10,180,250,'#dc2626',3,'stroke-dasharray="8 6"');
+ g+=`<text x="180" y="24" text-anchor="middle" font-size="14" font-weight="bold" fill="#dc2626">المحور</text>`;
+ if(s.seg){g+=L(x,130,x2,130,'#2563eb',3);g+='<path d="M180 130h12v12h-12z" fill="#fde04799" stroke="#16a34a" stroke-width="2"/><circle cx="180" cy="130" r="4" fill="#16a34a"/>';}
+ g+=L(x,130,180,130,'#2563eb',2,'stroke-dasharray="4 3"')+L(180,130,x2,130,'#f97316',2,'stroke-dasharray="4 3"');
+ g+=`<circle cx="${x}" cy="130" r="9" fill="#2563eb" stroke="#1e40af" stroke-width="2"/><circle cx="${x2}" cy="130" r="9" fill="#f97316" stroke="#ea580c" stroke-width="2"/><text x="${x}" y="108" text-anchor="middle" font-size="16" font-weight="bold" fill="#2563eb">أ</text><text x="${x2}" y="108" text-anchor="middle" font-size="16" font-weight="bold" fill="#f97316">أ′</text>`;
+ let m=`بعد (أ) عن المحور: ${fmt(d)} سم · بعد (أ′) عن المحور: ${fmt(d)} سم.`;
+ if(d===0)m='النقطة (أ) على المحور: صورتها (أ′) هي نفسها!';
+ else if(s.seg)m+=' المحور عمودي على القطعة (أ أ′) ويمر بمنتصفها.';
+ if(s.t)s.g.eq=1;
+ if(d===0)s.g.on=1;
+ if(s.seg)s.g.pp=1;
+ $('#ex').innerHTML=g;$('#msg').textContent=s.t?m:'جرّب: اسحب النقطة الزرقاء، أو حرّك المنزلق.';
+ $('#chips').innerHTML=[['eq','البعدان متساويان'],['on','النقطة على المحور صورتها نفسها'],['pp','المحور عمودي على القطعة']].map(([c,t])=>`<span class="chip${s.g[c]?' on':''}">${t}</span>`).join('');
+ if(!s.done&&s.g.eq&&s.g.on&&s.g.pp){s.done=1;nav();say('أحسنت! اكتشفت حقائق التماثل الثلاث. هيا نفسّرها.')}}
+function showSeg(){const s=S[2];s.seg=1;s.t=1;exDraw();}
+hooks[2]=()=>{const s=S[2],sv=$('#ex'),rg=$('#rg');exDraw();
+ rg.oninput=()=>{s.d=+rg.value;s.t=1;exDraw()};
+ const mv=e=>{if(!s.drag)return;const b=sv.getBoundingClientRect();const px=(e.clientX-b.left)*360/b.width;s.d=Math.min(6,Math.max(0,Math.round(Math.abs(px-180)/20*2)/2));rg.value=s.d;s.t=1;exDraw()};
+ sv.onpointerdown=e=>{s.drag=1;sv.setPointerCapture(e.pointerId);mv(e)};sv.onpointermove=mv;sv.onpointerup=sv.onpointercancel=()=>{s.drag=0}};
+
+/* 4: الاستنتاج */
+function rl(k,w){const s=st();
+ if(w==R[k].a){s.r[k]=1;render();if(s.r[0]&&s.r[1]){s.done=1;nav();say('أحسنت! استنتجنا القاعدتين. هيا نختبر أنفسنا.')}else say('صحيح! بقيت قاعدة واحدة.')}
+ else say(R[k].h,false)}
+
+/* 5-10: التقويم */
+function quiz(n){const q=Q[n],s=st();s.w=s.w||[];
+ say(s.d?'أحسنت يا بطل!':s.bad?'حاول مرة أخرى، أنت قادر!':'فكّر جيداً ثم أجب.',!(s.bad&&!s.d));
+ const dis=k=>s.d||s.w.includes(k)?'disabled':'',cl=k=>(s.d&&k==q.a?' ok':'')+(s.w.includes(k)?' no':'');
+ let b='';
+ if(q.t=='img')b=`<div class="grid3">${q.o.map((o,k)=>`<button class="pc${cl(k)}" ${dis(k)} onclick="ans(${k})" aria-label="صورة ${k+1}">${pic(o)}</button>`).join('')}</div>`;
+ if(q.t=='ch')b=`<div class="row">${q.p}</div><div class="opts">${q.o.map((o,k)=>`<button class="opt${cl(k)}" ${dis(k)} onclick="ans(${k})">${o}</button>`).join('')}</div>`;
+ if(q.t=='mt'){s.m=s.m||[0,0,0];b=`<div class="grid3">${q.it.map((o,k)=>`<div><button class="pc${s.m[k]?' ok':''}${s.si===k?' sel':''}" ${s.m[k]?'disabled':''} onclick="pI(${k})">${pic(o)}</button><div class="cap">${s.m[k]?q.W[k]:'؟'}</div></div>`).join('')}</div><div class="opts">${q.ws.map(w=>`<button class="opt${s.m[w]?' ok':''}" ${s.m[w]?'disabled':''} onclick="pW(${w})">${q.W[w]}</button>`).join('')}</div>`}
+ if(q.t=='rt'){s.a=s.a??3;b=`<svg id="rs" viewBox="0 0 360 220" class="board"></svg><input id="rr" type="range" min="0" max="6" step="0.5" value="${s.a}" dir="ltr" aria-label="بعد النقطة عن المحور"><div class="row"><button onclick="rchk()" ${s.d?'disabled':''}>تحقق</button></div>`}
+ if(s.d)st().done=1;
+ return `<div class="card"><h2>التطبيق والتقويم</h2><p><b>${q.q}</b></p>${b}${s.fb?`<div class="fb ${s.fb.ok?'ok':'no'}">${s.fb.t}</div>`:''}</div>`}
+function fin(s,q){s.d=1;s.done=1;if(!s.bad)s.sc=1;s.fb={ok:1,t:'صحيح! '+q.why}}
+function ans(k){const q=Q[i-5],s=st();if(s.d)return;
+ if(k==q.a)fin(s,q);else{s.bad=1;s.w.push(k);s.fb={ok:0,t:'ليست هذه الإجابة. تلميح: '+q.h}}
+ render()}
+function pI(k){const s=st();s.si=k;s.fb=null;render();say('اختر الاسم المناسب لهذه الصورة.')}
+function pW(w){const s=st(),q=Q[3];
+ if(s.si==null){say('اضغط أولاً على صورة.',false);return}
+ if(w==s.si){s.m[w]=1;s.si=null;s.fb=null;if(s.m.every(x=>x))fin(s,q)}
+ else{s.bad=1;s.fb={ok:0,t:'ليست هذه الكلمة. تلميح: '+q.h}}
+ render()}
+hooks[9]=()=>{const s=S[9],rg=$('#rr');
+ const d=()=>{const x=180-s.a*20,x2=180+s.a*20;$('#rs').innerHTML='<rect width="360" height="220" fill="#f8fafc"/>'+L(180,10,180,210,'#dc2626',3,'stroke-dasharray="8 6"')+`<circle cx="${x}" cy="110" r="9" fill="#2563eb"/><circle cx="${x2}" cy="110" r="9" fill="#f97316"/><text x="${x}" y="88" text-anchor="middle" font-size="16" font-weight="bold" fill="#2563eb">أ</text><text x="${x2}" y="88" text-anchor="middle" font-size="16" font-weight="bold" fill="#f97316">أ′</text><text x="180" y="200" text-anchor="middle" font-size="14" font-weight="bold" fill="#475569">بعد (أ) عن المحور: ${fmt(s.a)} سم</text>`};
+ d();rg.oninput=()=>{if(s.d)return;s.a=+rg.value;d()}};
+function rchk(){const s=st(),q=Q[4];if(s.d)return;
+ if(s.a<=0.01)fin(s,q);else{s.bad=1;s.fb={ok:0,t:'ليس بعد. تلميح: '+q.h}}
+ render()}
+
+render();
+</script>
+</body>
+</html>

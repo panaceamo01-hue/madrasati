@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>سعة التخزين الرقمي – المستوى السادس ابتدائي</title>
+<style>
+:root{--b:#2563eb;--o:#f97316;--g:#16a34a;--r:#dc2626;--bg:#fff7e6;--ink:#1e293b}
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,"Segoe UI","Noto Sans Arabic",system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:18px;line-height:1.7}
+#app{max-width:780px;margin:0 auto;padding:0 10px 10px;min-height:100vh;display:flex;flex-direction:column;gap:10px}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 0 4px}
+.top{display:flex;align-items:center;gap:10px}
+.bar{flex:1;height:14px;background:#e2e8f0;border-radius:9px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#16a34a,#84cc16);transition:width .4s}
+#lab{font-size:14px;white-space:nowrap;font-weight:bold;color:#475569}
+.mascot{display:flex;align-items:center;gap:8px;margin-top:6px}
+.mascot svg{width:66px;height:66px;flex:none}
+.bubble{background:#fff;border:3px solid var(--b);border-radius:18px;padding:6px 14px;flex:1;font-weight:bold;font-size:16px;line-height:1.5}
+main{flex:1}
+.card{background:#fff;border-radius:22px;padding:14px;box-shadow:0 5px 0 #f1d9a8}
+.c{text-align:center}
+h1,h2,h3{margin:.2em 0;color:var(--b)}
+h1{font-size:30px}h2{font-size:23px}h3{font-size:19px;color:#7c3aed}
+p{margin:.4em 0}
+button{font:inherit;cursor:pointer;border:0;border-radius:14px;padding:10px 16px;background:var(--b);color:#fff;font-weight:bold;box-shadow:0 4px 0 #1e40af}
+button:active:not(:disabled){transform:translateY(2px);box-shadow:0 2px 0 #1e40af}
+button:disabled{background:#cbd5e1;color:#64748b;box-shadow:0 4px 0 #94a3b8;cursor:not-allowed}
+button:focus-visible,input:focus-visible{outline:4px solid #fbbf24;outline-offset:2px}
+.big{font-size:22px;padding:12px 28px;background:var(--g);box-shadow:0 4px 0 #166534;margin-top:8px}
+.nav{display:flex;gap:8px;padding:6px 0}
+.nav button{flex:1;min-width:0;padding:10px 6px;font-size:16px}
+#home{background:#7c3aed;box-shadow:0 4px 0 #5b21b6}
+#retry{background:#f59e0b;box-shadow:0 4px 0 #b45309}
+.row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:flex-start;margin:8px 0}
+.row figure{margin:0;flex:1 1 240px;text-align:center;font-size:16px}
+.opts{display:grid;gap:10px;margin:10px 0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.opt{background:#fff;color:var(--ink);border:3px solid #cbd5e1;box-shadow:none;text-align:right}
+.pc{padding:4px;background:#fff;border:4px solid #cbd5e1;box-shadow:none;width:100%}
+.pc.sel{border-color:var(--b);background:#dbeafe}
+.opt.ok,.pc.ok,.chip.on{border-color:var(--g);background:#dcfce7;color:#14532d}
+.opt.no,.pc.no{border-color:var(--r);background:#fee2e2;color:#7f1d1d}
+.pic,.st{width:100%;max-width:200px;height:auto;display:block;margin:auto}
+.st{max-width:340px}
+.board{width:100%;max-width:520px;display:block;margin:6px auto;border:4px solid #bfdbfe;border-radius:14px;touch-action:none;background:#f8fafc}
+input[type=range]{width:100%;max-width:520px;display:block;margin:6px auto;height:38px;accent-color:var(--o)}
+.msg{background:#eff6ff;border-radius:12px;padding:8px 12px;margin:8px 0;font-weight:bold;min-height:3.4em}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.chip{padding:2px 14px;border-radius:20px;border:3px solid #cbd5e1;background:#fff;font-size:15px;font-weight:bold}
+.exp{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:8px 0}
+.exp figure,.exp div{margin:0;text-align:center;font-size:16px}
+.b{color:var(--b)}.o{color:var(--o)}.r{color:var(--r)}
+.rule{border:3px dashed #cbd5e1;border-radius:16px;padding:8px 12px;margin:10px 0}
+.rule.ok{border:3px solid var(--g);background:#f0fdf4;display:flex;align-items:center;gap:12px}
+.rule .mini{width:110px;flex:none}
+.blank{display:inline-block;min-width:70px;border-bottom:4px solid var(--o);text-align:center;color:var(--o)}
+.tip{background:#fef9c3;border-radius:12px;padding:8px 12px;font-weight:bold}
+.fb{padding:10px 14px;border-radius:12px;margin-top:10px;font-weight:bold}
+.fb.ok{background:#dcfce7;border:2px solid var(--g)}
+.fb.no{background:#fee2e2;border:2px solid var(--r)}
+.cap{text-align:center;font-weight:bold;min-height:1.7em;color:var(--g)}
+.score{font-size:34px;font-weight:bold;color:var(--o);margin:0}
+@media(max-width:480px){body{font-size:17px}h1{font-size:26px}.rule .mini{width:80px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+ <div class="top"><div class="bar"><i id="bar"></i></div><span id="lab"></span></div>
+ <div class="mascot">
+  <svg viewBox="0 0 100 100" aria-hidden="true">
+   <ellipse cx="50" cy="60" rx="36" ry="34" fill="#38bdf8"/><ellipse cx="50" cy="72" rx="22" ry="18" fill="#e0f2fe"/>
+   <circle cx="36" cy="50" r="10" fill="#fff"/><circle cx="64" cy="50" r="10" fill="#fff"/>
+   <circle cx="37" cy="51" r="5" fill="#1e293b"/><circle cx="63" cy="51" r="5" fill="#1e293b"/>
+   <path d="M45 58h10l-5 8z" fill="#f97316"/>
+   <path id="mouth" d="M40 72q10 8 20 0" fill="none" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>
+   <path d="M16 22L50 8l34 14-34 14z" fill="#1e3a8a"/><path d="M82 24v16" stroke="#facc15" stroke-width="3"/>
+  </svg>
+  <div class="bubble" id="say"></div>
+ </div>
+</header>
+<main id="stage"></main>
+<nav class="nav">
+ <button id="prev">السابق</button><button id="retry">إعادة المحاولة</button><button id="home">الرئيسية</button><button id="next">التالي</button>
+</nav>
+</div>
+<script>
+const S={},$=q=>document.querySelector(q);
+const names=['الرئيسية','الوضعية المشكلة','الاستكشاف','التفسير','الاستنتاج','تقويم 1/6','تقويم 2/6','تقويم 3/6','تقويم 4/6','تقويم 5/6','تقويم 6/6','النتيجة'];
+let i=0;
+const st=()=>S[i]||(S[i]={});
+const say=(t,ok)=>{$('#say').textContent=t;$('#mouth').setAttribute('d',ok===false?'M40 78q10-8 20 0':'M40 72q10 8 20 0')};
+const L=(x1,y1,x2,y2,c,w=4,x='')=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${w}" stroke-linecap="round" ${x}/>`;
+const fmt=n=>String(Math.round(n*100)/100).replace('.',',');
+
+/* رسومات */
+function bar(w,c,lab){
+ return `<rect x="10" y="38" width="${w}" height="22" rx="6" fill="${c}" stroke="#1e293b" stroke-width="2"/><text x="60" y="80" font-size="13" font-weight="bold" fill="#1e293b" text-anchor="middle">${lab}</text>`;
+}
+function pic(t,tilt=0,mark=false){
+ let s=`<svg viewBox="0 0 120 100" class="pic" role="img"><rect width="120" height="100" rx="10" fill="#f8fafc"/><g transform="rotate(${tilt} 60 50)">`;
+ if(t=='b')s+=`<rect x="52" y="42" width="16" height="16" rx="3" fill="#2563eb"/><text x="60" y="80" font-size="13" font-weight="bold" fill="#1e293b" text-anchor="middle">بايت</text>`;
+ if(t=='kb')s+=bar(30,'#60a5fa','كيلوبايت');
+ if(t=='mb')s+=bar(62,'#f97316','ميغابايت');
+ if(t=='gb')s+=bar(100,'#16a34a','غيغابايت');
+ if(t=='phone')s+=`<rect x="38" y="8" width="44" height="84" rx="10" fill="#1e293b"/><rect x="43" y="18" width="34" height="56" rx="4" fill="#dbeafe"/><circle cx="60" cy="82" r="4" fill="#e2e8f0"/><circle cx="52" cy="38" r="8" fill="#f97316"/><path d="M52 26l3-6 3 6z" fill="#16a34a"/>`;
+ if(t=='pc')s+=`<rect x="20" y="14" width="80" height="52" rx="6" fill="#1e293b"/><rect x="25" y="19" width="70" height="42" rx="4" fill="#dbeafe"/><rect x="56" y="66" width="8" height="14" fill="#475569"/><rect x="40" y="80" width="40" height="6" rx="3" fill="#475569"/>`;
+ if(t=='usb')s+=`<rect x="30" y="14" width="22" height="18" rx="2" fill="#94a3b8" stroke="#475569" stroke-width="2"/><rect x="30" y="32" width="60" height="44" rx="8" fill="#2563eb"/><circle cx="60" cy="54" r="10" fill="#fff"/>`;
+ return s+'</g></svg>';
+}
+const star=f=>`<svg viewBox="0 0 40 40" width="46" height="46"><path d="M20 3l5.2 11.4 12.3 1.4-9.2 8.4 2.6 12.2L20 30.2 9.1 36.4l2.6-12.2-9.2-8.4 12.3-1.4z" fill="${f?'#facc15':'#e2e8f0'}" stroke="${f?'#ca8a04':'#cbd5e1'}" stroke-width="2" stroke-linejoin="round"/></svg>`;
+
+/* مراحل الدرس */
+const hooks={};
+const scr=[
+// 0 الرئيسية
+()=>{st().done=1;say('أهلاً يا بطل! أنا بومة الرياضيات. هيا نكتشف سعة التخزين الرقمي معاً!');
+ return `<div class="card c"><h1>سعة التخزين الرقمي</h1><p>سنلاحظ ونجرّب ونكتشف وحدات التخزين من البايت إلى الغيغابايت.</p><div class="row">${pic('phone',-15)}${pic('usb',15)}</div><button class="big" onclick="go(1)">ابدأ اللعب</button></div>`},
+// 1 الوضعية المشكلة
+()=>{const s=st();s.f=s.f||[];s.w=s.w||[];say('انظر جيداً إلى الصورتين. ماذا تلاحظ؟');
+ const o=[['في الصورة 1: الهاتف يخزّن الصور والفيديو',1],['في الصورة 1: الهاتف لا يخزّن شيئا',0],['في الصورة 2: الفيديو يحتاج إلى مساحة أكبر من الصورة',1],['في الصورة 2: الصورة أكبر من الفيديو',0]];
+ return `<div class="card"><h2>الوضعية المشكلة</h2><p>هذا هاتف وحاسوب. اضغط على كل ملاحظة صحيحة.</p><div class="row"><figure>${pic('phone')}الصورة 1</figure><figure>${pic('pc')}الصورة 2</figure></div><div class="opts">${o.map((x,k)=>`<button class="opt${s.f.includes(k)?' ok':s.w.includes(k)?' no':''}" ${s.f.includes(k)||s.w.includes(k)?'disabled':''} onclick="obs(${k},${x[1]})">${x[0]}</button>`).join('')}</div></div>`},
+// 2 الاستكشاف
+()=>{const s=st();s.used=s.used??0;s.types=s.types||{};s.g=s.g||{};say('أضف الملفات إلى الذاكرة، ولاحظ المساحة المستعملة.');
+ const full=n=>s.used+n>16384;
+ return `<div class="card"><h2>نستكشف</h2><p>ذاكرة الهاتف سعتها 16 ميغابايت. أضف الملفات ولاحظ كم تتسع.</p><svg id="ex" viewBox="0 0 360 240" class="board"></svg><div class="row"><button onclick="addFile('photo')" ${full(500)?'disabled':''}>أضف صورة (500 كيلوبايت)</button><button onclick="addFile('video')" ${full(5120)?'disabled':''}>أضف فيديو (5 ميغابايت)</button><button onclick="addFile('game')" ${full(8192)?'disabled':''}>أضف لعبة (8 ميغابايت)</button></div><div id="msg" class="msg"></div><div class="chips" id="chips"></div></div>`},
+// 3 التفسير
+()=>{st().done=1;say('اقرأ البطاقات، ثم انظر أين نجدها حولنا.');
+ return `<div class="card"><h2>نفسّر ما اكتشفناه</h2><div class="exp"><div>${pic('b',-12)}<p><b class="b">البايت</b>: أصغر وحدة لقياس التخزين.</p></div><div>${pic('kb',14)}<p><b class="o">الكيلوبايت</b>: 1 كيلوبايت = 1024 بايت. الصورة تحتاج كيلوبايتات.</p></div><div>${pic('mb',-8)}<p><b class="r">الميغابايت</b>: 1 ميغابايت = 1024 كيلوبايت. الفيديو يحتاج ميغابايتات.</p></div><div>${pic('gb',10)}<p><b class="b">الغيغابايت</b>: أكبر من الميغابايت، وتقاس به ذاكرة الهاتف.</p></div></div><h3>أين نجدها حولنا؟</h3><div class="exp"><figure>${pic('phone',-10)}<figcaption>الهاتف</figcaption></figure><figure>${pic('pc',10)}<figcaption>الحاسوب</figcaption></figure><figure>${pic('usb',-5)}<figcaption>بطاقة الذاكرة</figcaption></figure></div></div>`},
+// 4 الاستنتاج
+()=>{const s=st();s.r=s.r||[0,0];say('أكمل القاعدتين باختيار الكلمة المناسبة.');
+ return `<div class="card"><h2>نستنتج القاعدتين</h2>${R.map((r,k)=>s.r[k]?`<div class="rule ok"><div class="mini">${pic(r.t,r.k,1)}</div><p>${r.pre} <b>${r.a}</b> ${r.post}</p></div>`:`<div class="rule"><p>${r.pre} <span class="blank">؟؟؟</span> ${r.post}</p><div class="row">${r.choices.map(w=>`<button class="opt" onclick="rl(${k},'${w}')">${w}</button>`).join('')}</div></div>`).join('')}<p class="tip">تذكّر: احفظ العدد 1024، فهو مفتاح التحويل بين الوحدات.</p></div>`},
+...Array.from({length:6},(_,n)=>()=>quiz(n)),
+// 11 النتيجة
+()=>{let sc=0;for(let k=5;k<11;k++)sc+=S[k]?.sc||0;st().done=1;
+ const m=sc>=5?'ممتاز! أنت بطل التخزين الرقمي.':sc>=3?'جيد جداً! راجع التفسير ثم حاول مجدداً.':'لا بأس! أعد المحاولة وسنتحسّن معاً.';say(m);
+ return `<div class="card c"><h1>النتيجة النهائية</h1><div class="row">${[...Array(6)].map((_,k)=>star(k<sc)).join('')}</div><p class="score">${sc} / 6</p><p>${m}</p><p class="tip">1 كيلوبايت = 1024 بايت، و1 ميغابايت = 1024 كيلوبايت. قارن الوحدات أولا قبل مقارنة الأعداد.</p><button class="big" onclick="reset()">العب من جديد</button></div>`}
+];
+
+/* بيانات الاستنتاج والتقويم */
+const R=[{a:'1024 بايت',pre:'1 كيلوبايت =',post:'',t:'kb',k:-8,choices:['1024 بايت','1000 بايت'],h:'احفظ العدد 1024، فهو مفتاح التحويل.'},
+ {a:'1024 كيلوبايت',pre:'1 ميغابايت =',post:'',t:'mb',k:8,choices:['1024 كيلوبايت','100 كيلوبايت'],h:'نفس العدد 1024.'}];
+const Q=[
+ {t:'img',q:'اضغط على الصورة التي تمثل أكبر ملف.',o:[['kb',25],['mb',-18],['gb',8]],a:2,why:'الغيغابايت أكبر من الميغابايت والكيلوبايت.',h:'ابحث عن أطول شريط.'},
+ {t:'ch',q:'كم بايتا في الكيلوبايت الواحد؟',o:['100 بايت','1024 بايتا','1000 بايت'],a:1,why:'1 كيلوبايت = 1024 بايت.',h:'تذكّر العدد 1024.'},
+ {t:'ch',q:'أي وحدة أكبر: الميغابايت أم الكيلوبايت؟',p:pic('mb'),o:['الكيلوبايت','الميغابايت','متساويان'],a:1,why:'الميغابايت أكبر من الكيلوبايت.',h:'قارن الوحدات أولا.'},
+ {t:'mt',q:'اضغط على صورة، ثم على الاسم المناسب لها.',it:[['kb',20],['mb',-25],['gb',10]],W:['كيلوبايت','ميغابايت','غيغابايت'],ws:[2,0,1],why:'الكيلوبايت أصغرها، ثم الميغابايت، ثم الغيغابايت أكبرها.',h:'رتّب الأشرطة من الأصغر إلى الأكبر.'},
+ {t:'sl',q:'ملف حجمه 3 ميغابايت. حرّك المنزلق حتى تجد كم كيلوبايتا يساوي، ثم اضغط «تحقق».',min:0,max:4096,step:128,def:1024,target:3072,show:v=>v+' كيلوبايت',why:'3 × 1024 = 3072 كيلوبايت.',h:'اضرب 3 في 1024.'},
+ {t:'ch',q:'أي ملف أكبر؟',o:['ملف 5 ميغابايت','ملف 500 كيلوبايت','ملف 5 كيلوبايت'],a:0,why:'500 كيلوبايت أقل من 1 ميغابايت، فالملف الذي حجمه 5 ميغابايت أكبر.',h:'500 كيلوبايت أقل من 1 ميغابايت.'}
+];
+
+/* تنقّل */
+function render(){S[i]||(S[i]={});$('#stage').innerHTML=scr[i]();hooks[i]&&hooks[i]();$('#bar').style.width=i/11*100+'%';$('#lab').textContent=names[i];nav()}
+function nav(){$('#prev').disabled=i==0;$('#next').disabled=!S[i].done;$('#next').style.display=i==11?'none':'';$('#retry').style.display=(i==0||i==3||i==11)?'none':''}
+const go=n=>{i=n;render();scrollTo(0,0)};
+const reset=()=>{for(const k in S)delete S[k];go(0)};
+$('#prev').onclick=()=>go(i-1);$('#next').onclick=()=>go(i+1);$('#home').onclick=()=>go(0);
+$('#retry').onclick=()=>{delete S[i];render()};
+
+/* 1: الملاحظة */
+function obs(k,ok){const s=st();
+ if(ok){s.f.push(k);render();if(s.f.length==2){s.done=1;nav();say('رائع! لاحظت الفرق بين الصورتين. هيا نجرّب بأنفسنا.')}else say('ملاحظة صحيحة! هل من ملاحظة أخرى؟')}
+ else{s.w.push(k);render();say('انظر مرة أخرى: هل يلتقي الشارعان فعلاً؟',false)}}
+
+/* 2: الاستكشاف */
+const SZ={photo:500,video:5120,game:8192};
+function addFile(k){const s=S[2];
+ if(s.used+SZ[k]>16384){say('الذاكرة ممتلئة! لا تتسع لهذا الملف.',false);return}
+ s.used+=SZ[k];s.types[k]=1;render();
+ say(k=='photo'?'أضفت صورة: 500 كيلوبايت.':k=='video'?'أضفت فيديو: 5 ميغابايت.':'أضفت لعبة: 8 ميغابايت.')}
+function exDraw(){const s=S[2],u=s.used;
+ const w=Math.round(320*u/16384);
+ let g='<rect width="360" height="240" fill="#f8fafc"/>';
+ g+=`<rect x="20" y="90" width="320" height="34" rx="8" fill="#e2e8f0" stroke="#2563eb" stroke-width="2"/>`;
+ if(w>0)g+=`<rect x="20" y="90" width="${w}" height="34" rx="8" fill="#16a34a"/>`;
+ g+=`<text x="180" y="70" font-size="15" font-weight="bold" fill="#2563eb" text-anchor="middle">ذاكرة الهاتف: 16 ميغابايت</text>`;
+ g+=`<text x="180" y="150" font-size="13" font-weight="bold" fill="#1e293b" text-anchor="middle">المستعمل: ${u} كيلوبايت</text>`;
+ $('#ex').innerHTML=g;
+ $('#msg').textContent=u>=16384?'امتلأت الذاكرة! اضغط «إعادة المحاولة» لتفريغها.':`المستعمل: ${u} كيلوبايت (${fmt(u/1024)} ميغابايت) من 16 ميغابايت · المتبقي: ${fmt((16384-u)/1024)} ميغابايت`;
+ if(s.types.photo)s.g.kb=1;if(s.types.video)s.g.mb=1;if(s.types.photo&&s.types.video&&s.types.game)s.g.order=1;
+ $('#chips').innerHTML=[['kb','الصورة تحتاج كيلوبايتات'],['mb','الفيديو يحتاج ميغابايتات'],['order','بايت < كيلوبايت < ميغابايت < غيغابايت']].map(([c,t])=>`<span class="chip${s.g[c]?' on':''}">${t}</span>`).join('');
+ if(!s.done&&s.g.kb&&s.g.mb&&s.g.order){s.done=1;nav();say('أحسنت! اكتشفت وحدات التخزين. هيا نفسّرها.')}}
+hooks[2]=()=>{exDraw()};
+
+/* 4: الاستنتاج */
+function rl(k,w){const s=st();
+ if(w==R[k].a){s.r[k]=1;render();if(s.r[0]&&s.r[1]){s.done=1;nav();say('أحسنت! استنتجنا القاعدتين. هيا نختبر أنفسنا.')}else say('صحيح! بقيت قاعدة واحدة.')}
+ else say(R[k].h,false)}
+
+/* 5-10: التقويم */
+function quiz(n){const q=Q[n],s=st();s.w=s.w||[];
+ say(s.d?'أحسنت يا بطل!':s.bad?'حاول مرة أخرى، أنت قادر!':'فكّر جيداً ثم أجب.',!(s.bad&&!s.d));
+ const dis=k=>s.d||s.w.includes(k)?'disabled':'',cl=k=>(s.d&&k==q.a?' ok':'')+(s.w.includes(k)?' no':'');
+ let b='';
+ if(q.t=='img')b=`<div class="grid3">${q.o.map((o,k)=>`<button class="pc${cl(k)}" ${dis(k)} onclick="ans(${k})" aria-label="صورة ${k+1}">${pic(o[0],o[1])}</button>`).join('')}</div>`;
+ if(q.t=='ch')b=`<div class="row">${q.p||''}</div><div class="opts">${q.o.map((o,k)=>`<button class="opt${cl(k)}" ${dis(k)} onclick="ans(${k})">${o}</button>`).join('')}</div>`;
+ if(q.t=='mt'){s.m=s.m||[0,0,0];b=`<div class="grid3">${q.it.map((o,k)=>`<div><button class="pc${s.m[k]?' ok':''}${s.si===k?' sel':''}" ${s.m[k]?'disabled':''} onclick="pI(${k})">${pic(o[0],o[1])}</button><div class="cap">${s.m[k]?q.W[k]:'؟'}</div></div>`).join('')}</div><div class="opts">${q.ws.map(w=>`<button class="opt${s.m[w]?' ok':''}" ${s.m[w]?'disabled':''} onclick="pW(${w})">${q.W[w]}</button>`).join('')}</div>`}
+ if(q.t=='sl'){s.a=s.a??q.def;b=`<div class="msg" id="sv"></div><input id="rr" type="range" min="${q.min}" max="${q.max}" step="${q.step}" value="${s.a}" dir="ltr" aria-label="المنزلق"><div class="row"><button onclick="slchk()" ${s.d?'disabled':''}>تحقق</button></div>`}
+ if(s.d)st().done=1;
+ return `<div class="card"><h2>التطبيق والتقويم</h2><p><b>${q.q}</b></p>${b}${s.fb?`<div class="fb ${s.fb.ok?'ok':'no'}">${s.fb.t}</div>`:''}</div>`}
+function fin(s,q){s.d=1;s.done=1;if(!s.bad)s.sc=1;s.fb={ok:1,t:'صحيح! '+q.why}}
+function ans(k){const q=Q[i-5],s=st();if(s.d)return;
+ if(k==q.a)fin(s,q);else{s.bad=1;s.w.push(k);s.fb={ok:0,t:'ليست هذه الإجابة. تلميح: '+q.h}}
+ render()}
+function pI(k){const s=st();s.si=k;s.fb=null;render();say('اختر الاسم المناسب لهذه الصورة.')}
+function pW(w){const s=st(),q=Q[3];
+ if(s.si==null){say('اضغط أولاً على صورة.',false);return}
+ if(w==s.si){s.m[w]=1;s.si=null;s.fb=null;if(s.m.every(x=>x))fin(s,q)}
+ else{s.bad=1;s.fb={ok:0,t:'ليست هذه الكلمة. تلميح: '+q.h}}
+ render()}
+hooks[9]=()=>{const s=S[9],q=Q[4],rg=$('#rr');if(!rg)return;
+ const show=()=>{$('#sv').textContent=q.show(s.a)};
+ show();rg.oninput=()=>{if(s.d)return;s.a=+rg.value;show()}};
+function slchk(){const s=st(),q=Q[4];if(s.d)return;
+ if(Math.abs(s.a-q.target)<0.001)fin(s,q);else{s.bad=1;s.fb={ok:0,t:'ليس بعد. تلميح: '+q.h}}
+ render()}
+
+render();
+</script>
+</body>
+</html>

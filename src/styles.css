@@ -1049,6 +1049,17 @@ main {
   margin: 0 auto;
 }
 
+/* لعبة HTML الكاملة للدرس (ملف مستقل في public/games/) */
+.html-game-frame {
+  display: block;
+  width: 100%;
+  height: 82vh;
+  min-height: 560px;
+  border: 0;
+  border-radius: 16px;
+  background: #fff;
+}
+
 .game-hud {
   display: flex;
   align-items: center;

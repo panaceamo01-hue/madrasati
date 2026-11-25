@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>الإنشاءات الهندسية (1) – المستوى السادس ابتدائي</title>
+<style>
+:root{--b:#2563eb;--o:#f97316;--g:#16a34a;--r:#dc2626;--bg:#fff7e6;--ink:#1e293b}
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,"Segoe UI","Noto Sans Arabic",system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:18px;line-height:1.7}
+#app{max-width:780px;margin:0 auto;padding:0 10px 10px;min-height:100vh;display:flex;flex-direction:column;gap:10px}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 0 4px}
+.top{display:flex;align-items:center;gap:10px}
+.bar{flex:1;height:14px;background:#e2e8f0;border-radius:9px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#16a34a,#84cc16);transition:width .4s}
+#lab{font-size:14px;white-space:nowrap;font-weight:bold;color:#475569}
+.mascot{display:flex;align-items:center;gap:8px;margin-top:6px}
+.mascot svg{width:66px;height:66px;flex:none}
+.bubble{background:#fff;border:3px solid var(--b);border-radius:18px;padding:6px 14px;flex:1;font-weight:bold;font-size:16px;line-height:1.5}
+main{flex:1}
+.card{background:#fff;border-radius:22px;padding:14px;box-shadow:0 5px 0 #f1d9a8}
+.c{text-align:center}
+h1,h2,h3{margin:.2em 0;color:var(--b)}
+h1{font-size:30px}h2{font-size:23px}h3{font-size:19px;color:#7c3aed}
+p{margin:.4em 0}
+button{font:inherit;cursor:pointer;border:0;border-radius:14px;padding:10px 16px;background:var(--b);color:#fff;font-weight:bold;box-shadow:0 4px 0 #1e40af}
+button:active:not(:disabled){transform:translateY(2px);box-shadow:0 2px 0 #1e40af}
+button:disabled{background:#cbd5e1;color:#64748b;box-shadow:0 4px 0 #94a3b8;cursor:not-allowed}
+button:focus-visible,input:focus-visible{outline:4px solid #fbbf24;outline-offset:2px}
+.big{font-size:22px;padding:12px 28px;background:var(--g);box-shadow:0 4px 0 #166534;margin-top:8px}
+.nav{display:flex;gap:8px;padding:6px 0}
+.nav button{flex:1;min-width:0;padding:10px 6px;font-size:16px}
+#home{background:#7c3aed;box-shadow:0 4px 0 #5b21b6}
+#retry{background:#f59e0b;box-shadow:0 4px 0 #b45309}
+.row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:flex-start;margin:8px 0}
+.row figure{margin:0;flex:1 1 240px;text-align:center;font-size:16px}
+.opts{display:grid;gap:10px;margin:10px 0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.opt{background:#fff;color:var(--ink);border:3px solid #cbd5e1;box-shadow:none;text-align:right}
+.pc{padding:4px;background:#fff;border:4px solid #cbd5e1;box-shadow:none;width:100%}
+.pc.sel{border-color:var(--b);background:#dbeafe}
+.opt.ok,.pc.ok,.chip.on{border-color:var(--g);background:#dcfce7;color:#14532d}
+.opt.no,.pc.no{border-color:var(--r);background:#fee2e2;color:#7f1d1d}
+.pic,.st{width:100%;max-width:200px;height:auto;display:block;margin:auto}
+.st{max-width:340px}
+.board{width:100%;max-width:520px;display:block;margin:6px auto;border:4px solid #bfdbfe;border-radius:14px;touch-action:none;background:#f8fafc}
+input[type=range]{width:100%;max-width:520px;display:block;margin:6px auto;height:38px;accent-color:var(--o)}
+.msg{background:#eff6ff;border-radius:12px;padding:8px 12px;margin:8px 0;font-weight:bold;min-height:3.4em}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.chip{padding:2px 14px;border-radius:20px;border:3px solid #cbd5e1;background:#fff;font-size:15px;font-weight:bold}
+.exp{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:8px 0}
+.exp figure,.exp div{margin:0;text-align:center;font-size:16px}
+.b{color:var(--b)}.o{color:var(--o)}.r{color:var(--r)}
+.rule{border:3px dashed #cbd5e1;border-radius:16px;padding:8px 12px;margin:10px 0}
+.rule.ok{border:3px solid var(--g);background:#f0fdf4;display:flex;align-items:center;gap:12px}
+.rule .mini{width:110px;flex:none}
+.blank{display:inline-block;min-width:70px;border-bottom:4px solid var(--o);text-align:center;color:var(--o)}
+.tip{background:#fef9c3;border-radius:12px;padding:8px 12px;font-weight:bold}
+.fb{padding:10px 14px;border-radius:12px;margin-top:10px;font-weight:bold}
+.fb.ok{background:#dcfce7;border:2px solid var(--g)}
+.fb.no{background:#fee2e2;border:2px solid var(--r)}
+.cap{text-align:center;font-weight:bold;min-height:1.7em;color:var(--g)}
+.score{font-size:34px;font-weight:bold;color:var(--o);margin:0}
+@media(max-width:480px){body{font-size:17px}h1{font-size:26px}.rule .mini{width:80px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+ <div class="top"><div class="bar"><i id="bar"></i></div><span id="lab"></span></div>
+ <div class="mascot">
+  <svg viewBox="0 0 100 100" aria-hidden="true">
+   <ellipse cx="50" cy="60" rx="36" ry="34" fill="#38bdf8"/><ellipse cx="50" cy="72" rx="22" ry="18" fill="#e0f2fe"/>
+   <circle cx="36" cy="50" r="10" fill="#fff"/><circle cx="64" cy="50" r="10" fill="#fff"/>
+   <circle cx="37" cy="51" r="5" fill="#1e293b"/><circle cx="63" cy="51" r="5" fill="#1e293b"/>
+   <path d="M45 58h10l-5 8z" fill="#f97316"/>
+   <path id="mouth" d="M40 72q10 8 20 0" fill="none" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>
+   <path d="M16 22L50 8l34 14-34 14z" fill="#1e3a8a"/><path d="M82 24v16" stroke="#facc15" stroke-width="3"/>
+  </svg>
+  <div class="bubble" id="say"></div>
+ </div>
+</header>
+<main id="stage"></main>
+<nav class="nav">
+ <button id="prev">السابق</button><button id="retry">إعادة المحاولة</button><button id="home">الرئيسية</button><button id="next">التالي</button>
+</nav>
+</div>
+<script>
+const S={},$=q=>document.querySelector(q);
+const names=['الرئيسية','الوضعية المشكلة','الاستكشاف','التفسير','الاستنتاج','تقويم 1/6','تقويم 2/6','تقويم 3/6','تقويم 4/6','تقويم 5/6','تقويم 6/6','النتيجة'];
+let i=0;
+const st=()=>S[i]||(S[i]={});
+const say=(t,ok)=>{$('#say').textContent=t;$('#mouth').setAttribute('d',ok===false?'M40 78q10-8 20 0':'M40 72q10 8 20 0')};
+const L=(x1,y1,x2,y2,c,w=4,x='')=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${w}" stroke-linecap="round" ${x}/>`;
+const fmt=x=>String(x).replace('.',',');
+
+/* رسومات */
+function compassPic(){
+ return `<svg viewBox="0 0 120 100" class="pic" role="img"><rect width="120" height="100" rx="10" fill="#f8fafc"/><circle cx="60" cy="86" r="26" fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="4 3"/><path d="M60 18L38 82M60 18L84 82" fill="none" stroke="#475569" stroke-width="4" stroke-linecap="round"/><circle cx="60" cy="18" r="6" fill="#f97316"/><path d="M38 82l-4 8M84 82l4 8" stroke="#475569" stroke-width="3" stroke-linecap="round"/></svg>`;
+}
+function angleBis(){
+ return `<svg viewBox="0 0 120 100" class="pic" role="img"><rect width="120" height="100" rx="10" fill="#f8fafc"/>${L(18,82,108,22,'#2563eb',3)}${L(18,82,108,82,'#2563eb',3)}${L(18,82,108,54,'#f97316',3)}<path d="M46 82 A28 28 0 0 0 41 67" fill="none" stroke="#16a34a" stroke-width="2"/><circle cx="46" cy="78" r="2" fill="#16a34a"/><circle cx="43" cy="70" r="2" fill="#16a34a"/><circle cx="18" cy="82" r="5" fill="#dc2626"/></svg>`;
+}
+function anglePlain(){
+ return `<svg viewBox="0 0 120 100" class="pic" role="img"><rect width="120" height="100" rx="10" fill="#f8fafc"/>${L(18,82,108,22,'#2563eb',3)}${L(18,82,108,82,'#2563eb',3)}<circle cx="18" cy="82" r="5" fill="#dc2626"/></svg>`;
+}
+function parLinesPic(){
+ return `<svg viewBox="0 0 120 100" class="pic" role="img"><rect width="120" height="100" rx="10" fill="#f8fafc"/>${L(12,38,108,38,'#2563eb',4)}${L(12,66,108,66,'#f97316',4)}<text x="60" y="92" text-anchor="middle" font-size="12" fill="#64748b">مستقيمان متوازيان</text></svg>`;
+}
+function perpMini(){
+ return `<svg viewBox="0 0 120 100" class="pic" role="img"><rect width="120" height="100" rx="10" fill="#f8fafc"/>${L(12,62,108,62,'#2563eb',4)}${L(60,8,60,92,'#f97316',4)}<path d="M60 62h11v11h-11z" fill="#fde04799" stroke="#16a34a" stroke-width="2"/><circle cx="60" cy="30" r="5" fill="#2563eb"/><text x="60" y="20" text-anchor="middle" font-size="13" font-weight="bold" fill="#2563eb">أ</text></svg>`;
+}
+function arcMini(){
+ return `<svg viewBox="0 0 120 100" class="pic" role="img"><rect width="120" height="100" rx="10" fill="#f8fafc"/>${L(12,68,108,68,'#2563eb',4)}<circle cx="60" cy="42" r="34" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="4 3"/><circle cx="60" cy="42" r="5" fill="#2563eb"/><text x="60" y="32" text-anchor="middle" font-size="13" font-weight="bold" fill="#2563eb">أ</text><circle cx="38" cy="68" r="4" fill="#dc2626"/><circle cx="82" cy="68" r="4" fill="#dc2626"/></svg>`;
+}
+function wallPic(){
+ return `<svg viewBox="0 0 320 200" class="st" role="img"><rect width="320" height="200" rx="14" fill="#fef3c7"/><rect x="40" y="120" width="240" height="18" fill="#92400e"/><rect x="140" y="20" width="18" height="100" fill="#b45309"/><polygon points="158,120 200,120 158,78" fill="#fde047" stroke="#16a34a" stroke-width="3" stroke-linejoin="round"/><text x="230" y="60" font-size="15" font-weight="bold" fill="#475569">الجدار</text><text x="230" y="160" font-size="15" font-weight="bold" fill="#475569">الأرضية</text></svg>`;
+}
+function railsPic(){
+ return `<svg viewBox="0 0 320 200" class="st" role="img"><rect width="320" height="200" rx="14" fill="#bbf7d0"/>${L(10,70,310,70,'#475569',8)}${L(10,130,310,130,'#475569',8)}<rect x="120" y="30" width="80" height="14" rx="3" fill="#facc15" stroke="#a16207" stroke-width="2"/><polygon points="120,70 160,70 120,40" fill="#fde047" stroke="#16a34a" stroke-width="3" stroke-linejoin="round"/><text x="160" y="180" text-anchor="middle" font-size="15" font-weight="bold" fill="#475569">سكتا حديد متوازيتان</text></svg>`;
+}
+const pic=k=>({comp:compassPic(),bis:angleBis(),plain:anglePlain(),par:parLinesPic(),perp:perpMini(),arc:arcMini(),wall:wallPic(),rail:railsPic()})[k];
+const star=f=>`<svg viewBox="0 0 40 40" width="46" height="46"><path d="M20 3l5.2 11.4 12.3 1.4-9.2 8.4 2.6 12.2L20 30.2 9.1 36.4l2.6-12.2-9.2-8.4 12.3-1.4z" fill="${f?'#facc15':'#e2e8f0'}" stroke="${f?'#ca8a04':'#cbd5e1'}" stroke-width="2" stroke-linejoin="round"/></svg>`;
+
+/* مراحل الدرس */
+const hooks={};
+const scr=[
+// 0 الرئيسية
+()=>{st().done=1;say('أهلاً يا بطل! أنا بومة الهندسة. هيا نبني بالبركار والمسطرة!');
+ return `<div class="card c"><h1>الإنشاءات الهندسية (1)</h1><p>سنرسم بالبركار والمسطرة مثل المهندسين: عمودي وموازٍ ومنصف زاوية.</p><div class="row">${compassPic()}${angleBis()}</div><button class="big" onclick="go(1)">ابدأ اللعب</button></div>`},
+// 1 الوضعية المشكلة
+()=>{const s=st();s.f=s.f||[];s.w=s.w||[];say('انظر جيداً إلى الصورتين. ماذا تلاحظ؟');
+ const o=[['في الصورة 1: الجدار عمودي على الأرضية',1],['في الصورة 1: الجدار موازٍ للأرضية',0],['في الصورة 2: الخطان متوازيان',1],['في الصورة 2: الخطان يلتقيان في نقطة',0]];
+ return `<div class="card"><h2>الوضعية المشكلة</h2><p>هذه غرفة وسكة حديد. اضغط على كل ملاحظة صحيحة.</p><div class="row"><figure>${wallPic()}الصورة 1</figure><figure>${railsPic()}الصورة 2</figure></div><div class="opts">${o.map((x,k)=>`<button class="opt${s.f.includes(k)?' ok':s.w.includes(k)?' no':''}" ${s.f.includes(k)||s.w.includes(k)?'disabled':''} onclick="obs(${k},${x[1]})">${x[0]}</button>`).join('')}</div></div>`},
+// 2 الاستكشاف
+()=>{const s=st();s.k=s.k??0;s.g=s.g||{};say('حرّك المنزلق خطوة خطوة، أو اضغط على اللوحة، لتبني المستقيم العمودي.');
+ return `<div class="card"><h2>نستكشف</h2><p>ابنِ مستقيماً عمودياً على المستقيم (د) يمر بالنقطة (أ)، خطوة خطوة.</p><svg id="ex" viewBox="0 0 360 260" class="board"></svg><input id="rg" type="range" min="0" max="4" step="1" value="${s.k}" dir="ltr" aria-label="خطوة الإنشاء"><div id="msg" class="msg"></div><div class="chips" id="chips"></div></div>`},
+// 3 التفسير
+()=>{st().done=1;say('اقرأ البطاقات، ثم انظر أين نستعملها.');
+ return `<div class="card"><h2>نفسّر ما اكتشفناه</h2><div class="exp"><div>${perpMini()}<p><b class="b">إنشاء عمودي</b>: قوس من النقطة يقطع المستقيم في نقطتين، ثم قوسان بنفس الفتحة، ونصل النقطة بنقطة تقاطعهما.</p></div><div>${parLinesPic()}<p><b class="o">إنشاء موازٍ</b>: نزلق الكوس على حافة المسطرة حتى النقطة، ثم نرسم.</p></div><div>${compassPic()}<p><b class="r">انتبه!</b> إذا غيّرت فتحة البركار أثناء الإنشاء، فلن تكون المسافات متساوية، ويفشل الإنشاء.</p></div></div><h3>أين نستعملها؟</h3><div class="exp"><figure>${compassPic()}<figcaption>البركار: يرسم الدوائر والأقواس</figcaption></figure><figure>${angleBis()}<figcaption>منصف الزاوية: يقسمها نصفين</figcaption></figure><figure>${wallPic()}<figcaption>الجدار العمودي على الأرضية</figcaption></figure></div></div>`},
+// 4 الاستنتاج
+()=>{const s=st();s.r=s.r||[0,0];say('أكمل القاعدتين باختيار الكلمة المناسبة.');
+ return `<div class="card"><h2>نستنتج القاعدتين</h2>${R.map((r,k)=>s.r[k]?`<div class="rule ok"><div class="mini">${pic(r.t)}</div><p>${r.pre} <b>${r.a}</b> ${r.post}</p></div>`:`<div class="rule"><p>${r.pre} <span class="blank">؟؟؟</span> ${r.post}</p><div class="row">${r.ch.map(w=>`<button class="opt" onclick="rl(${k},'${w}')">${w}</button>`).join('')}</div></div>`).join('')}<p class="tip">تذكّر: حافظ على نفس فتحة البركار في كل الخطوات.</p></div>`},
+...Array.from({length:6},(_,n)=>()=>quiz(n)),
+// 11 النتيجة
+()=>{let sc=0;for(let k=5;k<11;k++)sc+=S[k]?.sc||0;st().done=1;
+ const m=sc>=5?'ممتاز! أنت بطل الإنشاءات الهندسية.':sc>=3?'جيد جداً! راجع التفسير ثم حاول مجدداً.':'لا بأس! أعد المحاولة وسنتحسّن معاً.';say(m);
+ return `<div class="card c"><h1>النتيجة النهائية</h1><div class="row">${[...Array(6)].map((_,k)=>star(k<sc)).join('')}</div><p class="score">${sc} / 6</p><p>${m}</p><p class="tip">البركار يحافظ على نفس الفتحة لنقل المسافات المتساوية، والمنصف يقسم الزاوية نصفين متساويين.</p><button class="big" onclick="reset()">العب من جديد</button></div>`}
+];
+
+/* بيانات الاستنتاج والتقويم */
+const R=[{pre:'لإنشاء مستقيم عمودي، نبدأ برسم',a:'قوس',t:'arc',post:'من النقطة يقطع المستقيم في نقطتين.',ch:['قوس','دائرة كاملة'],h:'الدائرة الكاملة لا نحتاجها؛ يكفي قوس يقطع المستقيم.'},
+ {pre:'منصف الزاوية يقسمها إلى زاويتين',a:'متساويتين',t:'bis',post:'في القياس.',ch:['متساويتين','مختلفتين'],h:'المنصف يقسم الزاوية إلى نصفين متساويين تماماً.'}];
+const Q=[
+ {t:'ch',q:'أي أداة نستعمل لرسم الدوائر والأقواس ونقل المسافات؟',p:compassPic(),o:['المسطرة','البركار','المنقلة','الكوس'],a:1,why:'البركار يرسم الدوائر والأقواس وينقل المسافات المتساوية.',h:'أي أداة لها إبرة وقلم وتدور؟'},
+ {t:'img',q:'اضغط على الصورة التي فيها منصف زاوية.',o:['bis','plain','par'],a:0,why:'نصف المستقيم يقسم الزاوية إلى زاويتين متساويتين، فهو منصفها.',h:'ابحث عن الخط الذي يقسم الزاوية نصفين.'},
+ {t:'ch',q:'لإنشاء مستقيم عمودي بالبركار، أول خطوة هي:',o:['رسم قوس من النقطة يقطع المستقيم في نقطتين','رسم المستقيم كاملا','قياس الزاوية بالمنقلة','رسم دائرة كبيرة'],a:0,why:'نبدأ بنقل مسافتين متساويتين على المستقيم.',h:'نبدأ بنقل مسافتين متساويتين على المستقيم.'},
+ {t:'mt',q:'اضغط على إنشاء، ثم على خطوته الأولى.',it:['perp','par','bis'],W:['قوس من النقطة يقطع المستقيم','انزلاق الكوس على المسطرة','قوس من الرأس يقطع الضلعين'],ws:[1,2,0],why:'العمودي يبدأ بقوس من النقطة، والموازي بانزلاق الكوس، والمنصف بقوس من الرأس.',h:'تذكّر خطوات كل إنشاء.'},
+ {t:'rt',T:4,q:'افتح البركار على 4 سم، ثم اضغط «تحقق».',why:'فتحة البركار تساوي نصف القطر: 4 سم.',h:'حرّك المنزلق حتى يصبح العدد 4.'},
+ {t:'ch',q:'لماذا نحافظ على نفس فتحة البركار في خطوات الإنشاء؟',o:['حتى تبقى المسافات المنقولة متساوية','حتى يكون الرسم أجمل','حتى لا ينكسر البركار','لأن المسطرة قصيرة'],a:0,why:'البركار أداة لنقل المسافات المتساوية، فتغيير فتحته يفسد الإنشاء.',h:'البركار أداة لنقل المسافات المتساوية.'}
+];
+
+/* تنقّل */
+function render(){S[i]||(S[i]={});$('#stage').innerHTML=scr[i]();hooks[i]&&hooks[i]();$('#bar').style.width=i/11*100+'%';$('#lab').textContent=names[i];nav()}
+function nav(){$('#prev').disabled=i==0;$('#next').disabled=!S[i].done;$('#next').style.display=i==11?'none':'';$('#retry').style.display=(i==0||i==3||i==11)?'none':''}
+const go=n=>{i=n;render();scrollTo(0,0)};
+const reset=()=>{for(const k in S)delete S[k];go(0)};
+$('#prev').onclick=()=>go(i-1);$('#next').onclick=()=>go(i+1);$('#home').onclick=()=>go(0);
+$('#retry').onclick=()=>{delete S[i];render()};
+
+/* 1: الملاحظة */
+function obs(k,ok){const s=st();
+ if(ok){s.f.push(k);render();if(s.f.length==2){s.done=1;nav();say('رائع! لاحظت الفرق بين الصورتين. هيا نجرّب بأنفسنا.')}else say('ملاحظة صحيحة! هل من ملاحظة أخرى؟')}
+ else{s.w.push(k);render();say('انظر مرة أخرى: هل يلتقي الخطان فعلاً؟',false)}}
+
+/* 2: الاستكشاف */
+function exDraw(){const s=S[2],k=s.k;
+ let g='<rect width="360" height="260" fill="#f8fafc"/>';
+ g+=L(20,170,340,170,'#2563eb',5)+`<text x="330" y="158" font-size="15" font-weight="bold" fill="#2563eb">(د)</text>`;
+ g+=`<circle cx="180" cy="70" r="8" fill="#2563eb"/><text x="180" y="52" text-anchor="middle" font-size="16" font-weight="bold" fill="#2563eb">أ</text>`;
+ if(k>=1){g+=`<circle cx="180" cy="70" r="110" fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="5 4"/><circle cx="134" cy="170" r="5" fill="#dc2626"/><circle cx="226" cy="170" r="5" fill="#dc2626"/>`;}
+ if(k>=2){g+=`<circle cx="134" cy="170" r="85" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 4"/>`;}
+ if(k>=3){g+=`<circle cx="226" cy="170" r="85" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 4"/><circle cx="180" cy="242" r="5" fill="#16a34a"/>`;}
+ if(k>=4){g+=L(180,70,180,242,'#16a34a',5)+'<path d="M180 170h13v13h-13z" fill="#fde04799" stroke="#16a34a" stroke-width="2"/>';}
+ const msgs=['المستقيم (د) والنقطة (أ). حرّك المنزلق لتبدأ الإنشاء.','القوس من (أ) قطع المستقيم (د) في نقطتين.','قوس من النقطة الأولى بنفس الفتحة.','قوس من النقطة الثانية: تقاطع القوسان في نقطة جديدة.','صلنا (أ) بنقطة التقاطع: المستقيم الجديد عمودي على (د)!'];
+ if(k>=1)s.g.a=1;if(k>=3)s.g.b=1;if(k>=4)s.g.c=1;
+ $('#ex').innerHTML=g;$('#msg').textContent=msgs[k];
+ $('#chips').innerHTML=[['a','القوس يقطع المستقيم في نقطتين'],['b','القوسان بنفس الفتحة'],['c','المستقيم الجديد عمودي على (د)']].map(([c,t])=>`<span class="chip${s.g[c]?' on':''}">${t}</span>`).join('');
+ if(!s.done&&k>=4){s.done=1;nav();say('أحسنت! بنيت المستقيم العمودي. هيا نفسّر الخطوات.')}}
+hooks[2]=()=>{const s=S[2],sv=$('#ex'),rg=$('#rg');exDraw();
+ rg.oninput=()=>{s.k=+rg.value;exDraw()};
+ sv.onpointerdown=()=>{if(s.k<4){s.k++;rg.value=s.k;exDraw()}}};
+
+/* 4: الاستنتاج */
+function rl(k,w){const s=st();
+ if(w==R[k].a){s.r[k]=1;render();if(s.r[0]&&s.r[1]){s.done=1;nav();say('أحسنت! استنتجنا القاعدتين. هيا نختبر أنفسنا.')}else say('صحيح! بقيت قاعدة واحدة.')}
+ else say(R[k].h,false)}
+
+/* 5-10: التقويم */
+function quiz(n){const q=Q[n],s=st();s.w=s.w||[];
+ say(s.d?'أحسنت يا بطل!':s.bad?'حاول مرة أخرى، أنت قادر!':'فكّر جيداً ثم أجب.',!(s.bad&&!s.d));
+ const dis=k=>s.d||s.w.includes(k)?'disabled':'',cl=k=>(s.d&&k==q.a?' ok':'')+(s.w.includes(k)?' no':'');
+ let b='';
+ if(q.t=='img')b=`<div class="grid3">${q.o.map((o,k)=>`<button class="pc${cl(k)}" ${dis(k)} onclick="ans(${k})" aria-label="صورة ${k+1}">${pic(o)}</button>`).join('')}</div>`;
+ if(q.t=='ch')b=`<div class="row">${q.p}</div><div class="opts">${q.o.map((o,k)=>`<button class="opt${cl(k)}" ${dis(k)} onclick="ans(${k})">${o}</button>`).join('')}</div>`;
+ if(q.t=='mt'){s.m=s.m||[0,0,0];b=`<div class="grid3">${q.it.map((o,k)=>`<div><button class="pc${s.m[k]?' ok':''}${s.si===k?' sel':''}" ${s.m[k]?'disabled':''} onclick="pI(${k})">${pic(o)}</button><div class="cap">${s.m[k]?q.W[k]:'؟'}</div></div>`).join('')}</div><div class="opts">${q.ws.map(w=>`<button class="opt${s.m[w]?' ok':''}" ${s.m[w]?'disabled':''} onclick="pW(${w})">${q.W[w]}</button>`).join('')}</div>`}
+ if(q.t=='rt'){s.a=s.a??2;b=`<svg id="rs" viewBox="0 0 360 220" class="board"></svg><input id="rr" type="range" min="0" max="6" step="0.5" value="${s.a}" dir="ltr" aria-label="فتحة البركار"><div class="row"><button onclick="rchk()" ${s.d?'disabled':''}>تحقق</button></div>`}
+ if(s.d)st().done=1;
+ return `<div class="card"><h2>التطبيق والتقويم</h2><p><b>${q.q}</b></p>${b}${s.fb?`<div class="fb ${s.fb.ok?'ok':'no'}">${s.fb.t}</div>`:''}</div>`}
+function fin(s,q){s.d=1;s.done=1;if(!s.bad)s.sc=1;s.fb={ok:1,t:'صحيح! '+q.why}}
+function ans(k){const q=Q[i-5],s=st();if(s.d)return;
+ if(k==q.a)fin(s,q);else{s.bad=1;s.w.push(k);s.fb={ok:0,t:'ليست هذه الإجابة. تلميح: '+q.h}}
+ render()}
+function pI(k){const s=st();s.si=k;s.fb=null;render();say('اختر الاسم المناسب لهذه الصورة.')}
+function pW(w){const s=st(),q=Q[3];
+ if(s.si==null){say('اضغط أولاً على صورة.',false);return}
+ if(w==s.si){s.m[w]=1;s.si=null;s.fb=null;if(s.m.every(x=>x))fin(s,q)}
+ else{s.bad=1;s.fb={ok:0,t:'ليست هذه الكلمة. تلميح: '+q.h}}
+ render()}
+hooks[9]=()=>{const s=S[9],rg=$('#rr');
+ const d=()=>{const r=s.a*16;$('#rs').innerHTML='<rect width="360" height="220" fill="#f8fafc"/>'+`<circle cx="180" cy="110" r="${r}" fill="none" stroke="#2563eb" stroke-width="3"/><circle cx="180" cy="110" r="6" fill="#dc2626"/>`+L(180,110,180+r,110,'#f97316',3)+`<text x="180" y="200" text-anchor="middle" font-size="15" font-weight="bold" fill="#475569">فتحة البركار: ${fmt(s.a)} سم</text>`};
+ d();rg.oninput=()=>{if(s.d)return;s.a=+rg.value;d()}};
+function rchk(){const s=st(),q=Q[4];if(s.d)return;
+ if(Math.abs(s.a-4)<=0.01)fin(s,q);else{s.bad=1;s.fb={ok:0,t:'ليس بعد. تلميح: '+q.h}}
+ render()}
+
+render();
+</script>
+</body>
+</html>

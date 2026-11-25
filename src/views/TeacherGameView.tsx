@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { LESSON_BY_ID } from '../data';
+import { LESSON_HTML_GAMES } from '../data/lesson-games';
 import { LEVEL_NAMES, SUBJECT_BY_ID } from '../data/subjects';
 import { playCorrect, playWin, playWrong } from '../lib/sound';
 import { shuffle } from '../lib/shuffle';
@@ -15,6 +16,9 @@ interface Question {
 /** لعبة الدرس الخفيفة للأستاذ(ة): تمارين الدرس نفسها في شكل لعبة بالنقاط، للعب في القسم. */
 export function TeacherGameView({ id }: { id: string }) {
   const lesson = LESSON_BY_ID[id];
+  const htmlGame = LESSON_HTML_GAMES[id];
+  const [mode, setMode] = useState<'html' | 'quiz'>(htmlGame ? 'html' : 'quiz');
+  const frameRef = useRef<HTMLIFrameElement | null>(null);
   const [attempt, setAttempt] = useState(0);
   const [index, setIndex] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
@@ -87,7 +91,38 @@ export function TeacherGameView({ id }: { id: string }) {
         </div>
       </div>
 
-      {questions.length === 0 ? (
+      {htmlGame && mode === 'html' ? (
+        <>
+          <div className="game-actions" style={{ justifyContent: 'center' }}>
+            <button
+              className="btn primary"
+              onClick={() => frameRef.current?.requestFullscreen?.()}
+            >
+              ⛶ ملء الشاشة (للعرض على التلاميذ)
+            </button>
+            <button className="btn ghost" onClick={() => setMode('quiz')}>
+              ❓ لعبة الأسئلة بدلًا من ذلك
+            </button>
+          </div>
+          <iframe
+            ref={frameRef}
+            className="html-game-frame"
+            src={htmlGame}
+            title={`لعبة الدرس: ${lesson.title}`}
+            sandbox="allow-scripts"
+            allowFullScreen
+          />
+        </>
+      ) : (
+        <>
+          {htmlGame && (
+            <div className="game-actions" style={{ justifyContent: 'center' }}>
+              <button className="btn ghost" onClick={() => setMode('html')}>
+                🎮 لعبة الدرس الكاملة بدلًا من ذلك
+              </button>
+            </div>
+          )}
+          {questions.length === 0 ? (
         <p className="license-note">هذا الدرس بلا تمارين اختيار من متعدد، فلا لعبة له بعد.</p>
       ) : finished ? (
         <>
@@ -158,6 +193,8 @@ export function TeacherGameView({ id }: { id: string }) {
               </button>
             </div>
           </div>
+        </>
+      )}
         </>
       )}
     </div>
