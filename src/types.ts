@@ -68,7 +68,7 @@ export interface SubjectMeta {
   soft: string;
 }
 
-export type GameId = 'memory' | 'math' | 'words' | 'matching' | 'ordering' | 'values';
+export type GameId = 'memory' | 'math' | 'words' | 'matching' | 'ordering' | 'values' | 'lifeskills';
 
 export interface MemoryPair {
   a: string;
@@ -102,4 +102,18 @@ export interface GameMeta {
   emoji: string;
   tagline: string;
   skill: string;
+}
+
+/** موقف في لعبة المهارات الحياتية: وضعية من الحياة اليومية بأربعة خيارات. */
+export interface LifeSkillScenario {
+  situation: string;
+  emoji: string;
+  /** مكان الموقف: الشارع أو البيت أو المدرسة أو السوق... */
+  setting: string;
+  /** المهارة التي يتعلمها الطفل من الموقف. */
+  skill: string;
+  /** بالضبط 4 خيارات، واحد منها فقط صحيح. */
+  options: string[];
+  answer: number;
+  moral: string;
 }

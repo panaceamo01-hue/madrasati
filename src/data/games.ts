@@ -52,6 +52,13 @@ export const GAMES: GameMeta[] = [
     tagline: 'مواقف من المدرسة والبيت والشارع — 4 خيارات في كل موقف',
     skill: 'الأخلاق والقيادة',
   },
+  {
+    id: 'lifeskills',
+    name: 'المهارات الحياتية',
+    emoji: '🌱',
+    tagline: 'مواقف من الحياة اليومية — 6 مراحل مقفلة بالتسلسل',
+    skill: 'السلامة الطرقية والمال والمهن',
+  },
 ];
 
 export const MEMORY: Record<Level, MemoryPair[]> = {

@@ -20,7 +20,7 @@ export type Route =
   | { name: 'activate' }
   | { name: 'admin' };
 
-const GAME_IDS: GameId[] = ['memory', 'math', 'words', 'matching', 'ordering', 'values'];
+const GAME_IDS: GameId[] = ['memory', 'math', 'words', 'matching', 'ordering', 'values', 'lifeskills'];
 
 function toLevel(value: string | undefined): Level | null {
   const level = Number(value);
