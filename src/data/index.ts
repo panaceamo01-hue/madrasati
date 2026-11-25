@@ -12,6 +12,9 @@ import { l6ExamFrench } from './l6-exam-french';
 import { l6RestScience } from './l6-rest-science';
 import { l6RestIslamic } from './l6-rest-islamic';
 import { l6RestSocial } from './l6-rest-social';
+import { l6ArabicTarkib } from './l6-arabic-tarkib';
+import { l6ArabicSarf } from './l6-arabic-sarf';
+import { l6ArabicImla } from './l6-arabic-imla';
 
 export const LESSONS: Lesson[] = [
   ...level1,
@@ -24,6 +27,10 @@ export const LESSONS: Lesson[] = [
   ...extras[4],
   ...level5,
   ...extras[5],
+  // قواعد العربية للسادس حسب التوزيع السنوي الرسمي — أولًا في ترتيب المستوى.
+  ...l6ArabicTarkib,
+  ...l6ArabicSarf,
+  ...l6ArabicImla,
   ...level6,
   ...extras[6],
   ...l6ExamMath,
