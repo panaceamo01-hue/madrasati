@@ -84,8 +84,12 @@ export function SettingsView() {
   }, []);
 
   function handleReset() {
-    const confirmed = window.confirm('هل تريد مسح كل التقدم والنجوم والنتائج؟ لا يمكن التراجع.');
-    if (confirmed) resetProgress();
+    if (confirming !== 'reset') {
+      setConfirming('reset');
+      return;
+    }
+    setConfirming(null);
+    resetProgress();
   }
 
   const offlineText: Record<OfflineState, { title: string; body: string; pending: boolean }> = {
@@ -119,10 +123,15 @@ export function SettingsView() {
   const info = offlineText[offline];
 
   const role = loadRole();
+  /** تأكيد من خطوتين داخل الصفحة (بلا نافذة تأكيد أصلية قد لا تظهر في بعض المتصفحات). */
+  const [confirming, setConfirming] = useState<'role' | 'reset' | null>(null);
 
   function handleChangeRole() {
-    const confirmed = window.confirm('هل تريد تغيير دورك (ولي أمر أو أستاذ)؟ ستظهر شاشة اختيار الدور من جديد.');
-    if (!confirmed) return;
+    if (confirming !== 'role') {
+      setConfirming('role');
+      return;
+    }
+    setConfirming(null);
     clearRole();
     window.location.hash = '#/';
     window.location.reload();
@@ -197,9 +206,17 @@ export function SettingsView() {
             <p>مسح التقدم</p>
             <small>حذف النجوم ونتائج الألعاب من هذا الجهاز.</small>
           </div>
-          <button className="btn ghost small" onClick={handleReset}>
-            مسح
+          <button
+            className={`btn ${confirming === 'reset' ? 'primary' : 'ghost'} small`}
+            onClick={handleReset}
+          >
+            {confirming === 'reset' ? 'تأكيد المسح؟' : 'مسح'}
           </button>
+          {confirming === 'reset' && (
+            <button type="button" className="link-button" onClick={() => setConfirming(null)}>
+              إلغاء
+            </button>
+          )}
         </div>
       </div>
 
@@ -347,9 +364,17 @@ export function SettingsView() {
                 : 'أنت الآن في مساحة الأطفال. بدّل الدور لتدخل مساحة الأستاذ(ة): الجذاذات وألعاب الدروس.'}
             </small>
           </div>
-          <button className="btn ghost small" onClick={handleChangeRole}>
-            تغيير الدور
+          <button
+            className={`btn ${confirming === 'role' ? 'primary' : 'ghost'} small`}
+            onClick={handleChangeRole}
+          >
+            {confirming === 'role' ? 'اضغط للتأكيد' : 'تغيير الدور'}
           </button>
+          {confirming === 'role' && (
+            <button type="button" className="link-button" onClick={() => setConfirming(null)}>
+              إلغاء
+            </button>
+          )}
         </div>
       </div>
 
