@@ -59,6 +59,13 @@ export const GAMES: GameMeta[] = [
     tagline: 'مواقف من الحياة اليومية — 6 مراحل مقفلة بالتسلسل',
     skill: 'السلامة الطرقية والمال والمهن',
   },
+  {
+    id: 'knowledge',
+    name: 'تحدي المعرفة',
+    emoji: '🎓',
+    tagline: '100 سؤال في كل فرع — كل جولة أسئلة جديدة بلا تكرار',
+    skill: 'الثقافة العامة والترجمة والدين',
+  },
 ];
 
 export const MEMORY: Record<Level, MemoryPair[]> = {

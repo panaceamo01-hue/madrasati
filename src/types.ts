@@ -68,7 +68,14 @@ export interface SubjectMeta {
   soft: string;
 }
 
-export type GameId = 'memory' | 'math' | 'words' | 'matching' | 'ordering' | 'values' | 'lifeskills';
+export type GameId = 'memory' | 'math' | 'words' | 'matching' | 'ordering' | 'values' | 'lifeskills' | 'knowledge';
+
+/** سؤال في تحدي المعرفة: 4 خيارات، والإجابة الصحيحة برقمها (0-3). */
+export interface KnowledgeQuestion {
+  question: string;
+  options: [string, string, string, string];
+  answer: number;
+}
 
 export interface MemoryPair {
   a: string;

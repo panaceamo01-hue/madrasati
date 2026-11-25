@@ -1,0 +1,123 @@
+import type { KnowledgeQuestion } from '../types';
+
+/** أسئلة الترجمة فرنسية ↔ عربية في تحدي المعرفة: 100 سؤال، مفردات الابتدائي. */
+export const TRANSLATION_QUIZ: KnowledgeQuestion[] = [
+  // فرنسية ← عربية: الحيوانات (10)
+  { question: 'ما معنى كلمة «chien» بالعربية؟', options: ['قطة', 'كلب', 'طائر', 'سمكة'], answer: 1 },
+  { question: 'ما معنى كلمة «chat» بالعربية؟', options: ['كلب', 'طائر', 'قطة', 'سمكة'], answer: 2 },
+  { question: 'ما معنى كلمة «oiseau» بالعربية؟', options: ['سمكة', 'كلب', 'قطة', 'طائر'], answer: 3 },
+  { question: 'ما معنى كلمة «lion» بالعربية؟', options: ['أسد', 'نمر', 'ذئب', 'ثعلب'], answer: 0 },
+  { question: 'ما معنى كلمة «poisson» بالعربية؟', options: ['طائر', 'سمكة', 'كلب', 'قطة'], answer: 1 },
+  { question: 'ما معنى كلمة «lapin» بالعربية؟', options: ['سنجاب', 'فأر', 'أرنب', 'قنفذ'], answer: 2 },
+  { question: 'ما معنى كلمة «cheval» بالعربية؟', options: ['جمل', 'حمار', 'بقرة', 'حصان'], answer: 3 },
+  { question: 'ما معنى كلمة «vache» بالعربية؟', options: ['بقرة', 'غنم', 'ماعز', 'حصان'], answer: 0 },
+  { question: 'ما معنى كلمة «mouton» بالعربية؟', options: ['ماعز', 'خروف', 'بقرة', 'جمل'], answer: 1 },
+  { question: 'ما معنى كلمة «poule» بالعربية؟', options: ['حمامة', 'بطة', 'ديك', 'دجاجة'], answer: 3 },
+  // فرنسية ← عربية: الألوان (8)
+  { question: 'ما معنى كلمة «rouge» بالعربية؟', options: ['أزرق', 'أخضر', 'أحمر', 'أصفر'], answer: 2 },
+  { question: 'ما معنى كلمة «bleu» بالعربية؟', options: ['أزرق', 'أحمر', 'أخضر', 'أسود'], answer: 0 },
+  { question: 'ما معنى كلمة «vert» بالعربية؟', options: ['أصفر', 'أخضر', 'أزرق', 'أبيض'], answer: 1 },
+  { question: 'ما معنى كلمة «jaune» بالعربية؟', options: ['أحمر', 'أبيض', 'أسود', 'أصفر'], answer: 3 },
+  { question: 'ما معنى كلمة «noir» بالعربية؟', options: ['أبيض', 'أسود', 'رمادي', 'بني'], answer: 1 },
+  { question: 'ما معنى كلمة «blanc» بالعربية؟', options: ['أسود', 'رمادي', 'أبيض', 'أزرق'], answer: 2 },
+  { question: 'ما معنى كلمة «orange» بالعربية؟', options: ['برتقالي', 'أصفر', 'وردي', 'أحمر'], answer: 0 },
+  { question: 'ما معنى كلمة «rose» بالعربية؟', options: ['أحمر', 'وردي', 'بنفسجي', 'أصفر'], answer: 1 },
+  // فرنسية ← عربية: أفراد الأسرة (8)
+  { question: 'ما معنى كلمة «père» بالعربية؟', options: ['أب', 'أم', 'أخ', 'عم'], answer: 0 },
+  { question: 'ما معنى كلمة «mère» بالعربية؟', options: ['أخت', 'أم', 'جدة', 'خالة'], answer: 1 },
+  { question: 'ما معنى كلمة «frère» بالعربية؟', options: ['أخت', 'عم', 'أخ', 'ابن'], answer: 2 },
+  { question: 'ما معنى كلمة «sœur» بالعربية؟', options: ['أم', 'ابنة', 'خالة', 'أخت'], answer: 3 },
+  { question: 'ما معنى كلمة «grand-père» بالعربية؟', options: ['جد', 'عم', 'أب', 'خال'], answer: 0 },
+  { question: 'ما معنى كلمة «grand-mère» بالعربية؟', options: ['أم', 'جدة', 'عمة', 'خالة'], answer: 1 },
+  { question: 'ما معنى كلمة «oncle» بالعربية؟', options: ['خال', 'جد', 'عم', 'أب'], answer: 2 },
+  { question: 'ما معنى كلمة «tante» بالعربية؟', options: ['خالة', 'أم', 'جدة', 'عمة'], answer: 3 },
+  // فرنسية ← عربية: المدرسة والأدوات (8)
+  { question: 'ما معنى كلمة «école» بالعربية؟', options: ['مدرسة', 'بيت', 'مكتبة', 'حديقة'], answer: 0 },
+  { question: 'ما معنى كلمة «livre» بالعربية؟', options: ['دفتر', 'كتاب', 'قلم', 'مسطرة'], answer: 1 },
+  { question: 'ما معنى كلمة «cahier» بالعربية؟', options: ['كتاب', 'قلم', 'دفتر', 'ممحاة'], answer: 2 },
+  { question: 'ما معنى كلمة «crayon» بالعربية؟', options: ['قلم حبر', 'ممحاة', 'مسطرة', 'قلم رصاص'], answer: 3 },
+  { question: 'ما معنى كلمة «stylo» بالعربية؟', options: ['قلم حبر', 'قلم رصاص', 'ممحاة', 'دفتر'], answer: 0 },
+  { question: 'ما معنى كلمة «table» بالعربية؟', options: ['كرسي', 'طاولة', 'سبورة', 'باب'], answer: 1 },
+  { question: 'ما معنى كلمة «chaise» بالعربية؟', options: ['طاولة', 'باب', 'كرسي', 'نافذة'], answer: 2 },
+  { question: 'ما معنى كلمة «règle» بالعربية؟', options: ['ممحاة', 'قلم', 'دفتر', 'مسطرة'], answer: 3 },
+  // فرنسية ← عربية: أجزاء الجسم (8)
+  { question: 'ما معنى كلمة «tête» بالعربية؟', options: ['رأس', 'يد', 'قدم', 'عين'], answer: 0 },
+  { question: 'ما معنى كلمة «main» بالعربية؟', options: ['قدم', 'يد', 'أنف', 'فم'], answer: 1 },
+  { question: 'ما معنى كلمة «pied» بالعربية؟', options: ['يد', 'رأس', 'قدم', 'أذن'], answer: 2 },
+  { question: 'ما معنى كلمة «œil» بالعربية؟', options: ['أنف', 'فم', 'أذن', 'عين'], answer: 3 },
+  { question: 'ما معنى كلمة «nez» بالعربية؟', options: ['أنف', 'عين', 'فم', 'أذن'], answer: 0 },
+  { question: 'ما معنى كلمة «bouche» بالعربية؟', options: ['أنف', 'فم', 'عين', 'لسان'], answer: 1 },
+  { question: 'ما معنى كلمة «oreille» بالعربية؟', options: ['عين', 'فم', 'أذن', 'أنف'], answer: 2 },
+  { question: 'ما معنى كلمة «bras» بالعربية؟', options: ['رجل', 'يد', 'كتف', 'ذراع'], answer: 3 },
+  // فرنسية ← عربية: الطعام والفواكه (8)
+  { question: 'ما معنى كلمة «pomme» بالعربية؟', options: ['تفاحة', 'موزة', 'برتقالة', 'فراولة'], answer: 0 },
+  { question: 'ما معنى كلمة «banane» بالعربية؟', options: ['تفاحة', 'موزة', 'عنبة', 'فراولة'], answer: 1 },
+  { question: 'ما معنى كلمة «fraise» بالعربية؟', options: ['موزة', 'تفاحة', 'فراولة', 'عنبة'], answer: 2 },
+  { question: 'ما معنى كلمة «pain» بالعربية؟', options: ['أرز', 'جبن', 'حليب', 'خبز'], answer: 3 },
+  { question: 'ما معنى كلمة «lait» بالعربية؟', options: ['حليب', 'جبن', 'خبز', 'بيض'], answer: 0 },
+  { question: 'ما معنى كلمة «fromage» بالعربية؟', options: ['حليب', 'جبن', 'خبز', 'لحم'], answer: 1 },
+  { question: 'ما معنى كلمة «œuf» بالعربية؟', options: ['جبن', 'لحم', 'بيضة', 'خبز'], answer: 2 },
+  { question: 'ما معنى كلمة «riz» بالعربية؟', options: ['خبز', 'حليب', 'سكر', 'أرز'], answer: 3 },
+  // فرنسية ← عربية: الأعداد (6)
+  { question: 'ما معنى كلمة «un» بالعربية؟', options: ['واحد', 'اثنان', 'ثلاثة', 'أربعة'], answer: 0 },
+  { question: 'ما معنى كلمة «deux» بالعربية؟', options: ['واحد', 'اثنان', 'ثلاثة', 'خمسة'], answer: 1 },
+  { question: 'ما معنى كلمة «trois» بالعربية؟', options: ['اثنان', 'أربعة', 'ثلاثة', 'واحد'], answer: 2 },
+  { question: 'ما معنى كلمة «quatre» بالعربية؟', options: ['ثلاثة', 'خمسة', 'ستة', 'أربعة'], answer: 3 },
+  { question: 'ما معنى كلمة «cinq» بالعربية؟', options: ['خمسة', 'أربعة', 'ستة', 'سبعة'], answer: 0 },
+  { question: 'ما معنى كلمة «dix» بالعربية؟', options: ['تسعة', 'عشرة', 'ثمانية', 'سبعة'], answer: 1 },
+  // فرنسية ← عربية: أيام الأسبوع (7)
+  { question: 'ما معنى كلمة «lundi» بالعربية؟', options: ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء'], answer: 1 },
+  { question: 'ما معنى كلمة «mardi» بالعربية؟', options: ['الاثنين', 'الأربعاء', 'الثلاثاء', 'الخميس'], answer: 2 },
+  { question: 'ما معنى كلمة «mercredi» بالعربية؟', options: ['الثلاثاء', 'الخميس', 'الجمعة', 'الأربعاء'], answer: 3 },
+  { question: 'ما معنى كلمة «jeudi» بالعربية؟', options: ['الخميس', 'الأربعاء', 'الجمعة', 'السبت'], answer: 0 },
+  { question: 'ما معنى كلمة «vendredi» بالعربية؟', options: ['الخميس', 'الجمعة', 'السبت', 'الأحد'], answer: 1 },
+  { question: 'ما معنى كلمة «samedi» بالعربية؟', options: ['الجمعة', 'الأحد', 'السبت', 'الاثنين'], answer: 2 },
+  { question: 'ما معنى كلمة «dimanche» بالعربية؟', options: ['السبت', 'الاثنين', 'الثلاثاء', 'الأحد'], answer: 3 },
+  // فرنسية ← عربية: الأفعال البسيطة (7)
+  { question: 'ما معنى كلمة «manger» بالعربية؟', options: ['يأكل', 'يشرب', 'ينام', 'يلعب'], answer: 0 },
+  { question: 'ما معنى كلمة «boire» بالعربية؟', options: ['يأكل', 'يشرب', 'يقرأ', 'يكتب'], answer: 1 },
+  { question: 'ما معنى كلمة «lire» بالعربية؟', options: ['يكتب', 'يرسم', 'يقرأ', 'يغني'], answer: 2 },
+  { question: 'ما معنى كلمة «écrire» بالعربية؟', options: ['يقرأ', 'يغني', 'يلعب', 'يكتب'], answer: 3 },
+  { question: 'ما معنى كلمة «aller» بالعربية؟', options: ['يذهب', 'يأتي', 'يجري', 'ينام'], answer: 0 },
+  { question: 'ما معنى كلمة «jouer» بالعربية؟', options: ['يقرأ', 'يلعب', 'ينام', 'يأكل'], answer: 1 },
+  { question: 'ما معنى كلمة «dormir» بالعربية؟', options: ['يستيقظ', 'يلعب', 'ينام', 'يأكل'], answer: 2 },
+  // عربية ← فرنسية: الحيوانات (4)
+  { question: 'كيف نقول «ثعلب» بالفرنسية؟', options: ['loup', 'renard', 'ours', 'tigre'], answer: 1 },
+  { question: 'كيف نقول «دب» بالفرنسية؟', options: ['ours', 'lion', 'singe', 'loup'], answer: 0 },
+  { question: 'كيف نقول «فيل» بالفرنسية؟', options: ['girafe', 'zèbre', 'éléphant', 'hippopotame'], answer: 2 },
+  { question: 'كيف نقول «نمر» بالفرنسية؟', options: ['lion', 'panthère', 'loup', 'tigre'], answer: 3 },
+  // عربية ← فرنسية: الألوان (3)
+  { question: 'كيف نقول «بنفسجي» بالفرنسية؟', options: ['violet', 'rose', 'bleu', 'gris'], answer: 0 },
+  { question: 'كيف نقول «رمادي» بالفرنسية؟', options: ['blanc', 'gris', 'noir', 'marron'], answer: 1 },
+  { question: 'كيف نقول «بني» بالفرنسية؟', options: ['rouge', 'orange', 'marron', 'jaune'], answer: 2 },
+  // عربية ← فرنسية: أفراد الأسرة (2)
+  { question: 'كيف نقول «ابن» بالفرنسية؟', options: ['fille', 'frère', 'père', 'fils'], answer: 3 },
+  { question: 'كيف نقول «ابنة» بالفرنسية؟', options: ['fille', 'sœur', 'mère', 'tante'], answer: 0 },
+  // عربية ← فرنسية: المدرسة (3)
+  { question: 'كيف نقول «سبورة» بالفرنسية؟', options: ['table', 'tableau', 'chaise', 'porte'], answer: 1 },
+  { question: 'كيف نقول «معلم» بالفرنسية؟', options: ['élève', 'directeur', 'maître', 'ami'], answer: 2 },
+  { question: 'كيف نقول «تلميذ» بالفرنسية؟', options: ['maître', 'ami', 'voisin', 'élève'], answer: 3 },
+  // عربية ← فرنسية: أجزاء الجسم (3)
+  { question: 'كيف نقول «شعر» بالفرنسية؟', options: ['cheveux', 'dent', 'langue', 'nez'], answer: 0 },
+  { question: 'كيف نقول «سن» بالفرنسية؟', options: ['langue', 'dent', 'bouche', 'œil'], answer: 1 },
+  { question: 'كيف نقول «لسان» بالفرنسية؟', options: ['dent', 'bouche', 'langue', 'nez'], answer: 2 },
+  // عربية ← فرنسية: الطعام (4)
+  { question: 'كيف نقول «عنب» بالفرنسية؟', options: ['pomme', 'banane', 'fraise', 'raisin'], answer: 3 },
+  { question: 'كيف نقول «جزر» بالفرنسية؟', options: ['carotte', 'pomme de terre', 'tomate', 'oignon'], answer: 0 },
+  { question: 'كيف نقول «بطاطس» بالفرنسية؟', options: ['carotte', 'pomme de terre', 'tomate', 'salade'], answer: 1 },
+  { question: 'كيف نقول «ماء» بالفرنسية؟', options: ['lait', 'jus', 'eau', 'thé'], answer: 2 },
+  // عربية ← فرنسية: الأعداد (3)
+  { question: 'كيف نقول «سبعة» بالفرنسية؟', options: ['six', 'huit', 'neuf', 'sept'], answer: 3 },
+  { question: 'كيف نقول «ثمانية» بالفرنسية؟', options: ['huit', 'sept', 'neuf', 'dix'], answer: 0 },
+  { question: 'كيف نقول «تسعة» بالفرنسية؟', options: ['neuf', 'huit', 'dix', 'sept'], answer: 1 },
+  // عربية ← فرنسية: الأفعال البسيطة (4)
+  { question: 'كيف نقول «يسبح» بالفرنسية؟', options: ['courir', 'sauter', 'nager', 'danser'], answer: 2 },
+  { question: 'كيف نقول «يرسم» بالفرنسية؟', options: ['lire', 'écrire', 'chanter', 'dessiner'], answer: 3 },
+  { question: 'كيف نقول «يغني» بالفرنسية؟', options: ['chanter', 'danser', 'jouer', 'rire'], answer: 0 },
+  { question: 'كيف نقول «يقفز» بالفرنسية؟', options: ['courir', 'sauter', 'marcher', 'nager'], answer: 1 },
+  // عربية ← فرنسية: البيت والطبيعة (4)
+  { question: 'كيف نقول «بيت» بالفرنسية؟', options: ['école', 'jardin', 'maison', 'rue'], answer: 2 },
+  { question: 'كيف نقول «نافذة» بالفرنسية؟', options: ['porte', 'mur', 'toit', 'fenêtre'], answer: 3 },
+  { question: 'كيف نقول «شمس» بالفرنسية؟', options: ['soleil', 'lune', 'étoile', 'ciel'], answer: 0 },
+  { question: 'كيف نقول «شجرة» بالفرنسية؟', options: ['fleur', 'arbre', 'herbe', 'forêt'], answer: 1 },
+];

@@ -2543,13 +2543,16 @@ body {
   line-height: 1.7;
 }
 
+/* طباعة الشهادة فقط: إخفاء كل شيء إلا ورقة الشهادة، وفقط عندما تكون الشهادة معروضة.
+   القاعدة القديمة (body * { visibility: hidden }) كانت تُبيّض كل الصفحات الأخرى عند الطباعة،
+   منها جذاذة الأستاذ — لذلك صارت مقيّدة بـ :has(.certificate-sheet). */
 @media print {
-  body * {
+  body:has(.certificate-sheet) * {
     visibility: hidden;
   }
 
-  .certificate-sheet,
-  .certificate-sheet * {
+  body:has(.certificate-sheet) .certificate-sheet,
+  body:has(.certificate-sheet) .certificate-sheet * {
     visibility: visible;
   }
 

@@ -12,6 +12,7 @@ import { MatchingGame } from '../games/MatchingGame';
 import { OrderingGame } from '../games/OrderingGame';
 import { ValuesGame } from '../games/ValuesGame';
 import { LifeSkillsGame } from '../games/LifeSkillsGame';
+import { KnowledgeGame } from '../games/KnowledgeGame';
 
 export function GameView({ gameId, level }: { gameId: GameId; level: Level }) {
   const meta = gameById(gameId);
@@ -75,6 +76,7 @@ export function GameView({ gameId, level }: { gameId: GameId; level: Level }) {
       {gameId === 'ordering' && <OrderingGame key={`ordering-${attempt}`} {...props} />}
       {gameId === 'values' && <ValuesGame key={`values-${attempt}`} {...props} />}
       {gameId === 'lifeskills' && <LifeSkillsGame key={`lifeskills-${attempt}`} {...props} />}
+      {gameId === 'knowledge' && <KnowledgeGame key={`knowledge-${attempt}`} {...props} />}
     </div>
   );
 }
