@@ -18,6 +18,7 @@ import { l6ArabicImla } from './l6-arabic-imla';
 import { l6FrenchGrammaire } from './l6-french-grammaire';
 import { l6FrenchConjugaison } from './l6-french-conjugaison';
 import { l6FrenchOrthographe } from './l6-french-orthographe';
+import { l6MathGeometrie } from './l6-math-geometrie';
 
 export const LESSONS: Lesson[] = [
   ...level1,
@@ -38,6 +39,8 @@ export const LESSONS: Lesson[] = [
   ...l6FrenchGrammaire,
   ...l6FrenchConjugaison,
   ...l6FrenchOrthographe,
+  // الهندسة للسادس حسب التوزيع السنوي الرسمي — بعد الفرنسية.
+  ...l6MathGeometrie,
   ...level6,
   ...extras[6],
   ...l6ExamMath,
