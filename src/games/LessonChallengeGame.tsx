@@ -6,6 +6,7 @@ import { GameResult } from './GameResult';
 
 interface Question {
   question: string;
+  visual?: string;
   hint?: string;
   options: { text: string; correct: boolean }[];
 }
@@ -48,6 +49,7 @@ export function LessonChallengeGame({ lesson }: { lesson: Lesson }) {
     const quiz = lesson.steps.filter((step) => step.kind === 'quiz');
     return shuffle(quiz).map((step) => ({
       question: step.question,
+      visual: step.visual,
       hint: step.hint,
       options: shuffle(
         step.options.map((text, optionIndex) => ({ text, correct: optionIndex === step.answer })),
@@ -130,6 +132,11 @@ export function LessonChallengeGame({ lesson }: { lesson: Lesson }) {
           <span style={{ width: `${((index + 1) / questions.length) * 100}%` }} />
         </div>
         <p className="value-situation">{question.question}</p>
+        {question.visual && (
+          <div className="step-visual" aria-hidden="true">
+            {question.visual}
+          </div>
+        )}
         <div className="value-options">
           {question.options.map((option, optionIndex) => {
             let className = 'answer-btn';
