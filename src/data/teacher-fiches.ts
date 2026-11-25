@@ -13,6 +13,11 @@ import { OFFICIAL_FICHES_SCIENCE6_B } from './fiches-l6-science-b';
 import { OFFICIAL_FICHES_SOCIAL6_A } from './fiches-l6-social-a';
 import { OFFICIAL_FICHES_SOCIAL6_B } from './fiches-l6-social-b';
 import { OFFICIAL_FICHES_SOCIAL6_C } from './fiches-l6-social-c';
+import { OFFICIAL_FICHES_FRENCH6_A } from './fiches-l6-french-a';
+import { OFFICIAL_FICHES_FRENCH6_B } from './fiches-l6-french-b';
+import { OFFICIAL_FICHES_FRENCH6_C } from './fiches-l6-french-c';
+import { OFFICIAL_FICHES_ISLAMIC6_A } from './fiches-l6-islamic-a';
+import { OFFICIAL_FICHES_ISLAMIC6_B } from './fiches-l6-islamic-b';
 
 /**
  * الجذاذات الرسمية من دلائل الأستاذ المعتمدة، مفتاحها معرّف الدرس.
@@ -34,5 +39,10 @@ export const OFFICIAL_FICHES: Record<string, OfficialFiche> = Object.fromEntries
     ...OFFICIAL_FICHES_SOCIAL6_A,
     ...OFFICIAL_FICHES_SOCIAL6_B,
     ...OFFICIAL_FICHES_SOCIAL6_C,
+    ...OFFICIAL_FICHES_FRENCH6_A,
+    ...OFFICIAL_FICHES_FRENCH6_B,
+    ...OFFICIAL_FICHES_FRENCH6_C,
+    ...OFFICIAL_FICHES_ISLAMIC6_A,
+    ...OFFICIAL_FICHES_ISLAMIC6_B,
   ].map((fiche) => [fiche.lessonId, fiche]),
 );
