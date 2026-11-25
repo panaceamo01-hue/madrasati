@@ -18,7 +18,10 @@ export type Route =
   | { name: 'surah'; id: string }
   | { name: 'leaderboard' }
   | { name: 'activate' }
-  | { name: 'admin' };
+  | { name: 'admin' }
+  | { name: 'teacher' }
+  | { name: 'teacherLesson'; id: string }
+  | { name: 'teacherGame'; id: string };
 
 const GAME_IDS: GameId[] = ['memory', 'math', 'words', 'matching', 'ordering', 'values', 'lifeskills'];
 
@@ -64,6 +67,13 @@ export function parseRoute(hash: string): Route {
   if (parts[0] === 'leaderboard') return { name: 'leaderboard' };
   if (parts[0] === 'activate') return { name: 'activate' };
   if (parts[0] === 'admin') return { name: 'admin' };
+  if (parts[0] === 'teacher' && !parts[1]) return { name: 'teacher' };
+  if (parts[0] === 'teacher' && parts[1] === 'lesson' && parts[2]) {
+    return { name: 'teacherLesson', id: decodeURIComponent(parts[2]) };
+  }
+  if (parts[0] === 'teacher' && parts[1] === 'game' && parts[2]) {
+    return { name: 'teacherGame', id: decodeURIComponent(parts[2]) };
+  }
   return { name: 'home' };
 }
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { resetProgress, setSetting } from '../lib/store';
+import { clearRole, loadRole } from '../lib/role';
 import { useProgress } from '../lib/useProgress';
 import { speechAvailable } from '../lib/speech';
 import { checkForUpdate } from '../lib/swUpdate';
@@ -117,6 +118,16 @@ export function SettingsView() {
 
   const info = offlineText[offline];
 
+  const role = loadRole();
+
+  function handleChangeRole() {
+    const confirmed = window.confirm('هل تريد تغيير دورك (ولي أمر أو أستاذ)؟ ستظهر شاشة اختيار الدور من جديد.');
+    if (!confirmed) return;
+    clearRole();
+    window.location.hash = '#/';
+    window.location.reload();
+  }
+
   return (
     <>
       <div className="page-head">
@@ -126,14 +137,16 @@ export function SettingsView() {
         </div>
       </div>
 
-      <a className="parent-teaser" href="#/parent">
-        <span className="parent-teaser-emoji" aria-hidden="true">👨‍👩‍👧</span>
-        <span>
-          <strong>مساحة ولي الأمر</strong>
-          <small>مستوى ابنك، وإخفاء بقية المستويات، وشرح نظام الأسابيع والأقفال.</small>
-        </span>
-        <span className="cta">افتح ←</span>
-      </a>
+      {role !== 'teacher' && (
+        <a className="parent-teaser" href="#/parent">
+          <span className="parent-teaser-emoji" aria-hidden="true">👨‍👩‍👧</span>
+          <span>
+            <strong>مساحة ولي الأمر</strong>
+            <small>مستوى ابنك، وإخفاء بقية المستويات، وشرح نظام الأسابيع والأقفال.</small>
+          </span>
+          <span className="cta">افتح ←</span>
+        </a>
+      )}
 
       <div className={`offline-box${info.pending ? ' pending' : ''}`}>
         <span className="dot" aria-hidden="true" />
@@ -319,6 +332,23 @@ export function SettingsView() {
             disabled={updateState === 'checking'}
           >
             تحقق من وجود تحديث
+          </button>
+        </div>
+      </div>
+
+      <div className="settings-card">
+        <h2 className="settings-title">🔄 تغيير الدور</h2>
+        <div className="setting-row">
+          <div>
+            <p>دورك الحالي: {role === 'teacher' ? 'أستاذ(ة)' : 'ولي أمر'}</p>
+            <small>
+              {role === 'teacher'
+                ? 'أنت الآن في مساحة الأستاذ(ة). بدّل الدور لتدخل مساحة الأطفال كولي أمر.'
+                : 'أنت الآن في مساحة الأطفال. بدّل الدور لتدخل مساحة الأستاذ(ة): الجذاذات وألعاب الدروس.'}
+            </small>
+          </div>
+          <button className="btn ghost small" onClick={handleChangeRole}>
+            تغيير الدور
           </button>
         </div>
       </div>

@@ -3,6 +3,7 @@ import { parseRoute, type Route } from './lib/router';
 import { useProgress } from './lib/useProgress';
 import { totalStars, addMinutes } from './lib/store';
 import { loadLicense, revalidateLicense } from './lib/license';
+import { loadRole, saveRole, type UserRole } from './lib/role';
 import { clearSetupDone, isSetupDone, markSetupDone } from './lib/setup';
 import { LESSON_BY_ID } from './data';
 import { BottomNav } from './components/BottomNav';
@@ -25,6 +26,10 @@ import { LeaderboardView } from './views/LeaderboardView';
 import { ActivationView } from './views/ActivationView';
 import { SetupView } from './views/SetupView';
 import { AdminView } from './views/AdminView';
+import { RoleView } from './views/RoleView';
+import { TeacherHome } from './views/TeacherHome';
+import { TeacherLessonView } from './views/TeacherLessonView';
+import { TeacherGameView } from './views/TeacherGameView';
 import { NotFound } from './views/NotFound';
 
 function currentRoute(): Route {
@@ -37,6 +42,8 @@ export function App() {
   const stars = totalStars(progress.stars);
   /** هل فُعّل التطبيق بكود على هذا الجهاز؟ (الترخيص محفوظ محليًا فيبقى بعد التحديثات.) */
   const [licensed, setLicensed] = useState<boolean>(() => loadLicense() !== null);
+  /** دور المستعمل: ولي أمر (مساحة الأطفال) أو أستاذ(ة) (مساحة الأستاذ). */
+  const [role, setRole] = useState<UserRole | null>(() => loadRole());
   /** إعداد حسابات الأبناء لأول مرة: يظهر المعالج مرة واحدة بعد التفعيل. */
   const [setupDone, setSetupDone] = useState<boolean>(() => isSetupDone());
   const [setupOpen, setSetupOpen] = useState(false);
@@ -125,9 +132,30 @@ export function App() {
     );
   }
 
+  // بعد التفعيل: من فعّل من قبل بلا دور محفوظ يختار دوره مرة واحدة.
+  if (licensed && role === null) {
+    return (
+      <div className="app-shell">
+        <UpdateBanner />
+        <main className="app-main" id="main" tabIndex={-1}>
+          <div className="container">
+            <RoleView
+              onChoose={(nextRole) => {
+                saveRole(nextRole);
+                setRole(nextRole);
+                window.location.hash = nextRole === 'teacher' ? '#/teacher' : '#/';
+              }}
+            />
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   // بعد التفعيل مباشرة: معالج إعداد حسابات الأبناء (عدد الأبناء ومستوى كل
   // واحد)، يظهر مرة واحدة، ويمكن إعادة فتحه من مساحة ولي الأمر.
-  if (licensed && (!setupDone || setupOpen)) {
+  // (ولي الأمر فقط؛ الأستاذ لا يحتاج حسابات أبناء.)
+  if (licensed && role === 'parent' && (!setupDone || setupOpen)) {
     return (
       <div className="app-shell">
         <UpdateBanner />
@@ -141,6 +169,48 @@ export function App() {
                 window.location.hash = '#/';
               }}
             />
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  // مساحة الأستاذ(ة): جذاذات وألعاب الدروس، بلا حسابات أبناء ولا دروس الأطفال.
+  if (role === 'teacher') {
+    return (
+      <div className="app-shell">
+        <UpdateBanner />
+        <a className="skip-link" href="#main">
+          تخطَّ إلى المحتوى
+        </a>
+        <header className="topbar">
+          <div className="container topbar-inner">
+            <a className="brand" href="#/teacher">
+              <span className="brand-mark" aria-hidden="true">
+                🎒
+              </span>
+              <span className="brand-text">
+                مدرستي
+                <small>مساحة الأستاذ(ة)</small>
+              </span>
+            </a>
+            <a className="stars-pill" href="#/settings" title="الإعدادات">
+              ⚙️ الإعدادات
+            </a>
+          </div>
+        </header>
+
+        <main className="app-main" id="main" tabIndex={-1}>
+          <div className="container">
+            {route.name === 'teacherLesson' ? (
+              <TeacherLessonView id={route.id} />
+            ) : route.name === 'teacherGame' ? (
+              <TeacherGameView key={route.id} id={route.id} />
+            ) : route.name === 'settings' ? (
+              <SettingsView />
+            ) : (
+              <TeacherHome />
+            )}
           </div>
         </main>
       </div>
@@ -201,6 +271,9 @@ export function App() {
           {route.name === 'surah' && <SurahView key={route.id} surahId={route.id} />}
           {route.name === 'leaderboard' && <LeaderboardView />}
           {route.name === 'activate' && <Home />}
+          {(route.name === 'teacher' ||
+            route.name === 'teacherLesson' ||
+            route.name === 'teacherGame') && <Home />}
         </div>
       </main>
 

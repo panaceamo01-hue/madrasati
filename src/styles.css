@@ -1643,3 +1643,204 @@ html[dir='rtl'] .switch input:checked + span::after {
     scroll-behavior: auto !important;
   }
 }
+
+/* اختيار الدور: ولي أمر أو أستاذ(ة) */
+.role-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.role-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 20px 12px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+}
+
+.role-card:hover,
+.role-card:focus-visible {
+  border-color: var(--green);
+  outline: none;
+}
+
+.role-emoji {
+  font-size: 42px;
+  line-height: 1;
+}
+
+.role-card strong {
+  font-size: 18px;
+}
+
+.role-card span:last-child {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+@media (max-width: 480px) {
+  .role-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* مساحة الأستاذ(ة): قائمة الدروس */
+.teacher-search {
+  margin-top: 14px;
+}
+
+.teacher-lessons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.teacher-lesson {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.teacher-lesson .emoji {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.teacher-lesson-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.teacher-lesson-info strong {
+  line-height: 1.4;
+}
+
+.teacher-lesson-info small {
+  color: var(--muted);
+}
+
+.teacher-lesson-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 560px) {
+  .teacher-lesson {
+    flex-wrap: wrap;
+  }
+  .teacher-lesson-actions {
+    width: 100%;
+  }
+  .teacher-lesson-actions .btn {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+/* جذاذة الدرس */
+.fiche-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  padding: 22px;
+}
+
+.fiche-kicker {
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+
+.fiche-objective {
+  background: var(--green-soft);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+}
+
+.fiche-section {
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+  margin-top: 16px;
+}
+
+.fiche-section h2 {
+  font-size: 19px;
+  color: var(--green);
+}
+
+.fiche-steps {
+  padding-inline-start: 22px;
+}
+
+.fiche-steps li {
+  margin-bottom: 12px;
+}
+
+.fiche-visual {
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  white-space: pre-wrap;
+}
+
+.fiche-tip {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.fiche-options {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0 0;
+}
+
+.fiche-options li {
+  padding: 4px 10px;
+  border-radius: 8px;
+  margin-bottom: 4px;
+}
+
+.fiche-options li.correct {
+  background: var(--green-soft);
+  font-weight: 700;
+}
+
+/* طباعة الجذاذة: الورقة فقط، بلا شريط علوي ولا أزرار */
+@media print {
+  .topbar,
+  .bottom-nav,
+  .skip-link,
+  .update-banner,
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+  .app-main {
+    padding: 0;
+  }
+  .fiche-card {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+}

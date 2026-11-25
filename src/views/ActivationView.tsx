@@ -5,6 +5,8 @@ import {
   type ActivateError,
   type OwnerError,
 } from '../lib/license';
+import { saveRole, type UserRole } from '../lib/role';
+import { RoleChoice } from './RoleView';
 
 const ERROR_TEXT: Record<ActivateError, string> = {
   invalid_code: 'الكود غير صحيح. تأكد من الكود وأعد المحاولة.',
@@ -26,8 +28,9 @@ interface Props {
   onActivated: () => void;
 }
 
-/** شاشة تفعيل التطبيق بكود، تظهر لولي الأمر قبل استعمال التطبيق. */
+/** شاشة تفعيل التطبيق بكود، تظهر قبل استعمال التطبيق. يختار المستعمل دوره أولًا (ولي أمر أو أستاذ)، ثم يدخل الكود؛ والدور نفسه يسري على الأستاذ وولي الأمر. */
 export function ActivationView({ onActivated }: Props) {
+  const [role, setRole] = useState<UserRole | null>(null);
   const [code, setCode] = useState('');
   const [error, setError] = useState<ActivateError | null>(null);
   const [busy, setBusy] = useState(false);
@@ -56,6 +59,7 @@ export function ActivationView({ onActivated }: Props) {
     const result = await activateLicense(clean);
     setBusy(false);
     if (result.ok) {
+      if (role) saveRole(role);
       setSuccessMessage('مبروك تم تفعيل الكود الخاص بك صالح مدى الحياة');
       setSuccess(true);
       return;
@@ -70,6 +74,7 @@ export function ActivationView({ onActivated }: Props) {
     const result = await activateOwner(ownerPassword);
     setBusy(false);
     if (result.ok) {
+      if (role) saveRole(role);
       setSuccessMessage('مرحبًا بك، تم الدخول كمالك للتطبيق');
       setSuccess(true);
       return;
@@ -97,11 +102,19 @@ export function ActivationView({ onActivated }: Props) {
             <p>{successMessage}</p>
             <p className="license-note">جارٍ فتح التطبيق…</p>
           </div>
+        ) : role === null ? (
+          <RoleChoice onChoose={setRole} />
         ) : (
           <>
             <p className="license-lede">
               أدخل الكود الذي أرسله لك صاحب التطبيق لتفعيله. الكود يعمل على جهازين فقط،
               ويبقى صالحًا دائمًا.
+            </p>
+            <p className="license-note">
+              دورك: {role === 'teacher' ? 'أستاذ(ة)' : 'ولي أمر'} ·{' '}
+              <button type="button" className="link-button" onClick={() => setRole(null)}>
+                تغيير الدور
+              </button>
             </p>
         <label className="field" htmlFor="activation-code">
           <span>كود التفعيل</span>
@@ -141,7 +154,7 @@ export function ActivationView({ onActivated }: Props) {
           </>
         )}
       </div>
-      {!success && (
+      {!success && role !== null && (
         <div className="license-owner">
           {!ownerMode ? (
             <button
