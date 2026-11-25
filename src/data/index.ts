@@ -21,6 +21,9 @@ import { l6FrenchOrthographe } from './l6-french-orthographe';
 import { l6MathGeometrie } from './l6-math-geometrie';
 import { l6IslamicIbadat } from './l6-islamic-ibadat';
 import { l6IslamicSira } from './l6-islamic-sira';
+import { l6SocialGeo } from './l6-social-geo';
+import { l6SocialHistory } from './l6-social-history';
+import { l6SocialCivics } from './l6-social-civics';
 
 export const LESSONS: Lesson[] = [
   ...level1,
@@ -46,6 +49,10 @@ export const LESSONS: Lesson[] = [
   // التربية الإسلامية للسادس حسب التوزيع السنوي الرسمي — بعد الهندسة.
   ...l6IslamicIbadat,
   ...l6IslamicSira,
+  // الاجتماعيات للسادس حسب التوزيع السنوي الرسمي — بعد الإسلامية.
+  ...l6SocialGeo,
+  ...l6SocialHistory,
+  ...l6SocialCivics,
   ...level6,
   ...extras[6],
   ...l6ExamMath,
