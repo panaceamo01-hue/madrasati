@@ -1,4 +1,5 @@
 import { LESSON_BY_ID } from '../data';
+import { OFFICIAL_FICHES } from '../data/teacher-fiches';
 import { LEVEL_NAMES, SUBJECT_BY_ID } from '../data/subjects';
 import { NotFound } from './NotFound';
 
@@ -11,6 +12,7 @@ export function TeacherLessonView({ id }: { id: string }) {
   const teach = lesson.steps.filter((step) => step.kind === 'teach');
   const quiz = lesson.steps.filter((step) => step.kind === 'quiz');
   const firstHook = teach[0]?.hook;
+  const fiche = OFFICIAL_FICHES[lesson.id];
 
   return (
     <div className="fiche">
@@ -43,6 +45,31 @@ export function TeacherLessonView({ id }: { id: string }) {
             🖨️ طباعة الجذاذة
           </button>
         </div>
+
+        {fiche && (
+          <section className="fiche-section fiche-official">
+            <h2>📖 الجذاذة الرسمية والسيناريو البيداغوجي</h2>
+            <p className="fiche-source">
+              مصدر معتمد: {fiche.source} · الدرس {fiche.lessonNumber}
+            </p>
+            {fiche.sessions.map((session, sessionIndex) => (
+              <div className="fiche-session" key={sessionIndex}>
+                <h3>{session.name}</h3>
+                <p>
+                  <strong>الكفايات:</strong> {session.objective}
+                </p>
+                <ol className="fiche-steps">
+                  {session.activities.map((activity, activityIndex) => (
+                    <li key={activityIndex}>
+                      <strong>{activity.title}</strong>
+                      <p>{activity.description}</p>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))}
+          </section>
+        )}
 
         <section className="fiche-section">
           <h2>وضعية الانطلاق</h2>

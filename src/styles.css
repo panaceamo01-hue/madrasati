@@ -1823,6 +1823,36 @@ html[dir='rtl'] .switch input:checked + span::after {
   font-weight: 700;
 }
 
+/* الجذاذة الرسمية من دليل معتمد */
+.fiche-source {
+  color: var(--muted);
+  font-size: 15px;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+}
+
+.fiche-session {
+  margin-top: 14px;
+}
+
+.fiche-session h3 {
+  font-size: 17px;
+  color: var(--green);
+  margin-bottom: 6px;
+}
+
+.fiche-official-badge {
+  display: inline-block;
+  background: var(--green-soft);
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 2px 10px;
+  margin-top: 4px;
+}
+
 /* طباعة الجذاذة: الورقة فقط، بلا شريط علوي ولا أزرار */
 @media print {
   .topbar,

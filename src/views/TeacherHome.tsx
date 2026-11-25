@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { lessonsFor } from '../data';
+import { OFFICIAL_FICHES } from '../data/teacher-fiches';
 import { LEVEL_NAMES, LEVELS, SUBJECTS } from '../data/subjects';
 import type { Level, SubjectId } from '../types';
 
@@ -95,6 +96,9 @@ export function TeacherHome() {
                 <small>
                   {meta?.emoji} {meta?.name} · {LEVEL_NAMES[lesson.level]}
                 </small>
+                {OFFICIAL_FICHES[lesson.id] && (
+                  <span className="fiche-official-badge">📖 جذاذة رسمية</span>
+                )}
               </div>
               <div className="teacher-lesson-actions">
                 <a className="btn ghost small" href={`#/teacher/lesson/${lesson.id}`}>

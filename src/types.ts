@@ -104,7 +104,29 @@ export interface GameMeta {
   skill: string;
 }
 
-/** موقف في لعبة المهارات الحياتية: وضعية من الحياة اليومية بأربعة خيارات. */
+/** نشاط داخل حصة من جذاذة رسمية: عنوانه ووصفه كما في الدليل. */
+export interface FicheActivity {
+  title: string;
+  description: string;
+}
+
+/** حصة من جذاذة رسمية: اسمها وكفاياتها وأنشطتها بالترتيب. */
+export interface FicheSession {
+  name: string;
+  objective: string;
+  activities: FicheActivity[];
+}
+
+/** الجذاذة الرسمية لدرس، من دليل الأستاذ المعتمد (مع السيناريو البيداغوجي مضمّنًا في الحصص وأنشطتها). */
+export interface OfficialFiche {
+  /** معرّف الدرس في التطبيق، مثل 'l6-math-big-numbers'. */
+  lessonId: string;
+  /** المصدر المعتمد، مثل «دليل الجديد في الرياضيات — المستوى السادس». */
+  source: string;
+  /** رقم الدرس في الدليل. */
+  lessonNumber: number;
+  sessions: FicheSession[];
+}
 export interface LifeSkillScenario {
   situation: string;
   emoji: string;
