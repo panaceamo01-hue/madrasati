@@ -5,6 +5,7 @@ import {
   KNOWLEDGE_ROUND_SIZE,
   drawKnowledgeQuestions,
   knowledgeRemaining,
+  markKnowledgeSeen,
   type KnowledgeBranch,
 } from '../data/knowledge-quiz';
 import { playCorrect, playWin, playWrong } from '../lib/sound';
@@ -35,6 +36,7 @@ function toRoundQuestions(bank: KnowledgeQuestion[]): RoundQuestion[] {
 export function KnowledgeGame({ best, onFinish, onReplay }: Props) {
   const [branch, setBranch] = useState<KnowledgeBranch | null>(null);
   const [questions, setQuestions] = useState<RoundQuestion[]>([]);
+  const [indices, setIndices] = useState<number[]>([]);
   const [index, setIndex] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
   const [score, setScore] = useState(0);
@@ -45,7 +47,9 @@ export function KnowledgeGame({ best, onFinish, onReplay }: Props) {
   const isLast = index === questions.length - 1;
 
   function chooseBranch(id: KnowledgeBranch) {
-    setQuestions(toRoundQuestions(drawKnowledgeQuestions(id)));
+    const drawn = drawKnowledgeQuestions(id);
+    setQuestions(toRoundQuestions(drawn.questions));
+    setIndices(drawn.indices);
     setBranch(id);
     setIndex(0);
     setPicked(null);
@@ -56,6 +60,8 @@ export function KnowledgeGame({ best, onFinish, onReplay }: Props) {
   function pick(optionIndex: number) {
     if (picked !== null) return;
     setPicked(optionIndex);
+    // السؤال يُستهلك عند الإجابة عنه فقط: من ترك الجولة في منتصفها لا تضيع عليه الأسئلة التي لم يجب عنها.
+    if (branch) markKnowledgeSeen(branch, [indices[index]]);
     if (question.options[optionIndex].correct) {
       setScore((value) => value + 10);
       playCorrect();
@@ -79,6 +85,7 @@ export function KnowledgeGame({ best, onFinish, onReplay }: Props) {
   function backToBranches() {
     setBranch(null);
     setQuestions([]);
+    setIndices([]);
     setIndex(0);
     setPicked(null);
     setScore(0);

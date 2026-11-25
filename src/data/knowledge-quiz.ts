@@ -65,17 +65,21 @@ export function knowledgeRemaining(branch: KnowledgeBranch): number {
 /**
  * يسحب 10 أسئلة جديدة بلا تكرار لهذا الابن في هذا الفرع.
  * عندما تنفد الأسئلة غير المعروضة (بعد 10 جولات) تبدأ دورة جديدة مخلوطة.
+ * السحب لا يسجّل الأسئلة كمستهلكة؛ التسجيل يتم عند الإجابة عن كل سؤال
+ * (انظر markKnowledgeSeen)، حتى لا تضيع أسئلة جولة تُركت في منتصفها.
  * السحب يتم من معالج حدث (اختيار الفرع) لا من useMemo، لأن StrictMode
  * يستدعي useMemo مرتين في التطوير فيُسجَّل ضعف الأسئلة.
  */
-export function drawKnowledgeQuestions(branch: KnowledgeBranch): KnowledgeQuestion[] {
+export function drawKnowledgeQuestions(branch: KnowledgeBranch): {
+  questions: KnowledgeQuestion[];
+  indices: number[];
+} {
   const bank = KNOWLEDGE_BANKS[branch];
   const key = seenKey(branch);
   const all = loadSeen();
-  let seen = new Set(all[key] ?? []);
+  const seen = new Set(all[key] ?? []);
   let unseen = bank.map((_, index) => index).filter((index) => !seen.has(index));
   if (unseen.length < KNOWLEDGE_ROUND_SIZE) {
-    seen = new Set();
     unseen = bank.map((_, index) => index);
   }
   const picked: number[] = [];
@@ -83,12 +87,20 @@ export function drawKnowledgeQuestions(branch: KnowledgeBranch): KnowledgeQuesti
     const at = Math.floor(Math.random() * unseen.length);
     picked.push(unseen.splice(at, 1)[0]);
   }
-  picked.forEach((index) => seen.add(index));
+  return { questions: picked.map((index) => bank[index]), indices: picked };
+}
+
+/** يسجّل الأسئلة التي أجاب عنها الطفل فعلًا، فيُستهلك السؤال عند الإجابة عنه لا عند بدء الجولة. */
+export function markKnowledgeSeen(branch: KnowledgeBranch, indices: number[]): void {
+  if (indices.length === 0) return;
+  const key = seenKey(branch);
+  const all = loadSeen();
+  const seen = new Set(all[key] ?? []);
+  indices.forEach((index) => seen.add(index));
   all[key] = [...seen];
   try {
     localStorage.setItem(SEEN_KEY, JSON.stringify(all));
   } catch {
     // التخزين ممتلئ أو غير متاح: اللعبة تستمر بلا تتبع للأسئلة المعروضة.
   }
-  return picked.map((index) => bank[index]);
 }
