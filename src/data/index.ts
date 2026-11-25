@@ -24,6 +24,9 @@ import { l6IslamicSira } from './l6-islamic-sira';
 import { l6SocialGeo } from './l6-social-geo';
 import { l6SocialHistory } from './l6-social-history';
 import { l6SocialCivics } from './l6-social-civics';
+import { l6MathDivFrac } from './l6-math-div-frac';
+import { l6MathApplied } from './l6-math-applied';
+import { l6MathPrismCylinder } from './l6-math-prism-cylinder';
 
 export const LESSONS: Lesson[] = [
   ...level1,
@@ -53,6 +56,10 @@ export const LESSONS: Lesson[] = [
   ...l6SocialGeo,
   ...l6SocialHistory,
   ...l6SocialCivics,
+  // الرياضيات للسادس (باقي الفجوات) حسب التوزيع السنوي الرسمي — بعد الاجتماعيات.
+  ...l6MathDivFrac,
+  ...l6MathApplied,
+  ...l6MathPrismCylinder,
   ...level6,
   ...extras[6],
   ...l6ExamMath,
