@@ -38,6 +38,7 @@ export function ActivationView({ onActivated }: Props) {
   const [successMessage, setSuccessMessage] = useState('');
   const [ownerMode, setOwnerMode] = useState(false);
   const [ownerPassword, setOwnerPassword] = useState('');
+  const [showOwnerPassword, setShowOwnerPassword] = useState(false);
   const [ownerError, setOwnerError] = useState<OwnerError | null>(null);
 
   // بعد رسالة النجاح نفتح التطبيق تلقائيًا بعد ثانيتين ونصف.
@@ -168,23 +169,36 @@ export function ActivationView({ onActivated }: Props) {
             <div className="license-card owner-card">
               <label className="field" htmlFor="owner-password">
                 <span>كلمة سر الإدارة</span>
-                <input
-                  id="owner-password"
-                  className="license-input"
-                  type="password"
-                  autoComplete="current-password"
-                  dir="ltr"
-                  value={ownerPassword}
-                  onChange={(event) => {
-                    setOwnerPassword(event.target.value);
-                    setOwnerError(null);
-                  }}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter') void submitOwner();
-                  }}
-                  placeholder="كلمة السر"
-                  aria-label="كلمة سر الإدارة"
-                />
+                <div className="password-wrap">
+                  <input
+                    id="owner-password"
+                    className="owner-input"
+                    type={showOwnerPassword ? 'text' : 'password'}
+                    autoComplete="current-password"
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck={false}
+                    dir="ltr"
+                    value={ownerPassword}
+                    onChange={(event) => {
+                      setOwnerPassword(event.target.value);
+                      setOwnerError(null);
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter') void submitOwner();
+                    }}
+                    placeholder="كلمة السر"
+                    aria-label="كلمة سر الإدارة"
+                  />
+                  <button
+                    type="button"
+                    className="btn ghost small"
+                    onClick={() => setShowOwnerPassword((value) => !value)}
+                    aria-label={showOwnerPassword ? 'إخفاء كلمة السر' : 'إظهار كلمة السر'}
+                  >
+                    {showOwnerPassword ? '🙈 إخفاء' : '👁️ إظهار'}
+                  </button>
+                </div>
               </label>
               {ownerError && (
                 <p className="gate-error" role="alert">

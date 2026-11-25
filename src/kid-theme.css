@@ -3303,6 +3303,23 @@ html.a11y-reduce-motion *::after {
   font-weight: 800;
 }
 
+/* كلمة سر المالك: تُكتب كما هي، كبيرة وصغيرة، بلا أي تحويل أو تكبير. */
+.owner-input {
+  direction: ltr;
+  text-align: left;
+}
+
+.password-wrap {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.password-wrap input {
+  flex: 1;
+  min-width: 0;
+}
+
 .license-note {
   color: var(--muted);
   font-size: 0.85rem;

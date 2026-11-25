@@ -76,6 +76,7 @@ export function AdminView() {
       return '';
     }
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [authed, setAuthed] = useState(false);
   const [gateError, setGateError] = useState('');
   const [gateBusy, setGateBusy] = useState(false);
@@ -173,21 +174,36 @@ export function AdminView() {
         <div className="license-card">
           <label className="field" htmlFor="admin-password">
             <span>كلمة سر الإدارة</span>
-            <input
-              id="admin-password"
-              type="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(event) => {
-                setPassword(event.target.value);
-                setGateError('');
-              }}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') void login(password);
-              }}
-              placeholder="كلمة السر"
-              aria-label="كلمة سر الإدارة"
-            />
+            <div className="password-wrap">
+              <input
+                id="admin-password"
+                className="owner-input"
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
+                autoCapitalize="off"
+                autoCorrect="off"
+                spellCheck={false}
+                dir="ltr"
+                value={password}
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                  setGateError('');
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') void login(password);
+                }}
+                placeholder="كلمة السر"
+                aria-label="كلمة سر الإدارة"
+              />
+              <button
+                type="button"
+                className="btn ghost small"
+                onClick={() => setShowPassword((value) => !value)}
+                aria-label={showPassword ? 'إخفاء كلمة السر' : 'إظهار كلمة السر'}
+              >
+                {showPassword ? '🙈 إخفاء' : '👁️ إظهار'}
+              </button>
+            </div>
           </label>
           {gateError && (
             <p className="gate-error" role="alert">
