@@ -1,5 +1,6 @@
 import type { KnowledgeQuestion } from '../types';
 import { getActiveProfileId } from '../lib/store';
+// إعادة نشر: أُعيد دفع هذا الملف في 2026-11-25 لإعادة تشغيل نشر Vercel بعدما لم يبدأ النشر السابق.
 import { GENERAL_QUIZ } from './quiz-general';
 import { TRANSLATION_QUIZ } from './quiz-translation';
 import { RELIGION_QUIZ } from './quiz-religion';
