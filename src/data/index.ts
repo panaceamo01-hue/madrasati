@@ -27,6 +27,9 @@ import { l6SocialCivics } from './l6-social-civics';
 import { l6MathDivFrac } from './l6-math-div-frac';
 import { l6MathApplied } from './l6-math-applied';
 import { l6MathPrismCylinder } from './l6-math-prism-cylinder';
+import { l6ScienceEnvironment } from './l6-science-environment';
+import { l6ScienceEnergy } from './l6-science-energy';
+import { l6ScienceBody } from './l6-science-body';
 
 export const LESSONS: Lesson[] = [
   ...level1,
@@ -60,6 +63,10 @@ export const LESSONS: Lesson[] = [
   ...l6MathDivFrac,
   ...l6MathApplied,
   ...l6MathPrismCylinder,
+  // النشاط العلمي للسادس (باقي الفجوات) حسب التوزيع السنوي الرسمي — بعد الرياضيات.
+  ...l6ScienceEnvironment,
+  ...l6ScienceEnergy,
+  ...l6ScienceBody,
   ...level6,
   ...extras[6],
   ...l6ExamMath,
