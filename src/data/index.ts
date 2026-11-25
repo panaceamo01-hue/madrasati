@@ -15,6 +15,9 @@ import { l6RestSocial } from './l6-rest-social';
 import { l6ArabicTarkib } from './l6-arabic-tarkib';
 import { l6ArabicSarf } from './l6-arabic-sarf';
 import { l6ArabicImla } from './l6-arabic-imla';
+import { l6FrenchGrammaire } from './l6-french-grammaire';
+import { l6FrenchConjugaison } from './l6-french-conjugaison';
+import { l6FrenchOrthographe } from './l6-french-orthographe';
 
 export const LESSONS: Lesson[] = [
   ...level1,
@@ -31,6 +34,10 @@ export const LESSONS: Lesson[] = [
   ...l6ArabicTarkib,
   ...l6ArabicSarf,
   ...l6ArabicImla,
+  // قواعد وتصريف وإملاء الفرنسية للسادس حسب التوزيع السنوي الرسمي — بعد العربية.
+  ...l6FrenchGrammaire,
+  ...l6FrenchConjugaison,
+  ...l6FrenchOrthographe,
   ...level6,
   ...extras[6],
   ...l6ExamMath,
