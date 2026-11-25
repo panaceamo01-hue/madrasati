@@ -1,4 +1,5 @@
 import type { GameId, Level } from '../types';
+import { GAMES } from '../data/games';
 
 export type Route =
   | { name: 'home' }
@@ -23,7 +24,9 @@ export type Route =
   | { name: 'teacherLesson'; id: string }
   | { name: 'teacherGame'; id: string };
 
-const GAME_IDS: GameId[] = ['memory', 'math', 'words', 'matching', 'ordering', 'values', 'lifeskills'];
+/** مشتقة من سجل الألعاب: أي لعبة جديدة تُضاف في data/games.ts يصير مسارها شغالًا تلقائيًا.
+    (القائمة المكتوبة يدويًا هنا سابقًا نسيت 'knowledge' فكان رابط اللعبة يرجع للرئيسية.) */
+const GAME_IDS: GameId[] = GAMES.map((game) => game.id);
 
 function toLevel(value: string | undefined): Level | null {
   const level = Number(value);
