@@ -1,30 +1,17 @@
 import { useEffect, useMemo, useState } from 'react';
-import type { BuildStep, GameId, Lesson, OrderStep, QuizStep, SubjectId, TeachStep } from '../types';
+import type { BuildStep, Lesson, OrderStep, QuizStep, TeachStep } from '../types';
 import { DIFFICULTY_LABEL } from '../types';
 import { nextLesson } from '../data';
 import { lessonVideo } from '../data/videos';
 import { LEVEL_NAMES, SUBJECT_BY_ID } from '../data/subjects';
-import { recordLessonMistake, recordMistake, saveGameScore, saveLessonStars, touchDaily } from '../lib/store';
+import { recordLessonMistake, recordMistake, saveLessonStars, touchDaily } from '../lib/store';
 import { useProgress } from '../lib/useProgress';
 import { examKeyLesson, examPassed } from '../lib/exam';
 import { lessonUnlocked, levelUnlocked } from '../lib/unlock';
 import { playCorrect, playWin, playWrong } from '../lib/sound';
 import { speak, stopSpeaking } from '../lib/speech';
 import { shuffle } from '../lib/shuffle';
-import { MemoryGame } from '../games/MemoryGame';
-import { MathSprint } from '../games/MathSprint';
-import { WordBuilder } from '../games/WordBuilder';
-import { MatchingGame } from '../games/MatchingGame';
-import { OrderingGame } from '../games/OrderingGame';
-
-const GAME_FOR_SUBJECT: Record<SubjectId, GameId> = {
-  arabic: 'words',
-  math: 'math',
-  islamic: 'matching',
-  science: 'memory',
-  social: 'matching',
-  french: 'matching',
-};
+import { LessonChallengeGame } from '../games/LessonChallengeGame';
 
 type Tab = 'teach' | 'video' | 'practice' | 'play';
 
@@ -44,7 +31,6 @@ export function LessonPlayer({ lesson }: { lesson: Lesson }) {
   const [solved, setSolved] = useState(false);
   const [mistakes, setMistakes] = useState(0);
   const [finished, setFinished] = useState<number | null>(null);
-  const [attempt, setAttempt] = useState(0);
 
   const progress = useProgress();
   const video = lessonVideo(lesson.id);
@@ -53,8 +39,6 @@ export function LessonPlayer({ lesson }: { lesson: Lesson }) {
   const showVideo = Boolean(video && progress.settings.videosEnabled);
   const subject = SUBJECT_BY_ID[lesson.subject];
   const following = nextLesson(lesson);
-  const gameId = GAME_FOR_SUBJECT[lesson.subject];
-  const gameBest = progress.gameBest[`${gameId}:${lesson.level}`] ?? 0;
 
   const teachStep = teachSteps[teachIndex];
   const practiceStep = practiceSteps[practiceIndex];
@@ -374,51 +358,10 @@ export function LessonPlayer({ lesson }: { lesson: Lesson }) {
       {tab === 'play' && (
         <div className="lesson-game">
           <div className="lesson-game-head">
-            <h2>🎮 لعبة مرتبطة بالدرس</h2>
-            <p>لعبة المستوى {LEVEL_NAMES[lesson.level]}، نتيجتها تُحفظ في ملفك.</p>
+            <h2>🎮 تحدي الدرس</h2>
+            <p>أسئلة هذا الدرس نفسه في شكل لعبة — كل إجابة صحيحة 10 نقاط.</p>
           </div>
-          <div className="game-embed" key={`${gameId}-${attempt}`}>
-            {gameId === 'memory' && (
-              <MemoryGame
-                level={lesson.level}
-                best={gameBest}
-                onFinish={(score) => saveGameScore(gameId, lesson.level, score)}
-                onReplay={() => setAttempt((value) => value + 1)}
-              />
-            )}
-            {gameId === 'math' && (
-              <MathSprint
-                level={lesson.level}
-                best={gameBest}
-                onFinish={(score) => saveGameScore(gameId, lesson.level, score)}
-                onReplay={() => setAttempt((value) => value + 1)}
-              />
-            )}
-            {gameId === 'words' && (
-              <WordBuilder
-                level={lesson.level}
-                best={gameBest}
-                onFinish={(score) => saveGameScore(gameId, lesson.level, score)}
-                onReplay={() => setAttempt((value) => value + 1)}
-              />
-            )}
-            {gameId === 'matching' && (
-              <MatchingGame
-                level={lesson.level}
-                best={gameBest}
-                onFinish={(score) => saveGameScore(gameId, lesson.level, score)}
-                onReplay={() => setAttempt((value) => value + 1)}
-              />
-            )}
-            {gameId === 'ordering' && (
-              <OrderingGame
-                level={lesson.level}
-                best={gameBest}
-                onFinish={(score) => saveGameScore(gameId, lesson.level, score)}
-                onReplay={() => setAttempt((value) => value + 1)}
-              />
-            )}
-          </div>
+          <LessonChallengeGame key={lesson.id} lesson={lesson} />
         </div>
       )}
     </div>
