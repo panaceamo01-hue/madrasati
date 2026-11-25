@@ -30,6 +30,7 @@ import { RoleView } from './views/RoleView';
 import { TeacherHome } from './views/TeacherHome';
 import { TeacherLessonView } from './views/TeacherLessonView';
 import { TeacherGameView } from './views/TeacherGameView';
+import { ExamsView } from './views/ExamsView';
 import { NotFound } from './views/NotFound';
 
 function currentRoute(): Route {
@@ -208,6 +209,8 @@ export function App() {
               <TeacherGameView key={route.id} id={route.id} />
             ) : route.name === 'settings' ? (
               <SettingsView />
+            ) : route.name === 'exams' ? (
+              <ExamsView />
             ) : (
               <TeacherHome />
             )}
@@ -270,6 +273,7 @@ export function App() {
           {route.name === 'quran' && <QuranView />}
           {route.name === 'surah' && <SurahView key={route.id} surahId={route.id} />}
           {route.name === 'leaderboard' && <LeaderboardView />}
+          {route.name === 'exams' && <ExamsView />}
           {route.name === 'activate' && <Home />}
           {(route.name === 'teacher' ||
             route.name === 'teacherLesson' ||

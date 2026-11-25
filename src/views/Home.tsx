@@ -274,6 +274,17 @@ export function Home() {
         <span className="cta">افتح ←</span>
       </a>
 
+      <a className="wisdom-teaser" href="#/exams">
+        <span className="wisdom-teaser-emoji" aria-hidden="true">
+          📝
+        </span>
+        <span>
+          <strong>نماذج الفروض والامتحانات</strong>
+          <small>أوراق فروض حقيقية لكل مستوى + امتحانات موحدة للسادس</small>
+        </span>
+        <span className="cta">افتح ←</span>
+      </a>
+
       <a className="wisdom-teaser" href="#/leaderboard">
         <span className="wisdom-teaser-emoji" aria-hidden="true">
           🏆

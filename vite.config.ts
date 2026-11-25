@@ -27,7 +27,10 @@ function offlinePrecachePlugin() {
           if (statSync(full).isDirectory()) walk(full);
           else {
             const rel = relative(dist, full).split(sep).join('/');
-            if (rel !== 'sw.js') files.push('/' + rel);
+            // ملفات الامتحانات (PDF) لا تُحفظ مسبقًا: تُجلب عند الطلب وتُحفظ
+            // بعدها في الذاكرة عبر معالج fetch، حتى لا يثقل التثبيت الأول
+            // (عشرات الملفات) ولا يفشل التثبيت إن تعذّر ملف واحد.
+            if (rel !== 'sw.js' && !rel.startsWith('exams/')) files.push('/' + rel);
           }
         }
       };

@@ -22,7 +22,8 @@ export type Route =
   | { name: 'admin' }
   | { name: 'teacher' }
   | { name: 'teacherLesson'; id: string }
-  | { name: 'teacherGame'; id: string };
+  | { name: 'teacherGame'; id: string }
+  | { name: 'exams' };
 
 /** مشتقة من سجل الألعاب: أي لعبة جديدة تُضاف في data/games.ts يصير مسارها شغالًا تلقائيًا.
     (القائمة المكتوبة يدويًا هنا سابقًا نسيت 'knowledge' فكان رابط اللعبة يرجع للرئيسية.) */
@@ -77,6 +78,7 @@ export function parseRoute(hash: string): Route {
   if (parts[0] === 'teacher' && parts[1] === 'game' && parts[2]) {
     return { name: 'teacherGame', id: decodeURIComponent(parts[2]) };
   }
+  if (parts[0] === 'exams') return { name: 'exams' };
   return { name: 'home' };
 }
 
