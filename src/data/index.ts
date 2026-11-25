@@ -19,6 +19,8 @@ import { l6FrenchGrammaire } from './l6-french-grammaire';
 import { l6FrenchConjugaison } from './l6-french-conjugaison';
 import { l6FrenchOrthographe } from './l6-french-orthographe';
 import { l6MathGeometrie } from './l6-math-geometrie';
+import { l6IslamicIbadat } from './l6-islamic-ibadat';
+import { l6IslamicSira } from './l6-islamic-sira';
 
 export const LESSONS: Lesson[] = [
   ...level1,
@@ -41,6 +43,9 @@ export const LESSONS: Lesson[] = [
   ...l6FrenchOrthographe,
   // الهندسة للسادس حسب التوزيع السنوي الرسمي — بعد الفرنسية.
   ...l6MathGeometrie,
+  // التربية الإسلامية للسادس حسب التوزيع السنوي الرسمي — بعد الهندسة.
+  ...l6IslamicIbadat,
+  ...l6IslamicSira,
   ...level6,
   ...extras[6],
   ...l6ExamMath,
